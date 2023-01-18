@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Website\CareerController;
+use App\Http\Controllers\Website\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,6 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 Route::post('/career', [CareerController::class, 'index'])->name('career');
+Route::post('/contact-us', [ContactController::class, 'store'])->name('contact-us');
+Route::post('/dealers', [ContactController::class, 'store'])->name('dealers');
 
