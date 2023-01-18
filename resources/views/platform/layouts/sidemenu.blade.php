@@ -18,8 +18,8 @@
                     <span class="menu-title">Dashboard</span>
                 </a>
             </div>
-           @if( access()->hasAccess(['product-category', 'products']) )
-            <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if( request()->routeIs(['product-category', 'products','products.*', 'product-attribute', 'product-collection'])) hover show @endif">
+           @if( access()->hasAccess(['product-category', 'products','industrial-module']) )
+            <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if( request()->routeIs(['product-category','industrial-module', 'products','products.*', 'product-attribute', 'product-collection'])) hover show @endif">
                 <span class="menu-link">
                     <span class="menu-icon">
                         <span class="svg-icon svg-icon-2">
@@ -35,6 +35,14 @@
                     <span class="menu-arrow"></span>
                 </span>
                 <div class="menu-sub menu-sub-accordion menu-active-bg">
+                    <div class="menu-item">
+                        <a class="menu-link @if(  request()->routeIs(['industrial-module'])) active @endif" href="{{ route('industrial-module') }}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Industrial Module</span>
+                        </a>
+                    </div>
                     @if( access()->hasAccess(['product-category']) )
                     <div class="menu-item">
                         <a class="menu-link @if(  request()->routeIs(['product-category'])) active @endif" href="{{ route('product-category') }}">

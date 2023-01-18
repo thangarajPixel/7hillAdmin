@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $seededAdminEmail = 'adminmusee@yopmail.com';
+        $seededAdminEmail = 'admin7hill@yopmail.com';
         $user = User::where('email', '=', $seededAdminEmail)->first();
         if ($user === null) {
             $user = User::create([

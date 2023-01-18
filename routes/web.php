@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function(){
         'roles' => App\Http\Controllers\Settings\RoleController::class,
         'customer' => App\Http\Controllers\CustomerController::class,
         'banner' => App\Http\Controllers\BannerController::class,
+        'industrial-module' => App\Http\Controllers\IndustrialController::class,
     );
     foreach ($routeArray as $key => $value) {
         Route::prefix($key)->group(function() use($key, $value) {
@@ -89,6 +90,6 @@ Route::middleware(['auth'])->group(function(){
         Route::prefix('products')->group(function(){
             Route::get('/list', [App\Http\Controllers\ReportProductController::class, 'index'])->name('reports.products.list');
         });
-    });    
+    });  
    
 });
