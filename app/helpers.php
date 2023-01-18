@@ -22,13 +22,14 @@ if( !function_exists('errorArrays') ) {
         }, $errors);
     }
 }
-
+function failedCall($data)
+  {
+    return response()->json(['Status'=>200,'Errors'=>true,'Message'=>$data]);
+  }
 function sendSMS($numbers, $msg, $params) {
     extract($params);
     $uid = "museemusical";
     $pwd = urlencode("18870");
-    // $Peid = "1001409933589317661";
-    // $tempid = "1607100000000238808";
     $sender = urlencode("MUSEEM");
 
     $message = rawurlencode($msg);
