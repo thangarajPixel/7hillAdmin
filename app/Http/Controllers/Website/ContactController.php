@@ -23,11 +23,11 @@ class ContactController extends Controller
             return failedCall($validator->messages());
         }
       
-        $data = new Contact;
-        $data->name = $requests->name;
-        $data->mobile = $requests->mobile;
-        $data->email = $requests->email;
-        $data->message = $requests->message;
+        $data               = new Contact;
+        $data->name         = $requests->name;
+        $data->mobile       = $requests->mobile;
+        $data->email        = $requests->email;
+        $data->message      = $requests->message;
         $res = $data->save();
         if($res)
         {
