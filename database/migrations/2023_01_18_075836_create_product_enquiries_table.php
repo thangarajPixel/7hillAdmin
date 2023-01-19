@@ -19,7 +19,7 @@ class CreateProductEnquiriesTable extends Migration
             $table->string('product_id');
             $table->string('email');
             $table->string('mobile');
-            $table->string('company_name');
+            $table->string('company_name')->nullable();
             $table->string('city');
             $table->enum( 'status', ['published', 'unpublished'])->default('published');
             $table->softDeletes();
