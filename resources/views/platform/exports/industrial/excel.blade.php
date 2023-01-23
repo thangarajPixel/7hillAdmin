@@ -24,11 +24,10 @@
     <tbody>
         @if( isset( $list ) && !empty($list))
             @foreach ($list as $item)
-           
             <tr>
                 <td>{{ $item->title }}</td>
                 <td>{{ $item->slug }}</td>
-                <td>{{ $item->parent->name ?? '' }}</td>
+                <td>{{ $item->parent->title ?? '' }}</td>
                 <td>{{ $item->description ?? '' }}</td>
                 <td>{{ $item->meta_title ?? '' }}</td>
                 <td>{{ $item->meta_keyword ?? '' }}</td>
@@ -36,7 +35,7 @@
                 <td>{{ $item->status }}</td>
                 <td>{{ $item->userInfo->name ?? '' }}</td>
                 <td>{{ $item->created_at }}</td>
-
+                
             </tr>
             @endforeach
         @endif

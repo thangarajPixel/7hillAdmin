@@ -26,6 +26,10 @@ class Industrial extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Industrial::class,'id','parent_id') ;
+        return $this->hasOne(Industrial::class,'id','parent_id') ;
+    }
+    public function userInfo()
+    {
+        return $this->hasOne(User::class,'id','added_by');
     }
 }

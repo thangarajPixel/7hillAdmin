@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\IndustrialExport;
 use App\Models\Industrial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -183,5 +184,15 @@ class IndustrialController extends Controller
         $directory = 'industrial/'.$id;
         Storage::deleteDirectory('public/'.$directory); 
         return response()->json(['message'=>"Successfully deleted Industrial!",'status'=>1]);
+    }
+    public function export()
+    {
+        return Excel::download(new IndustrialExport, 'industrial.xlsx');
+    }
+    public function exportPdf()
+    {
+        $list       = Industrial::all();
+        $pdf        = PDF::loadView('platform.exports.product.product_category_excel', array('list' => $list, 'from' => 'pdf'))->setPaper('a4', 'landscape');;
+        return $pdf->download('industrial.pdf');
     }
 }
