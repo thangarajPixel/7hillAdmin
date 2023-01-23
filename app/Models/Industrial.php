@@ -23,4 +23,9 @@ class Industrial extends Model
         'status',
         'added_by',
     ];
+
+    public function parent()
+    {
+        return $this->belongsTo(Industrial::class,'id','parent_id') ;
+    }
 }

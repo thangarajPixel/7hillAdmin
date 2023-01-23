@@ -45,7 +45,7 @@ var KTAppEcommerceSaveCategory = function () {
     const initTagify = () => {
         // Define all elements for tagify
         const elements = [
-            '#kt_ecommerce_add_category_meta_keywords'
+            '#kt_ecommerce_add_category_meta_keyword'
         ];
 
         // Loop all elements

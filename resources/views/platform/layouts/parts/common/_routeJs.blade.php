@@ -80,6 +80,15 @@
                    'pdf': "{{ route('banner.export.pdf') }}",
                 }
             },  
+            'industrial-module': {
+               'delete': "{{ route('industrial-module.delete') }}",
+               'status': "{{ route('industrial-module.status') }}",
+               'add': "{{ route('industrial-module.add.edit') }}",
+               'export': {
+                   'excel': "{{ route('industrial-module.export.excel') }}",
+                   'pdf': "{{ route('industrial-module.export.pdf') }}",
+                }
+            }, 
            
        }
    };

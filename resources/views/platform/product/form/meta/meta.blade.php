@@ -29,7 +29,7 @@
         <div>
           
             <label class="form-label">Meta Tag Keywords</label>
-            <input id="kt_ecommerce_add_product_meta_keywords" value="{{ $info->productMeta->meta_keyword ?? '' }}" name="meta_keywords" class="form-control mb-2" />
+            <input id="kt_ecommerce_add_product_meta_keyword" value="{{ $info->productMeta->meta_keyword ?? '' }}" name="meta_keyword" class="form-control mb-2" />
             <div class="text-muted fs-7">Set a list of keywords that the product is related to. Separate the keywords by adding a comma 
             <code>,</code>between each keyword.</div>
             

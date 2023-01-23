@@ -127,18 +127,6 @@ class ProductCategoryController extends Controller
             } else {
                 $ins['parent_id'] = 0;
             }
-            if( $request->is_tax ) {
-                $ins['tax_id'] = $request->tax_id;
-            } else {
-                $ins['tax_id'] = null;
-            }
-
-            if( $request->is_home_menu ) {
-                $ins['is_home_menu'] = 'yes';
-            } else {
-                $ins['is_home_menu'] = 'no';
-            }
-
             if( !$id ) {
                 $ins['added_by'] = Auth::id();
             } else {
@@ -148,7 +136,6 @@ class ProductCategoryController extends Controller
             $ins['name'] = $request->name;
             $ins['description'] = $request->description;
             $ins['order_by'] = $request->order_by ?? 0;
-            $ins['tag_line'] = $request->tag_line;
 
             if($request->status)
             {
@@ -223,7 +210,6 @@ class ProductCategoryController extends Controller
         $info->delete();
         $directory      = 'productCategory/'.$id;
         Storage::deleteDirectory($directory);
-        // echo 1;
         return response()->json(['message'=>"Successfully deleted!",'status'=>1]);
     }
 

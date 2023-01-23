@@ -19,10 +19,10 @@ class CreateIndustrialsTable extends Migration
             $table->string('slug')->nullable();
             $table->string('image')->nullable();
             $table->unsignedBigInteger('parent_id')->default(0);
-            $table->string('description')->nullable();
-            $table->string('meta_title')->nullable();
-            $table->string('meta_keyword')->nullable();
-            $table->string('meta_description')->nullable();
+            $table->longText('description')->nullable();
+            $table->longText('meta_title')->nullable();
+            $table->longText('meta_keyword')->nullable();
+            $table->longText('meta_description')->nullable();
             $table->integer('sorting_order')->nullable();
             $table->enum( 'status', ['published', 'unpublished'])->default('published');
             $table->unsignedBigInteger('added_by')->nullable();
