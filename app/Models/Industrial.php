@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Product\Product;
+use App\Models\Product\ProductCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -28,8 +30,22 @@ class Industrial extends Model
     {
         return $this->hasOne(Industrial::class,'id','parent_id') ;
     }
+
+    public function childOnlyNames()
+    {
+        return $this->hasMany(Industrial::class, 'parent_id', 'id');
+    }
+    public function parentOnlyName()
+    {
+        return $this->hasMany(ProductCategory::class,'industrial_id','id');
+    }
     public function userInfo()
     {
         return $this->hasOne(User::class,'id','added_by');
+    }
+    
+    public function childCategory()
+    {
+        return $this->hasMany(ProductCategory::class, 'industrial_id', 'id');
     }
 }

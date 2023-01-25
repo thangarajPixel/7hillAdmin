@@ -3,6 +3,7 @@
 namespace App\Models\Product;
 
 use App\Models\CategoryMetaTags;
+use App\Models\Industrial;
 use App\Models\Settings\Tax;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,18 +15,18 @@ class ProductCategory extends Model
     use HasFactory,SoftDeletes;
     protected $fillable = [
         'name',
-        'parent_id',
         'slug',
+        'parent_id',
+        'industrial_id',
         'description',
         'image',
-        'is_featured',
+        'meta_title',
+        'meta_keyword',
+        'meta_description',
         'status',
         'order_by',
         'added_by',
-        'tag_line',
-        'tax_id',
-        'is_home_menu',
-        'updated_by'
+        'updated_by',
     ];
 
     public function meta()
@@ -48,14 +49,10 @@ class ProductCategory extends Model
         return $this->belongsTo(ProductCategory::class, 'parent_id', 'id');
     }
 
-    public function childCategory() 
+    public function parentIndustry()
     {
-        return $this->hasMany(ProductCategory::class, 'parent_id', 'id')->where('status', 'published')->orderBy('order_by', 'asc');
+        return $this->belongsTo(Industrial::class, 'industrial_id', 'id');
     }
 
-    public function childTopMenuCategory() 
-    {
-        return $this->hasMany(ProductCategory::class, 'parent_id', 'id')->select('id','name','is_featured', 'slug')->where(['status' => 'published', 'is_home_menu' => 'yes'])->orderBy('order_by', 'asc');
-    }
     
 }

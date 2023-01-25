@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Website\CareerController;
 use App\Http\Controllers\Website\ContactController;
 use App\Http\Controllers\Website\DealersController;
+use App\Http\Controllers\Website\ProductCategoryController;
 use App\Http\Controllers\Website\ProductEnquiryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +27,5 @@ Route::post('/career', [CareerController::class, 'index'])->name('career');
 Route::post('/contact-us', [ContactController::class, 'store'])->name('contact-us');
 Route::post('/dealers', [DealersController::class, 'store'])->name('dealers');
 Route::post('/product-enquiry', [ProductEnquiryController::class, 'store'])->name('product-enquiry');
+Route::get('/product-category', [MenuController::class, 'getAllMenu'])->name('product-category');
 
