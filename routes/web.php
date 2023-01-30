@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/export/pdf', [$value, 'exportPdf'])->name($key.'.export.pdf')->middleware(['checkAccess:export']);
         });
     }
+    Route::post('industrial-data-check',[App\Http\Controllers\Product\ProductCategoryController::class,'checkIndustrial'])->name('industrial-data-check');
     Route::prefix('products')->group(function(){
         Route::get('/', [App\Http\Controllers\Product\ProductController::class, 'index'])->name('products')->middleware(['checkAccess:visible']); 
         Route::get('/upload', [App\Http\Controllers\Product\ProductController::class, 'bulkUpload'])->name('products.upload')->middleware(['checkAccess:editable']); 

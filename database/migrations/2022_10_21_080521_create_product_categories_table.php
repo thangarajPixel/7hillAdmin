@@ -16,12 +16,15 @@ class CreateProductCategoriesTable extends Migration
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
             $table->string( 'name' );
+            $table->string( 'slug' );
             $table->unsignedBigInteger('parent_id')->default(0);
             $table->text('description')->nullable();
             $table->text('image')->nullable();
+            $table->longText('meta_title')->nullable();
+            $table->longText('meta_keyword')->nullable();
+            $table->longText('meta_description')->nullable();
             $table->enum( 'status', ['published', 'unpublished'])->default('published');
             $table->integer('order_by')->nullable();
-            $table->enum( 'is_featured', [0,1,])->default(0);
             $table->unsignedBigInteger('added_by');
             $table->foreign('added_by')->references('id')->on('users');
             $table->softDeletes();

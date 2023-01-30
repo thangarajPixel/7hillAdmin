@@ -87,7 +87,6 @@
         }
     });
 
-   
     //image image script
      document.getElementById('readUrl').addEventListener('change', function() {
         // console.log("111");
@@ -104,7 +103,7 @@
         }
     });
     document.getElementById('avatar_remove_logo').addEventListener('click', function() {
-        $('#image_remove_image').val("yes");
+        $('#image_remove_image').val("no");
         $('#manual-image').css({
             'background-image': ''
         });
@@ -127,10 +126,17 @@
             var validator = FormValidation.formValidation(
                 form, {
                     fields: {
-                        'category_name': {
+                        'name': {
                             validators: {
                                 notEmpty: {
                                     message: 'Category Name is required'
+                                }
+                            }
+                        },
+                        'parent_category': {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Parent Category is required'
                                 }
                             }
                         },

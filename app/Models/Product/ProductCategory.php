@@ -46,7 +46,7 @@ class ProductCategory extends Model
 
     public function parent()
     {
-        return $this->belongsTo(ProductCategory::class, 'parent_id', 'id');
+        return $this->belongsTo(Industrial::class, 'industrial_id', 'id');
     }
 
     public function parentIndustry()

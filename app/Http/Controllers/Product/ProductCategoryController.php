@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Exports\ProductCategoryExport;
 use App\Http\Controllers\Controller;
 use App\Models\CategoryMetaTags;
+use App\Models\Industrial;
 use Illuminate\Http\Request;
 use App\Models\Product\ProductCategory;
 use Illuminate\Validation\Rule;
@@ -49,7 +50,6 @@ class ProductCategoryController extends Controller
                                     ->orWhere('parent_category.name', 'like', "%{$keywords}%")
                                     ->orWhereDate("product_categories.created_at", $date);
                     });
-                    
                 })
                 ->addIndexColumn()
                 ->editColumn('status', function ($row) {
@@ -64,7 +64,6 @@ class ProductCategoryController extends Controller
                     $created_at = Carbon::createFromFormat('Y-m-d H:i:s', $row['created_at'])->format('d-m-Y');
                     return $created_at;
                 })
-
                 ->addColumn('action', function ($row) {
                     $edit_btn = '<a href="javascript:void(0);" onclick="return  openForm(\'product-category\',' . $row->id . ')" class="btn btn-icon btn-active-primary btn-light-primary mx-1 w-30px h-30px" > 
                     <i class="fa fa-edit"></i>
@@ -81,7 +80,6 @@ class ProductCategoryController extends Controller
 
     public function modalAddEdit(Request $request)
     {
-        
         $title              = "Add Product Categories";
         $breadCrum          = array('Products', 'Add Product Categories');
 
@@ -89,48 +87,65 @@ class ProductCategoryController extends Controller
         $from               = $request->from;
         $info               = '';
         $modal_title        = 'Add Product Category';
-        $productCategory    = ProductCategory::where('status', 'published')->where('parent_id', 0)->get();
+        $industrial         = Industrial::where('status', 'published')->get();
         if (isset($id) && !empty($id)) {
             $info           = ProductCategory::find($id);
+
             $modal_title    = 'Update Product Category';
         }
-        
-        return view('platform.product_category.form.add_edit_form', compact('modal_title', 'breadCrum', 'info', 'from', 'productCategory'));
+        foreach($industrial as $key=>$val)
+        {
+            if($val['parent_id'] == 0)
+            {
+                $val['title'] = $val['title']." - Parent";
+            }
+            else{
+                if($val['parent_id'])
+                {
+                    $datass = $val->selectOption;
+                    $val['title'] = $val['title']." - " . $val->selectOption->title;
+                }
+            }
+
+        }
+
+        return view('platform.product_category.form.add_edit_form', compact('modal_title', 'breadCrum', 'info', 'from', 'industrial'));
     }
-    
+    public function checkIndustrial(Request $request)
+    {
+        $data  = '';
+        if($request->data)
+        {
+            $data   = Industrial::select('id','title')->where('status', 'published')->where('parent_id', $request->data)->get();
+        }
+        // $data = $request->all();
+        return response()->json(['data'=>$data]);
+    }
     public function saveForm(Request $request,$id = null)
     {
-        
         $id             = $request->id;
-        $parent_id      = $request->parent_category;
+        $industrial_id      = $request->parent_category;
         $validator      = Validator::make($request->all(), [
-                            'name' => ['required','string',
-                                                Rule::unique('product_categories')->where(function ($query) use($id, $parent_id) {
-                                                    return $query->where('parent_id', $parent_id)->where('deleted_at', NULL)->when($id != '', function($q) use($id){
-                                                        return $q->where('id', '!=', $id);
-                                                    });
-                                                }),
-                                                ],
-
-                            'avatar' => 'mimes:jpeg,png,jpg',
-                            'tax_id' => 'required_if:is_tax,on'
-                        ]);
-
+            'name' => 'required','string',
+            'parent_category' => 'required|numeric',
+            'avatar' => 'mimes:jpeg,png,jpg',
+        ]);
         $categoryId         = '';
         if ($validator->passes()) {
-            
             if ($request->image_remove_logo == "yes") {
                 $ins['image'] = '';
             }
-            if( !$request->is_parent ) {
-                $ins['parent_id'] = $request->parent_category;
+          
+            $ins['parent_id'] = 0;
+            if( $industrial_id ) {
+                $ins['industrial_id'] = $industrial_id;
             } else {
-                $ins['parent_id'] = 0;
+                $ins['industrial_id'] = 0;
             }
             if( !$id ) {
                 $ins['added_by'] = Auth::id();
-            } else {
-                $ins['updated_by'] = Auth::id();
+            }else {
+                $ins['updated_at'] = Auth::id();
             }
 
             $ins['name'] = $request->name;
@@ -143,58 +158,41 @@ class ProductCategoryController extends Controller
             } else {
                 $ins['status']          = 'unpublished';
             }
-            $parent_name = '';
-            if( isset( $parent_id ) && !empty( $parent_id ) ) {
-                $parentInfo             = ProductCategory::find($parent_id);
-                $parent_name            = $parentInfo->name;
-            }
 
-            $ins['slug']                = Str::slug($request->name.' '.$parent_name);
-            
+            $ins['slug']                = \Str::slug($request->name);
+            $ins['meta_title']          = $request->meta_title ?? '';
+            $ins['meta_keyword']        = $request->meta_keyword ?? '';
+            $ins['meta_description']    = $request->meta_description ?? '';
+            $ins['sorting_order']       = $request->order_by ?? 0;
             $error                      = 0;
+            if ($request->image_remove_image == "no") {
+                $directory = 'upload/category/image/'.$id;
+                \File::deleteDirectory(public_path($directory));
+                $ins['image'] = '';
+            }
             $categeryInfo               = ProductCategory::updateOrCreate(['id' => $id], $ins);
             $categoryId                 = $categeryInfo->id;
 
-            if ($request->hasFile('categoryImage')) {
-               
-                $imagName               = time() . '_' . $request->categoryImage->getClientOriginalName();
-                $directory              = 'productCategory/'.$categoryId;
-                $filename               = $directory.'/'.$imagName.'/';
-                Storage::deleteDirectory('public/'.$directory);
-                Storage::disk('public')->put($filename, File::get($request->categoryImage));
-                
-                if (!is_dir(storage_path("app/public/productCategory/".$categoryId."/thumbnail"))) {
-                    mkdir(storage_path("app/public/productCategory/".$categoryId."/thumbnail"), 0775, true);
+
+            if($request->hasFile('categoryImage'))
+            {
+                $directory = 'upload/category/image/'.$categoryId;
+                \File::deleteDirectory(public_path($directory));
+
+                $file = $request->file('categoryImage');
+                $imageName = uniqid().str_replace(["(", ")"],'',$file->getClientOriginalName());
+                if(!is_dir(public_path($directory."/")))
+                {
+                    mkdir(public_path($directory."/"),0775,true);
                 }
-                if (!is_dir(storage_path("app/public/productCategory/".$categoryId."/carousel"))) {
-                    mkdir(storage_path("app/public/productCategory/".$categoryId."/carousel"), 0775, true);
-                }
+                $mainCategory   = "upload/category/image/".$categoryId."/".$imageName;
+                $file->move(public_path($directory),$imageName);
 
-                $thumbnailPath          = 'public/productCategory/'.$categoryId.'/thumbnail/' . $imagName;
-                Image::make($request->file('categoryImage'))->resize(350,690)->save(storage_path('app/' . $thumbnailPath));
-
-                $carouselPath          = 'public/productCategory/'.$categoryId.'/carousel/' . $imagName;
-                Image::make($request->file('categoryImage'))->resize(300,220)->save(storage_path('app/' . $carouselPath));
-
-                // $carouselPath          = $directory.'/carousel/'.$imagName;
-                // Storage::disk('public')->put( $carouselPath, Image::make($request->file('categoryImage'))->resize(300,220) );
-
-                $categeryInfo->image    = $filename;
+                $categeryInfo->image       = $mainCategory;
                 $categeryInfo->save();
             }
 
-            $meta_title = $request->meta_title;
-            $meta_keywords = $request->meta_keywords;
-            $meta_description = $request->meta_description;
 
-            if( !empty( $meta_title ) || !empty( $meta_keywords) || !empty( $meta_description ) ) {
-                CategoryMetaTags::where('category_id',$categoryId)->delete();
-                $metaIns['meta_title']          = $meta_title;
-                $metaIns['meta_keyword']       = $meta_keywords;
-                $metaIns['meta_description']    = $meta_description;
-                $metaIns['category_id']         = $categoryId;
-                CategoryMetaTags::create($metaIns);
-            }
             $message                    = (isset($id) && !empty($id)) ? 'Updated Successfully' : 'Added successfully';
         } else {
             $error      = 1;
@@ -225,7 +223,7 @@ class ProductCategoryController extends Controller
         return response()->json(['message'=>"You changed the status!",'status'=>1]);
 
     }
-
+    
     public function export()
     {
         return Excel::download(new ProductCategoryExport, 'productCategories.xlsx');

@@ -26,9 +26,9 @@
             @foreach ($list as $item)
            
             <tr>
-                <td>{{ $item->title }}</td>
+                <td>{{ $item->name }}</td>
                 <td>{{ $item->slug }}</td>
-                <td>{{ $item->parent->name ?? '' }}</td>
+                <td>{{ $item->parent_name ?? '' }}</td>
                 <td>{{ $item->description ?? '' }}</td>
                 <td>{{ $item->meta_title ?? '' }}</td>
                 <td>{{ $item->meta_keyword ?? '' }}</td>

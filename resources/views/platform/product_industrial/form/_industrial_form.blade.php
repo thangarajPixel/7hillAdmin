@@ -85,8 +85,8 @@
        
         <div class="mb-7 mt-4">
             <label class="fw-bold fs-6 mb-2">Sorting Order</label>
-            <input type="text" name="order_by" class="form-control numberonly form-control-solid mb-3 mb-lg-0"
-                placeholder="Sorting Order" value="{{ $info->order_by ?? '' }}" min="1" />
+            <input type="text" name="sorting_order" class="form-control numberonly form-control-solid mb-3 mb-lg-0"
+                placeholder="Sorting Order" value="{{ $info->sorting_order ?? '' }}" min="1" />
         </div>
         
     </div>

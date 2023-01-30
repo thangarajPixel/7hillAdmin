@@ -111,7 +111,7 @@ class IndustrialController extends Controller
             $ins['meta_title']          = $request->meta_title ?? '';
             $ins['meta_keyword']        = $request->meta_keyword ?? '';
             $ins['meta_description']    = $request->meta_description ?? '';
-            $ins['sorting_order']       = $request->order_by ?? 0;
+            $ins['sorting_order']       = $request->sorting_order ?? 0;
             $ins['added_by']            = auth()->user()->id;
            
             if($request->status == "1")
@@ -127,7 +127,7 @@ class IndustrialController extends Controller
             }
 
             if ($request->image_remove_image == "no") {
-                $directory = 'upload/category/'.$id;
+                $directory = 'upload/category/industrial/'.$id;
                 \File::deleteDirectory(public_path($directory));
                 $ins['image'] = '';
             }
@@ -136,23 +136,19 @@ class IndustrialController extends Controller
             $info                       = Industrial::updateOrCreate(['id' => $id], $ins);
             $category_id                  = $info->id;
 
-            if ($request->image_remove_image == "no") {
-                $directory = 'upload/category/'.$category_id;
-                \File::deleteDirectory(public_path($directory));
-            }
 
             if($request->hasFile('avatar'))
             {
-                $directory = 'upload/category/'.$category_id;
+                $directory = 'upload/category/industrial/'.$category_id;
                 \File::deleteDirectory(public_path($directory));
 
                 $file = $request->file('avatar');
-                $imageName = uniqid().preg_replace('/[^A-Za-z0-9\-]/','',$file->getClientOriginalName());
+                $imageName = uniqid().str_replace(["(", ")"],'',$file->getClientOriginalName());
                 if(!is_dir(public_path($directory."/")))
                 {
                     mkdir(public_path($directory."/"),0775,true);
                 }
-                $mainCategory   = "upload/category/".$category_id."/".$imageName;
+                $mainCategory   = "upload/category/industrial/".$category_id."/".$imageName;
                 $file->move(public_path($directory),$imageName);
 
                 $info->image       = $mainCategory;

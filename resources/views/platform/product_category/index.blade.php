@@ -42,7 +42,6 @@
                             <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
                                 <th> Category  </th>
                                 <th> Parent Category  </th>
-                                <th> Tagline </th>
                                 <th> Created By </th>
                                 <th> Created Date </th>
                                 <th> Status </th>
@@ -81,11 +80,7 @@
                     data: 'parent_name',
                     name: 'parent_name'
                 },
-                {
-                    data: 'tag_line',
-                    name: 'tag_line'
-                },
-                
+               
                 {
                     data: 'users_name',
                     name: 'users_name'
