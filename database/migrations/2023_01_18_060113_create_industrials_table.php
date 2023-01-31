@@ -39,5 +39,6 @@ class CreateIndustrialsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('industrials');
+        Schema::dropIfExists('product_categories');
     }
 }

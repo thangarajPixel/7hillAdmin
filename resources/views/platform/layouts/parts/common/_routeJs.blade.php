@@ -80,6 +80,24 @@
                    'pdf': "{{ route('banner.export.pdf') }}",
                 }
             },  
+            'product-attribute': {
+               'delete': "{{ route('product-attribute.delete') }}",
+               'status': "{{ route('product-attribute.status') }}",
+               'add': "{{ route('product-attribute.add.edit') }}",
+               'export': {
+                   'excel': "{{ route('product-attribute.export.excel') }}",
+                   'pdf': "{{ route('product-attribute.export.pdf') }}",
+                }
+            },    
+            'product-collection': {
+               'delete': "{{ route('product-collection.delete') }}",
+               'status': "{{ route('product-collection.status') }}",
+               'add': "{{ route('product-collection.add.edit') }}",
+               'export': {
+                   'excel': "{{ route('product-collection.export.excel') }}",
+                   'pdf': "{{ route('product-collection.export.pdf') }}",
+                }
+            },   
             'industrial-module': {
                'delete': "{{ route('industrial-module.delete') }}",
                'status': "{{ route('industrial-module.status') }}",

@@ -17,8 +17,6 @@ class ProductCategoryExport implements FromView
             DB::raw('IF(7hill_product_categories.parent_id = 0, "Parent", 7hill_parent_category.name ) as parent_name '))
                                     ->join('users', 'users.id', '=', 'product_categories.added_by')
                                     ->leftJoin('product_categories as parent_category', 'parent_category.id', '=', 'product_categories.parent_id')->get();
-        
-    
         return view('platform.exports.product.product_category_excel', compact('list'));
     }
 }

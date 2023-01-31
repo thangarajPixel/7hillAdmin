@@ -31,7 +31,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-active-primary product-tab pb-4" data-bs-toggle="tab" href="#kt_ecommerce_add_product_description">Descriptions</a>
                         </li>
-                        
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary product-tab pb-4" data-bs-toggle="tab" href="#kt_ecommerce_add_product_filter">Filter</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-active-primary product-tab pb-4" data-bs-toggle="tab" href="#kt_ecommerce_add_product_meta">Meta Tags</a>
                         </li>
@@ -51,7 +53,9 @@
                         <div class="tab-pane fade" id="kt_ecommerce_add_product_description" role="tab-panel">
                             @include('platform.product.form.description.description')
                         </div>
-
+                        <div class="tab-pane fade" id="kt_ecommerce_add_product_filter" role="tab-panel">
+                            @include('platform.product.form.filter.filter')
+                        </div>
 
                         <div class="tab-pane fade" id="kt_ecommerce_add_product_meta" role="tab-panel">
                             @include('platform.product.form.meta.meta')
@@ -84,7 +88,9 @@
 @section('add_on_script')
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
-
+    @if(isset( $info->id) && !empty( $info->id))
+    addVariationRow('{{ $info->id }}');
+    @endif
     $('.product-tab').click(function() {
         
         let types = $(this).attr('href');
@@ -303,7 +309,22 @@
 
     }
 
+    function addVariationRow( id = '') {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url:"{{ route('products.attribute.row') }}",
+            type: "POST",
+            data:{product_id:id},
+            success: function(res){
+                $('#formRepeaterId').append( res );
+            }
 
+        });
+    }
     $("body").on("click", ".removeRow", function () {
         $(this).parents(".childRow").remove();
     })

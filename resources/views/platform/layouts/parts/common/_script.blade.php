@@ -16,7 +16,7 @@
         exportModal.hide();
     })
 
-    function openForm(module_type, id = '', from = '', dynamicModel = '') {
+    function openForm(module_type, id = '', from = '', dynamicModel = '', categoryId = '') {
                
         $.ajaxSetup({
             headers: {

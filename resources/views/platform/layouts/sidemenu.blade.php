@@ -64,6 +64,26 @@
                         </a>
                     </div>
                     @endif
+                    @if( access()->hasAccess(['product-collection']) )
+                    <div class="menu-item">
+                        <a class="menu-link @if( request()->routeIs(['product-collection'])) active @endif" href="{{ route('product-collection') }}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Product Collection</span>
+                        </a>
+                    </div>
+                    @endif
+                    @if( access()->hasAccess(['product-attribute']) )
+                    <div class="menu-item">
+                        <a class="menu-link @if( request()->routeIs(['product-attribute'])) active @endif" href="{{ route('product-attribute') }}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Product Attributes</span>
+                        </a>
+                    </div>
+                    @endif   
                                  
                 </div>
             </div>

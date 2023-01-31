@@ -51,6 +51,8 @@
     </div>
     <!--end::Select2-->
     <!--begin::Input-->
+    <input type="text" class="form-control mw-100 w-250px required" name="filter_variation_title[]" value="{{ $attr->title ?? ''}}" placeholder="Title" required />
+
     <input type="text" class="form-control mw-100 w-200px required" name="filter_variation_value[]" placeholder="Values" required />
     <!--end::Input-->
     <button type="button" data-repeater-delete="" class="btn btn-sm btn-icon btn-light-danger removeRow"  >
