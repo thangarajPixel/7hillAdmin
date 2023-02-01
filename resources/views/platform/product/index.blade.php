@@ -31,9 +31,7 @@
                                 <th> Product </th>
                                 <th> SKU </th>
                                 <th> Category </th>
-                                <th> Brand  </th>
                                 <th> Price </th>
-                                <th> Video Booking </th>
                                 <th> Status </th>
                                 <th style="width: 75px;">Action</th>
                             </tr>
@@ -78,16 +76,8 @@
                     name: 'category'
                 },
                 {
-                    data: 'brand_name',
-                    name: 'brand_name'
-                },
-                {
                     data: 'price',
                     name: 'price'
-                },
-                {
-                    data: 'has_video_shopping',
-                    name: 'has_video_shopping'
                 },
                 {
                     data: 'status',

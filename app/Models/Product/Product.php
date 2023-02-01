@@ -24,20 +24,16 @@ class Product extends Model
         'sale_end_date',
         'status',
         'quantity',
-        'has_video_shopping',
         'stock_status',
         'category_id',
-        'tag_id',
-        'label_id',
         'is_display_home',
-        'is_featured',
         'is_best_selling',
         'is_new',
         'tax_id',
         'description',
-        'technical_information',
-        'feature_information',
+        'product_model',
         'specification',
+        'technical_information',
         'brochure_upload',
         'base_image',
         'approved_by',
@@ -49,8 +45,6 @@ class Product extends Model
     // {
     //     return $this->hasOne(ProductCategory::class, 'id', 'category_id');
     // }
-
-   
 
     public function productTag()
     {
@@ -72,11 +66,7 @@ class Product extends Model
         return $this->hasOne(ProductMeasurement::class, 'product_id', 'id');
     }
 
-    public function productDiscount()
-    {
-        return $this->hasOne(ProductDiscount::class, 'product_id', 'id');
-    }
-
+    
     public function productAttributes()
     {
         return $this->hasMany(ProductWithAttributeSet::class, 'product_id', 'id');

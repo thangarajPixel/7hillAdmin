@@ -190,6 +190,7 @@ class ProductController extends Controller
 
     public function saveForm(Request $request)
     {
+        // dd($request->all());
         $id                 = $request->id;
         $product_page_type  = $request->product_page_type;
 
@@ -237,19 +238,18 @@ class ProductController extends Controller
             $ins[ 'price' ]                 = $request->base_price;
             $ins[ 'status' ]                = $request->status;
             $ins[ 'category_id' ]           = $request->category_id;
-            $ins[ 'tag_id' ]                = $request->tag_id;
-            $ins[ 'label_id' ]              = $request->label_id;
-            $ins[ 'is_featured' ]           = $request->is_featured ?? 0;
-            $ins[ 'has_video_shopping' ]    = $request->has_video_shopping ?? 'no';
+            // $ins[ 'tag_id' ]                = $request->tag_id;
+            // $ins[ 'label_id' ]              = $request->label_id;
+            // $ins[ 'is_featured' ]           = $request->is_featured ?? 0;
+            // $ins[ 'has_video_shopping' ]    = $request->has_video_shopping ?? 'no';
             $ins[ 'quantity' ]              = $request->qty;
             $ins[ 'stock_status' ]          = $request->stock_status;
             $ins[ 'sale_price' ]            = $request->sale_price ?? 0;
             $ins[ 'sale_start_date' ]       = $request->sale_start_date ?? null;
             $ins[ 'sale_end_date' ]         = $request->sale_end_date ?? null;
             $ins[ 'description' ]           = $request->product_description ?? null;
-            $ins[ 'technical_information' ] = $request->product_technical_information ?? null;
-            $ins[ 'feature_information' ]   = $request->product_feature_information ?? null;
             $ins[ 'specification' ]         = $request->product_specification ?? null;
+            $ins[ 'product_model' ]         = $request->product_model ?? null;
             $ins[ 'added_by' ]              = auth()->user()->id;
             
             $productInfo                    = Product::updateOrCreate(['id' => $id], $ins);
@@ -278,25 +278,25 @@ class ProductController extends Controller
 
             }
             
-            ProductDiscount::where('product_id', $product_id )->delete();
-            if( isset( $request->discount_option ) && $request->discount_option != 1 ) {
-                $disIns['product_id'] = $product_id;
-                $disIns['discount_type'] = $request->discount_option;
-                $disIns['discount_value'] = $request->discount_percentage ?? 0; //this is for percentage 
-                $disIns['amount'] = $request->dicsounted_price ?? 0; //this only for fixed amount
-                ProductDiscount::create($disIns);
-            }
+            // ProductDiscount::where('product_id', $product_id )->delete();
+            // if( isset( $request->discount_option ) && $request->discount_option != 1 ) {
+            //     $disIns['product_id'] = $product_id;
+            //     $disIns['discount_type'] = $request->discount_option;
+            //     $disIns['discount_value'] = $request->discount_percentage ?? 0; //this is for percentage 
+            //     $disIns['amount'] = $request->dicsounted_price ?? 0; //this only for fixed amount
+            //     ProductDiscount::create($disIns);
+            // }
 
-            ProductMeasurement::where('product_id', $product_id )->delete();
-            if( isset( $request->isShipping ) ) {
+            // ProductMeasurement::where('product_id', $product_id )->delete();
+            // if( isset( $request->isShipping ) ) {
 
-                $measure['product_id']  = $product_id;
-                $measure[ 'weight' ]    = $request->weight ?? 0;
-                $measure[ 'width' ]     = $request->width ?? 0;
-                $measure[ 'hight' ]     = $request->height ?? 0;
-                $measure[ 'length' ]    = $request->length ?? 0;
-                ProductMeasurement::create($measure);
-            }
+            //     $measure['product_id']  = $product_id;
+            //     $measure[ 'weight' ]    = $request->weight ?? 0;
+            //     $measure[ 'width' ]     = $request->width ?? 0;
+            //     $measure[ 'hight' ]     = $request->height ?? 0;
+            //     $measure[ 'length' ]    = $request->length ?? 0;
+            //     ProductMeasurement::create($measure);
+            // }
 
             $request->session()->put('image_product_id', $product_id);
             $request->session()->put('brochure_product_id', $product_id);
@@ -320,7 +320,7 @@ class ProductController extends Controller
             
             $meta_ins['meta_title']         = $request->meta_title ?? '';
             $meta_ins['meta_description']   = $request->meta_description ?? '';
-            $meta_ins['meta_keyword']       = $request->meta_keywords ?? '';
+            $meta_ins['meta_keyword']       = $request->meta_keyword ?? '';
             $meta_ins['product_id']         = $product_id;
             ProductMetaTag::updateOrCreate(['product_id' => $product_id], $meta_ins);
 
