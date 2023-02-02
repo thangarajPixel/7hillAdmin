@@ -130,13 +130,26 @@ class ProductCategoryController extends Controller
             'parent_category' => 'required|numeric',
             'avatar' => 'mimes:jpeg,png,jpg',
         ]);
+
+
+        $Catedata = Industrial::where('id',$industrial_id)->select('parent_id')->first();
+        if(!empty($Catedata))
+        {
+            if($Catedata['parent_id'] == 0)
+            {
+                $parentId = $industrial_id;
+            }
+            else{
+                $parentId = $Catedata['parent_id'];
+            }
+        }
         $categoryId         = '';
         if ($validator->passes()) {
             if ($request->image_remove_logo == "yes") {
                 $ins['image'] = '';
             }
           
-            $ins['parent_id'] = 0;
+            $ins['parent_id'] = $parentId;
             if( $industrial_id ) {
                 $ins['industrial_id'] = $industrial_id;
             } else {

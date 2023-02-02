@@ -31,6 +31,6 @@
     @include('platform.product.form.parts._status')
 </div>
 
-<div class="card card-flush" id="product-brochure">
+{{-- <div class="card card-flush" id="product-brochure">
     @include('platform.product.form.parts._brochure')
-</div>
+</div> --}}

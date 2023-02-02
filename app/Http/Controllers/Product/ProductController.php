@@ -184,7 +184,6 @@ class ProductController extends Controller
                                     'otherProducts' => $otherProducts,
                                     
                                 );
-        
         return view('platform.product.form.add_edit_form', $params);
     }
 
@@ -200,18 +199,17 @@ class ProductController extends Controller
                                 'status' => 'required',
                                 'stock_status' => 'required',
                                 'product_name' => 'required_if:product_page_type,==,general',
-                                'base_price' => 'required_if:product_page_type,==,general',
+                                // 'base_price' => 'required_if:product_page_type,==,general',
                                 'sku' => 'required_if:product_page_type,==,general|unique:products,sku,' . $id . ',id,deleted_at,NULL',
-                                'sale_price' => 'required_if:discount_option,==,percentage',
-                                'sale_price' => 'required_if:discount_option,==,fixed_amount',
-                                'sale_start_date' => 'required_if:sale_price,!=,0',
-                                'sale_end_date' => 'required_if:sale_price,==,0',
+                                // 'sale_price' => 'required_if:discount_option,==,percentage',
+                                // 'sale_price' => 'required_if:discount_option,==,fixed_amount',
+                                // 'sale_start_date' => 'required_if:sale_price,!=,0',
+                                // 'sale_end_date' => 'required_if:sale_price,==,0',
                                 'dicsounted_price' => 'required_if:discount_option,==,fixed_amount',
                                 'filter_variation' => 'nullable|array',
                                 'filter_variation.*' => 'nullable|required_with:filter_variation',
                                 'filter_variation_value' => 'nullable|required_with:filter_variation|array',
                                 'filter_variation_value.*' => 'nullable|required_with:filter_variation.*',
-                               
                             ];
                                        
         if( isset($request->url) && !empty( $request->url) && !is_null($request->url[0]) ) {

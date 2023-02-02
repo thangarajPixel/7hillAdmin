@@ -19,7 +19,7 @@ class AddQuantityToProducts extends Migration
             Type::addType('double', FloatType::class);
         }
         Schema::table('products', function (Blueprint $table) {
-            $table->integer('quantity')->after('status')->default(1);
+            $table->integer('quantity')->after('status')->nullable();
             $table->double('sale_price', 8,2)->default(0)->change();
         });
     }

@@ -11,9 +11,9 @@
     </div>
     <!--end::Media-->
     <!--begin::Pricing-->
-    <div class="card card-flush py-4" id="product-price">
+    {{-- <div class="card card-flush py-4" id="product-price">
         @include('platform.product.form.general._price')
-    </div>
+    </div> --}}
     <!--end::Pricing-->
      <!--begin::Shipping-->
     {{-- <div class="card card-flush py-4" id="product-shipping">
