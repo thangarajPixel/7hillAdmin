@@ -272,7 +272,6 @@ var KTAppEcommerceSaveProduct = function () {
             // Init forms
             initQuillProduct();
             initTagifyProduct();
-            initSlider();
             // Handle forms
             handleStatus();
             handleConditions();

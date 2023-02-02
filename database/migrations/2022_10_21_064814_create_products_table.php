@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->date( 'sale_end_date' )->nullable();
             $table->enum( 'status', ['published', 'unpublished']);
             $table->enum( 'stock_status', ['in_stock', 'out_of_stock', 'coming_soon']);
+            $table->unsignedBigInteger('industrial_id');
             $table->unsignedBigInteger('category_id');
             $table->tinyInteger('is_display_home')->default(0);
             $table->tinyInteger('is_best_selling')->default(0);

@@ -270,7 +270,35 @@
                 
         //     }
         // });
+       
+    $('#industrial_id').on('change',function(){
+        var industrial_id = $(this).val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        }); 
+        $.ajax({
+            url : "{{ route('industrial-category') }}",
+            type : "POST",
+            data:{  industrial_id:industrial_id},
+            success:function(res) {
+                // alert(res.industrialCategory.length)
+                $('#category_append').html(res);
+                // var catLength = res.industrialCategory.length;
 
+                // if(catLength>0)
+                // {
+                //     for(i = 0; i < catLength ; i++)
+                //     {
+
+                //     }
+                // }
+
+                console.log( res );
+            }
+        });
+    });
         
     function removeGalleryImage( productImageId ) {
 
@@ -366,11 +394,14 @@
 
 // Get elements
 $(document).ready(function() {
+    $('#industrial_id').select2();
+    $('#category_id').select2();
        $('#kt_ecommerce_add_product_form').validate({
            rules: {
                 product_name : "required",
                 sku : "required",
                 category_id : "required",
+                industrial_id : "required",
                 // brand_id : "required",
                 // qty : "required",
                 base_price : "required",
@@ -379,6 +410,7 @@ $(document).ready(function() {
                 product_name: "Product Name is required",
                 sku: "Product Sku is required",
                 category_id: "Category is required",
+                industrial_id: "Industrial Category is required",
                 // qty: "Quantity is required",
                 // brand_id: "Brand is required",
                 base_price: "Base is required",

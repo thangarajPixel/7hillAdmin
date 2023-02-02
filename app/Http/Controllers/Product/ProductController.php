@@ -8,6 +8,7 @@ use App\Imports\MultiSheetProductImport;
 use App\Imports\TestImport;
 use Illuminate\Http\Request;
 use App\Models\Category\MainCategory;
+use App\Models\Industrial;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
 use App\Models\Product\ProductCrossSaleRelation;
@@ -153,16 +154,21 @@ class ProductController extends Controller
         
         $title                  = "Add Product";
         $breadCrum              = array('Products', 'Add Product');
+        $industrialCategory = '';
         if( $id ) {
             $title              = 'Update Product';
             $breadCrum          = array('Products', 'Update Product');
             $info               = Product::find( $id );
+            $industrialCategory = ProductCategory::where('parent_id',$info['industrial_id'])->select('id','name','slug','image','industrial_id')->get();
+        }
+        else{
+            $industrialCategory = ProductCategory::select('id','name','slug','image','industrial_id')->get();
         }
         $otherProducts          = Product::where('status', 'published')
                                         ->when($id, function ($q) use ($id) {
                                             return $q->where('id', '!=', $id);
                                         })->get();
-        $productCategory        = ProductCategory::where('status', 'published')->get();
+        $productIndustrial      = Industrial::where('status', 'published')->where('parent_id',0)->get();
 
         $productLabels          = MainCategory::where(['slug' => 'product-labels', 'status' => 'published'])->first();
         
@@ -175,7 +181,7 @@ class ProductController extends Controller
 
                                     'title' => $title,
                                     'breadCrum' => $breadCrum,
-                                    'productCategory' => $productCategory,
+                                    'productIndustrial' => $productIndustrial,
                                     'productLabels' => $productLabels,
                                     'productTags' => $productTags,
                                     'info'  => $info ?? '',
@@ -184,9 +190,15 @@ class ProductController extends Controller
                                     'otherProducts' => $otherProducts,
                                     
                                 );
-        return view('platform.product.form.add_edit_form', $params);
+                                // dd($params['info']);
+        return view('platform.product.form.add_edit_form', $params,compact('industrialCategory'));
     }
-
+    public function getIndustrialCategory(Request $request)
+    {
+        $industrial_id  = $request->industrial_id;
+        $industrialCategory = ProductCategory::where('parent_id',$industrial_id)->select('id','name','slug','image','industrial_id')->get();
+        return view('platform.product.form.parts.categorydata',compact('industrialCategory'));
+    }
     public function saveForm(Request $request)
     {
         // dd($request->all());
@@ -195,6 +207,7 @@ class ProductController extends Controller
 
         $validate_array     = [
                                 'product_page_type' => 'required',
+                                'industrial_id' => 'required',
                                 'category_id' => 'required',
                                 'status' => 'required',
                                 'stock_status' => 'required',
@@ -228,13 +241,13 @@ class ProductController extends Controller
             if( isset( $request->avatar_remove ) && !empty($request->avatar_remove) ) {
                 $ins['base_image']          = null;
             }
-            
             $ins[ 'product_name' ]          = $request->product_name;
             $ins[ 'hsn_code' ]              = $request->hsn_code;
             $ins[ 'product_url' ]           = Str::slug($request->product_name);
             $ins[ 'sku' ]                   = $request->sku;
             $ins[ 'price' ]                 = $request->base_price;
             $ins[ 'status' ]                = $request->status;
+            $ins[ 'industrial_id' ]         = $request->industrial_id;
             $ins[ 'category_id' ]           = $request->category_id;
             // $ins[ 'tag_id' ]                = $request->tag_id;
             // $ins[ 'label_id' ]              = $request->label_id;

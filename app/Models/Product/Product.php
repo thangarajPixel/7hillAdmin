@@ -25,6 +25,7 @@ class Product extends Model
         'status',
         'quantity',
         'stock_status',
+        'industrial_id',
         'category_id',
         'is_display_home',
         'is_best_selling',

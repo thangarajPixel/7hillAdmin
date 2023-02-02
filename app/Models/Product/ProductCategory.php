@@ -48,6 +48,10 @@ class ProductCategory extends Model
     {
         return $this->belongsTo(Industrial::class, 'industrial_id', 'id');
     }
+    public function categoryParentData()
+    {
+        return $this->hasOne(Industrial::class, 'id', 'industrial_id');
+    }
 
     public function parentIndustry()
     {
