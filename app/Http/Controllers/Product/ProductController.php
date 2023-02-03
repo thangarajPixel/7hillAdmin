@@ -201,7 +201,6 @@ class ProductController extends Controller
     }
     public function saveForm(Request $request)
     {
-        // dd($request->all());
         $id                 = $request->id;
         $product_page_type  = $request->product_page_type;
 

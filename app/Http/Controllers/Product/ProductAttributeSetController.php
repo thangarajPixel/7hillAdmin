@@ -91,12 +91,11 @@ class ProductAttributeSetController extends Controller
         $category_info      = ProductCategory::find($category_id);
         $info               = '';
         $modal_title        = 'Add Product Attribute Sets';
-        $sub_category       = ProductCategory::where('parent_id', '0')->get();
+        $sub_category       = ProductCategory::where('status','published')->get();
         if (isset($id) && !empty($id)) {
             $info           = ProductAttributeSet::find($id);
             $modal_title    = 'Update Product Attribute Sets';
         }
-        
         return view('platform.product_attribute_sets.add_edit_modal', compact('info', 'modal_title', 'from', 'sub_category', 'category_info'));
     }
 
