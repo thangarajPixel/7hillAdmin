@@ -33,7 +33,6 @@ class MenuController extends Controller
                 if( isset( $item->childCategory ) && !empty( $item->childCategory ) ) {
                     $tmp['parentCategory']= [];
                     foreach ( $item->childCategory as $parentCat ) {
-                        // echo $parentCat->name."<br>";
                         $tmpCate['id'] = $parentCat->id;
                         $tmpCate['name'] = $parentCat->name;
                         $tmpCate['slug'] = $parentCat->slug;

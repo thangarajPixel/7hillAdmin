@@ -16,7 +16,7 @@ class CreateIndustrialsTable extends Migration
         Schema::create('industrials', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('slug')->nullable();
+            $table->string('slug')->unique()->nullable();
             $table->string('image')->nullable();
             $table->unsignedBigInteger('parent_id')->default(0);
             $table->longText('description')->nullable();

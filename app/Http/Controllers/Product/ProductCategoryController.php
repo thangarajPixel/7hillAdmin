@@ -126,8 +126,10 @@ class ProductCategoryController extends Controller
         $id             = $request->id;
         $industrial_id      = $request->parent_category;
         $validator      = Validator::make($request->all(), [
-            'name' => 'required','string',
+            // 'name' => 'required|string|unique:product_categories,name,'. $id . ',id,deleted_at,NULL',
+            'name' => 'required|string',
             'parent_category' => 'required|numeric',
+            'slug' => 'string|unique:product_categories,slug,'. $id . ',id,deleted_at,NULL',
             'avatar' => 'mimes:jpeg,png,jpg',
         ]);
 

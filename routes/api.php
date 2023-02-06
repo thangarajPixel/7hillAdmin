@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Website\CareerController;
 use App\Http\Controllers\Website\ContactController;
@@ -29,3 +30,5 @@ Route::post('/dealers', [DealersController::class, 'store'])->name('dealers');
 Route::post('/product-enquiry', [ProductEnquiryController::class, 'store'])->name('product-enquiry');
 Route::get('/product-category', [MenuController::class, 'getAllMenu'])->name('product-category');
 
+
+Route::get('/get/category/{slug?}',[CategoryController::class,'index'])->name('industrial');
