@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Category\SubCategory;
 use App\Models\Product\ProductCollection;
+use App\Models\Product\Product;
+use App\Models\Product\ProductCategory;
+use App\Models\Product\ProductWithAttributeSet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FilterController extends Controller
 {
@@ -58,5 +62,183 @@ class FilterController extends Controller
 
         return $response;
     
+    }
+    public function getProducts(Request $request)
+    {
+        
+        $page                   = $request->page ?? 0;
+        $filter_category        = $request->category;
+        // $filter_sub_category    = $request->scategory;
+        $filter_availability    = $request->availability;
+        // $filter_brand           = $request->brand;
+        // $filter_discount        = $request->discount;
+        $filter_attribute       = $request->attributes_category;
+        // $sort                   = $request->sort;
+       
+        $filter_availability_array = [];
+        $filter_attribute_array = [];
+        $filter_brand_array = [];
+        // $filter_discount_array = [];
+        // $filter_booking     = $request->booking;
+        if (isset($filter_attribute) && !empty($filter_attribute)) {
+            
+            $filter_attribute_array = explode("-", $filter_attribute);
+        }
+        if (isset($filter_availability) && !empty($filter_availability)) {
+            $filter_availability_array = explode("-", $filter_availability);
+        }
+        if (isset($filter_brand) && !empty($filter_brand)) {
+            $filter_brand_array     = explode("_", $filter_brand);
+        }
+
+        // if (isset($filter_discount) && !empty($filter_discount)) {
+        //     $filter_discount_array     = explode("_", $filter_discount);
+        // }
+
+        $productAttrNames = [];
+        if( isset( $filter_attribute_array ) && !empty( $filter_attribute_array ) ) {
+            $productWithData = ProductWithAttributeSet::whereIn('id', $filter_attribute_array)->get();
+            if( isset( $productWithData ) && !empty( $productWithData ) ) {
+                foreach ( $productWithData as $attr ) {
+                    $productAttrNames[] = $attr->attribute_values;
+                }
+            }
+        }
+        $limit = 6;
+        $skip = (isset($page) && !empty($page)) ? ($page * $limit) : 0;
+
+        $from   = 1 + ($page * $limit);
+        $to     = $skip + $limit;
+
+        $take_limit = $limit + ($page * $limit);
+        $total = Product::select('products.*')->where('products.status', 'published')
+            ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
+            ->leftJoin('product_categories as parent', 'parent.id', '=', 'product_categories.parent_id')
+            // ->join('brands', 'brands.id', '=', 'products.brand_id')
+            ->when($filter_category != '', function ($q) use ($filter_category) {
+                $q->where(function ($query) use ($filter_category) {
+                    return $query->where('product_categories.slug', $filter_category);
+                });
+            })
+            // ->when($filter_sub_category != '', function ($q) use ($filter_sub_category) {
+            //     return $q->where('product_categories.slug', $filter_sub_category);
+            // })
+            ->when($filter_availability != '', function ($q) use ($filter_availability_array) {
+                return $q->whereIn('products.stock_status', $filter_availability_array);
+            })
+            // ->when($filter_brand != '', function ($q) use ($filter_brand_array) {
+            //     return $q->whereIn('brands.slug', $filter_brand_array);
+            // })
+            // ->when($filter_booking == 'video_shopping', function ($q) {
+            //     return $q->where('products.has_video_shopping', 'yes');
+            // })
+            // ->when($filter_discount != '', function ($q) use ($filter_discount_array) {
+            //     $q->join('product_collections_products', 'product_collections_products.product_id', '=', 'products.id');
+            //     $q->join('product_collections', 'product_collections.id', '=', 'product_collections_products.product_collection_id');
+            //     return $q->whereIn('product_collections.slug', $filter_discount_array);
+            // })
+            ->when($filter_attribute != '', function ($q) use ($productAttrNames) {
+                $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
+                return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
+            })
+            // ->when($sort == 'price_high_to_low', function ($q) {
+            //     $q->orderBy('products.price', 'desc');
+            // })
+            // ->when($sort == 'price_low_to_high', function ($q) {
+            //     $q->orderBy('products.price', 'asc');
+            // })
+            // ->when($sort == 'is_featured', function ($q) {
+            //     $q->orderBy('products.is_featured', 'desc');
+            // })
+            ->count();
+
+        $details = Product::select('products.*')->where('products.status', 'published')
+            ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
+            ->leftJoin('product_categories as parent', 'parent.id', '=', 'product_categories.parent_id')
+            // ->join('brands', 'brands.id', '=', 'products.brand_id')
+            ->when($filter_category != '', function ($q) use ($filter_category) {
+                $q->where(function ($query) use ($filter_category) {
+                    return $query->where('product_categories.slug', $filter_category);
+                });
+            })
+            // ->when($filter_sub_category != '', function ($q) use ($filter_sub_category) {
+            //     return $q->where('product_categories.slug', $filter_sub_category);
+            // })
+            ->when($filter_availability != '', function ($q) use ($filter_availability_array) {
+                return $q->whereIn('products.stock_status', $filter_availability_array);
+            })
+            // ->when($filter_brand != '', function ($q) use ($filter_brand_array) {
+            //     return $q->whereIn('brands.slug', $filter_brand_array);
+            // })
+            // ->when($filter_booking == 'video_shopping', function ($q) {
+            //     return $q->where('products.has_video_shopping', 'yes');
+            // })
+            // ->when($filter_discount != '', function ($q) use ($filter_discount_array) {
+            //     $q->join('product_collections_products', 'product_collections_products.product_id', '=', 'products.id');
+            //     $q->join('product_collections', 'product_collections.id', '=', 'product_collections_products.product_collection_id');
+            //     return $q->whereIn('product_collections.slug', $filter_discount_array);
+            // })
+            ->when($filter_attribute != '', function ($q) use ($productAttrNames) {
+                $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
+                return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
+            })
+            // ->when($sort == 'price_high_to_low', function ($q) {
+            //     $q->orderBy('products.price', 'desc');
+            // })
+            // ->when($sort == 'price_low_to_high', function ($q) {
+            //     $q->orderBy('products.price', 'asc');
+            // })
+            // ->when($sort == 'is_featured', function ($q) {
+            //     $q->orderBy('products.is_featured', 'desc');
+            // })
+            ->groupBy('products.id')
+            ->skip(0)->take($take_limit)
+            ->get();
+        $tmp = [];
+
+        if (isset($details) && !empty($details)) {
+            foreach ($details as $items) {
+
+                $category               = $items->productCategory;
+                // $salePrices             = getProductPrice($items);
+
+                $pro                    = [];
+                $pro['id']              = $items->id;
+                $pro['product_name']    = $items->product_name;
+                $pro['category_name']   = $category->name ?? '';
+                // $pro['brand_name']      = $items->productBrand->brand_name ?? '';
+                $pro['hsn_code']        = $items->hsn_code;
+                $pro['product_url']     = $items->product_url;
+                $pro['sku']             = $items->sku;
+                // $pro['has_video_shopping'] = $items->has_video_shopping;
+                $pro['stock_status']    = $items->stock_status;
+                // $pro['is_featured']     = $items->is_featured;
+                // $pro['is_best_selling'] = $items->is_best_selling;
+                // $pro['is_new']          = $items->is_new;
+                // $pro['sale_prices']     = $salePrices;
+                // $pro['mrp_price']       = $items->price;
+                $pro['image']           = $items->base_image;
+                // $pro['max_quantity']    = $items->quantity;
+
+                $imagePath              = $items->base_image;
+
+                if (!Storage::exists($imagePath)) {
+                    $path               = asset('assets/logo/product-noimg.jpg');
+                } else {
+                    $url                = Storage::url($imagePath);
+                    $path               = asset($url);
+                }
+
+                $pro['image']           = $path;
+
+                $tmp[] = $pro;
+            }
+        }
+        
+        if ($total < $limit) {
+            $to = $total;
+        }
+
+        return array('products' => $tmp, 'total_count' => $total, 'from' => ($total == 0 ? '0' : '1'), 'to' => $to);
     }
 }

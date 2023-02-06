@@ -58,7 +58,6 @@ class ProductController extends Controller
             ->select('Products.*','product_categories.name as category')->when($f_product_category, function($q) use($f_product_category){
                 return $q->where('category_id', $f_product_category);
             })
-            
             // ->when($f_tags, function($q) use($f_tags) {
             //     return $q->where('tag_id', $f_tags);
             // })
