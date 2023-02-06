@@ -13,18 +13,11 @@
             <th>Product Name</th>
             <th>Sku</th>
             <th>Hsn No</th>
-            <th>Base Price</th>
-            <th>Sale Price</th>
-            <th>Sale Start Date</th>
-            <th>Sale End Date</th>
             <th>Status</th>
             <th>Quantity</th>
-            <th>Video Shopping</th>
             <th>Stock Status</th>
-            <th>Brand</th>
             <th>Category</th>
-            <th>Tag</th>
-            <th>Label</th>
+            <th>Industrial</th>
             <th>Featured</th>
             <th>Description</th>
             <th>Technical Information</th>
@@ -42,18 +35,11 @@
                 <td>{{ $item->product_name }}</td>
                 <td>{{ $item->sku }}</td>
                 <td>{{ $item->hsn_code ?? '' }}</td>
-                <td>{{ $item->price }}</td>
-                <td>{{ $item->sale_price }}</td>
-                <td>{{ $item->sale_start_date }}</td>
-                <td>{{ $item->sale_end_date }}</td>
                 <td>{{ $item->status }}</td>
                 <td>{{ $item->quantity }}</td>
-                <td>{{ $item->has_video_shopping }}</td>
                 <td>{{ $item->stock_status }}</td>
-                <td>{{ $item->productBrand->brand_name ?? '' }}</td>
                 <td>{{ $item->productCategory->name ?? '' }}</td>
-                <td>{{ $item->productTag->category_name ?? '' }}</td>
-                <td>{{ $item->productLabel->category_name ?? '' }}</td>
+                <td>{{ $item->parentCategory->title ?? '' }}</td>
                 <td>{{ ( isset( $item->is_featured ) && $item->is_featured == 1 ) ? 'Yes' : 'No' }}</td>
                 <td>{{ $item->description ?? '' }}</td>
                 <td>{{ $item->technical_information ?? '' }}</td>

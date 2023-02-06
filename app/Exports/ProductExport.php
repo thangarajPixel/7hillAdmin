@@ -23,7 +23,6 @@ class ProductExport implements FromView
         $f_product_status = request()->filter_product_status;
         $f_video_booking = request()->filter_video_booking;
 
-
         $list = Product::when($f_product_category, function($q) use($f_product_category){
                             return $q->where('category_id', $f_product_category);
                         })
@@ -39,16 +38,12 @@ class ProductExport implements FromView
                         ->when($f_product_status, function($q) use($f_product_status) {
                             return $q->where('status', $f_product_status);
                         })
-                        ->when($f_video_booking, function($q) use($f_video_booking) {
-                            return $q->where('has_video_shopping', $f_video_booking);
-                        })
                         ->when($f_product_name, function($q) use($f_product_name) {
                             return $q->where('product_name', 'like', "%{$f_product_name}%")->orWhere('sku', 'like', "%{$f_product_name}%")->orWhere('price', 'like', "%{$f_product_name}%");
                         })
                         ->when($f_label, function($q) use($f_label) {
                             return $q->where('label_id', $f_label);
                         })->get();
-        
         return view('platform.exports.product.products_excel', compact('list'));
     }
 }

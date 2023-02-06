@@ -59,9 +59,9 @@ class ProductController extends Controller
                 return $q->where('category_id', $f_product_category);
             })
             
-            ->when($f_tags, function($q) use($f_tags) {
-                return $q->where('tag_id', $f_tags);
-            })
+            // ->when($f_tags, function($q) use($f_tags) {
+            //     return $q->where('tag_id', $f_tags);
+            // })
             ->when($f_stock_status, function($q) use($f_stock_status) {
                 return $q->where('stock_status', $f_stock_status);
             })
@@ -74,13 +74,13 @@ class ProductController extends Controller
             ->when($f_product_name, function($q) use($f_product_name) {
                 return $q->where(function($qr) use($f_product_name){
                     $qr->where('product_name', 'like', "%{$f_product_name}%")
-                    ->orWhere('sku', 'like', "%{$f_product_name}%")
-                    ->orWhere('price', 'like', "%{$f_product_name}%");
+                    ->orWhere('sku', 'like', "%{$f_product_name}%");
+                    // ->orWhere('price', 'like', "%{$f_product_name}%");
                 });
-            })
-            ->when($f_label, function($q) use($f_label) {
-                return $q->where('label_id', $f_label);
             });
+            // ->when($f_label, function($q) use($f_label) {
+            //     return $q->where('label_id', $f_label);
+            // });
 
             $keywords = $request->get('search')['value'];
             
@@ -90,12 +90,11 @@ class ProductController extends Controller
                     if ($keywords) {
                         $date = date('Y-m-d', strtotime($keywords));
                         $query->where(function($que) use($keywords, $date){
-                            $que->where('has_video_shopping', 'like', "%{$keywords}%")
-                                ->orWhere('products.status', 'like', "%{$keywords}%")
+                            $que->Where('products.status', 'like', "%{$keywords}%")
                                 ->orWhere('product_categories.name', 'like', "%{$keywords}%")
                                 ->orWhere('products.product_name', 'like', "%{$keywords}%")
                                 ->orWhere('products.sku', 'like', "%{$keywords}%")
-                                ->orWhere('products.price', 'like', "%{$keywords}%")
+                                // ->orWhere('products.price', 'like', "%{$keywords}%")
                                 ->orWhereDate("products.created_at", $date);
                         });
                         return $query;
@@ -201,6 +200,7 @@ class ProductController extends Controller
     }
     public function saveForm(Request $request)
     {
+        // dd($request->all());
         $id                 = $request->id;
         $product_page_type  = $request->product_page_type;
 
@@ -312,20 +312,21 @@ class ProductController extends Controller
             $request->session()->put('brochure_product_id', $product_id);
 
             if( isset( $request->filter_variation ) && !empty( $request->filter_variation ) )  {
-                $proAttributes              = array_combine($request->filter_variation, $request->filter_variation_value);
-                
-                if( isset( $proAttributes ) && !empty( $proAttributes )) {
-                    ProductWithAttributeSet::where('product_id', $product_id)->delete();
-                    foreach ( $proAttributes as $akey => $avalue ) {
+                $filter_variation = $request->filter_variation;
+                $filter_variation_value = $request->filter_variation_value;
+                // $filter_variation_title = $request->filter_variation_title;
+                ProductWithAttributeSet::where('product_id', $product_id)->delete();
 
-                        $insAttr['product_attribute_set_id']    = $akey;
-                        $insAttr['attribute_values']            = $avalue;
-                        $insAttr['product_id']                  = $product_id;
+                for ($i=0; $i < count($request->filter_variation); $i++) { 
+                    $insAttr = [];
+                    $insAttr['product_attribute_set_id']    = $filter_variation[$i];
+                    $insAttr['attribute_values']            = $filter_variation_value[$i];
+                    // $insAttr['title']                       = $filter_variation_title[$i];
+                    $insAttr['product_id']                  = $product_id;
 
-                        ProductWithAttributeSet::create($insAttr);
-
-                    }
+                    ProductWithAttributeSet::create($insAttr);
                 }
+               
             } 
             
             $meta_ins['meta_title']         = $request->meta_title ?? '';

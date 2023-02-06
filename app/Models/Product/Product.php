@@ -3,6 +3,7 @@
 namespace App\Models\Product;
 
 use App\Models\Category\MainCategory;
+use App\Models\Industrial;
 use App\Models\Master\Brands;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,10 +43,14 @@ class Product extends Model
         'added_by'
     ];
 
-    // public function productCategory()
-    // {
-    //     return $this->hasOne(ProductCategory::class, 'id', 'category_id');
-    // }
+    public function productCategory()
+    {
+        return $this->hasOne(ProductCategory::class, 'id', 'category_id');
+    }
+    public function parentCategory()
+    {
+        return $this->hasOne(Industrial::class, 'id', 'industrial_id');
+    }
 
     public function productTag()
     {
