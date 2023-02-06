@@ -33,3 +33,5 @@ Route::get('/product-category', [MenuController::class, 'getAllMenu'])->name('pr
 
 Route::get('/get/category/{slug?}',[CategoryController::class,'index'])->name('industrial');
 Route::post('/get/products', [App\Http\Controllers\Api\FilterController::class, 'getProducts']);
+Route::get('/get/products/by/slug/{product_url}', [App\Http\Controllers\Api\FilterController::class, 'getProductBySlug']);
+Route::post('/get/other/category', [App\Http\Controllers\Api\FilterController::class, 'getOtherCategories']);
