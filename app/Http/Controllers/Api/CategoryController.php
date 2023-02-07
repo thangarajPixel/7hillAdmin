@@ -15,8 +15,7 @@ class CategoryController extends Controller
 
         if(!empty($industrial))
         {
-            $data = Industrial::where('slug',$industrial)
-
+            $data = Industrial::where('parent_id',0)->where('slug',$industrial)
             ->where('status','published')
             ->get();
             $params = [];
@@ -104,7 +103,7 @@ class CategoryController extends Controller
             return response()->json(['data'=>$params,]);
         }
         else{
-            $data = Industrial::where('status','published')->get();
+            $data = Industrial::where('parent_id',0)->where('status','published')->get();
             $params = [];
             $tmp= [];
             
