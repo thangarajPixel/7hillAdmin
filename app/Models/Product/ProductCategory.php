@@ -34,11 +34,6 @@ class ProductCategory extends Model
         return $this->hasOne(CategoryMetaTags::class, 'category_id', 'id');
     }
 
-    // public function tax()
-    // {
-    //     return $this->hasOne(Tax::class, 'id', 'tax_id');
-    // }
-
     public function userInfo()
     {
         return $this->hasOne(User::class, 'id', 'added_by');
@@ -52,7 +47,10 @@ class ProductCategory extends Model
     {
         return $this->hasOne(Industrial::class, 'id', 'industrial_id');
     }
-
+    public function childCategory() 
+    {
+        return $this->hasMany(ProductCategory::class, 'parent_id', 'id')->where('status', 'published')->orderBy('order_by', 'asc');
+    }
     public function parentIndustry()
     {
         return $this->belongsTo(Industrial::class, 'industrial_id', 'id');

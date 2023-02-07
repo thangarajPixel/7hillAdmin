@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Industrial;
+use App\Models\Product\ProductCategory;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -191,5 +192,27 @@ class CategoryController extends Controller
         }
         
 
+    }
+    public function getCategoryDetails(Request $request)
+    {
+        $slug = $request->slug;
+        $data = ProductCategory::where('slug',$slug)->first();
+        $ins['id'] = $data['id'];
+        $ins['name'] = $data['name'];
+        $ins['slug'] = $data['slug'];
+        $ins['description'] = $data['description'];
+        $ins['image'] = asset($data->image);
+        $ins['meta_title'] = $data->meta_title;
+        $ins['meta_keyword'] = $data->meta_keyword;
+        $ins['meta_description'] = $data->meta_description;
+        if(!empty($data->categoryParentData)&& isset($data->categoryParentData))
+        {
+            $temp['title'] = $data->categoryParentData->title;
+            $temp['slug'] = $data->categoryParentData->slug;
+            $temp['image'] = asset($data->categoryParentData->image);
+            $temp['description'] = $data->categoryParentData->description;
+            $ins['industrial'] = $temp;
+        }
+        return response()->json(['category'=>$ins]);
     }
 }

@@ -24,4 +24,12 @@ class ProductAttributeSet extends Model
     {
         return $this->hasOne(ProductCategory::class, 'id', 'product_category_id');
     }
+    public function attributesFields()
+    {
+        return $this->hasMany(ProductWithAttributeSet::class, 'product_attribute_set_id', 'id')->orderBy('attribute_values', 'asc');
+    }
+    public function attributesFieldsByTitle()
+    {
+        return $this->hasMany(ProductWithAttributeSet::class, 'product_attribute_set_id', 'id')->orderBy('attribute_values', 'asc')->groupBy('attribute_values');
+    }
 }
