@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="text-muted">Product Name / Sku / Price </label>
+                    <label class="text-muted">Product Name / Sku  </label>
                     <input type="text" name="filter_product_name" id="filter_product_name" class="form-control">
                 </div>
             </div>
