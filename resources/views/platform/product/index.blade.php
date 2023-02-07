@@ -31,7 +31,6 @@
                                 <th> Product </th>
                                 <th> SKU </th>
                                 <th> Category </th>
-                                <th> Price </th>
                                 <th> Status </th>
                                 <th style="width: 75px;">Action</th>
                             </tr>
@@ -74,10 +73,6 @@
                 {
                     data: 'category',
                     name: 'category'
-                },
-                {
-                    data: 'price',
-                    name: 'price'
                 },
                 {
                     data: 'status',
