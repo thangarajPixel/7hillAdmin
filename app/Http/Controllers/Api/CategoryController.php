@@ -37,7 +37,7 @@ class CategoryController extends Controller
                     else{
                         $tmp['image'] = '';
                     }
-
+                    
                     // industrial Category data Get
                     if( isset( $item->childCategory ) && !empty( $item->childCategory ) ) 
                     {
