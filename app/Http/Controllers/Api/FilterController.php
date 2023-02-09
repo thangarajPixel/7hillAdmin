@@ -282,7 +282,56 @@ class FilterController extends Controller
             
         }
 
-        $pro['attributes']              = $items->productAttributes;
+        $productWithAttributeSetData = ProductWithAttributeSet::where('product_id',$items->id)->groupBy('product_attribute_set_id')->select('product_attribute_set_id')->get();
+       
+        foreach($productWithAttributeSetData as $key=>$val)
+        {
+            $attributeData = ProductAttributeSet::where('id',$val['product_attribute_set_id'])->select('id','title','slug')->first();
+                $parentData = []; 
+
+                if( isset( $attributeData ) && !empty( $attributeData ) ) {
+                    $dataVal = ProductWithAttributeSet::where('product_id',$items->id)->where('product_attribute_set_id',$attributeData->id)
+                    ->select('attribute_values')->get();
+                    // dd($dataVal);
+                    $attrData['id'] = $attributeData->id;
+                    $attrData['title'] = $attributeData->title;
+                    $attrData['slug'] = $attributeData->slug;
+                    $attrData['items'] = $dataVal;
+        
+                    $pro['attributes'][] =   $attrData;
+
+                    // foreach( $attributeData as $items  ){
+                    //     $parentData[] = $items;
+                    // }
+                }
+
+        }
+        // dd( $pro['attributes'] );
+        ///////////////////////////
+
+        // foreach($productWithAttributeSetData as $key=>$val)
+        // {
+        //     $attributeData = ProductAttributeSet::where('id',$val['product_attribute_set_id'])->select('id','title','slug')->first();
+        //     $parentData = [];
+        //     // print_r($attributeData)."<br>";
+        //     if( isset( $attributeData->attributesFieldsByTitle ) && !empty( $attributeData->attributesFieldsByTitle ) ) {
+        //         foreach( $attributeData->attributesFieldsByTitle as $items ){
+        //             $parentData[] = $items;
+        //         }
+        //     }
+        //     $attrData['id'] = $attributeData->id;
+        //     $attrData['title'] = $attributeData->title;
+        //     $attrData['slug'] = $attributeData->slug;
+        //     $attrData['items'] = $parentData;
+
+        //     $pro['attributes'][] =   $attrData;
+            
+        //     // $pro['attributes'][] =  $attributeData->productAttributes;
+        //     // dd( $attributeData->productAttributes );
+        // }
+        // $pro['attributes']              = $items->productAttributes;
+
+        ///////////////////////////
         $related_arr                    = [];
         
         $pro['meta'] = $items->productMeta;
