@@ -22,12 +22,14 @@ use App\Models\Product\ProductWithAttributeSet;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Str;
 use DataTables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Image;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class ProductController extends Controller
 {
@@ -157,7 +159,7 @@ class ProductController extends Controller
             $title              = 'Update Product';
             $breadCrum          = array('Products', 'Update Product');
             $info               = Product::find( $id );
-            $industrialCategory = ProductCategory::where('parent_id',$info['industrial_id'])->select('id','name','slug','image','industrial_id')->get();
+            $industrialCategory = ProductCategory::select('id','name','slug','image','industrial_id')->get();
         }
         else{
             $industrialCategory = ProductCategory::select('id','name','slug','image','industrial_id')->get();
@@ -166,7 +168,7 @@ class ProductController extends Controller
                                         ->when($id, function ($q) use ($id) {
                                             return $q->where('id', '!=', $id);
                                         })->get();
-        $productIndustrial      = Industrial::where('status', 'published')->where('parent_id',0)->get();
+        $productIndustrial      = Industrial::where('status', 'published')->get();
 
         $productLabels          = MainCategory::where(['slug' => 'product-labels', 'status' => 'published'])->first();
         
@@ -188,18 +190,20 @@ class ProductController extends Controller
                                     'otherProducts' => $otherProducts,
                                     
                                 );
-                                // dd($params['info']);
+                                // dd($industrialCategory);
         return view('platform.product.form.add_edit_form', $params,compact('industrialCategory'));
     }
     public function getIndustrialCategory(Request $request)
     {
         $industrial_id  = $request->industrial_id;
-        $industrialCategory = ProductCategory::where('parent_id',$industrial_id)->select('id','name','slug','image','industrial_id')->get();
-        return view('platform.product.form.parts.categorydata',compact('industrialCategory'));
+        $industrialCategory =     ProductCategory::where('industrial_id', $industrial_id)->get(); 
+        if(!empty( $industrialCategory) && isset( $industrialCategory))
+        {
+            return view('platform.product.form.parts.categorydata',compact('industrialCategory'));
+        }           
     }
     public function saveForm(Request $request)
     {
-        // dd($request->all());
         $id                 = $request->id;
         $product_page_type  = $request->product_page_type;
 
@@ -249,8 +253,8 @@ class ProductController extends Controller
             $ins[ 'category_id' ]           = $request->category_id;
             // $ins[ 'tag_id' ]                = $request->tag_id;
             // $ins[ 'label_id' ]              = $request->label_id;
-            // $ins[ 'is_featured' ]           = $request->is_featured ?? 0;
-            // $ins[ 'has_video_shopping' ]    = $request->has_video_shopping ?? 'no';
+            $ins[ 'wood_type' ]             = $request->wood_type;
+            $ins[ 'finishing' ]             = $request->finishing;
             $ins[ 'quantity' ]              = $request->qty;
             $ins[ 'stock_status' ]          = $request->stock_status;
             $ins[ 'sale_price' ]            = $request->sale_price ?? 0;

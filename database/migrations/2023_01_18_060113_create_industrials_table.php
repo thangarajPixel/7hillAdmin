@@ -16,9 +16,9 @@ class CreateIndustrialsTable extends Migration
         Schema::create('industrials', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('slug')->unique()->nullable();
+            $table->string('slug')->nullable();
             $table->string('image')->nullable();
-            $table->unsignedBigInteger('parent_id')->default(0);
+            $table->unsignedBigInteger('parent_id')->default(0)->nullable();
             $table->longText('description')->nullable();
             $table->longText('meta_title')->nullable();
             $table->longText('meta_keyword')->nullable();
@@ -39,6 +39,5 @@ class CreateIndustrialsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('industrials');
-        Schema::dropIfExists('product_categories');
     }
 }

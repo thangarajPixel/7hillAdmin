@@ -110,6 +110,8 @@
     });
    
     $('#parent_category').select2();
+    $('#industrial_category').select2();
+    
     var add_url = "{{ route('product-category.save') }}";
     // Class definition
     var KTProductCategory = function() {
@@ -133,13 +135,20 @@
                                 }
                             }
                         },
-                        'parent_category': {
+                        'industrial_category': {
                             validators: {
                                 notEmpty: {
-                                    message: 'Parent Category is required'
+                                    message: 'Industrial Category is required'
                                 }
                             }
                         },
+                        // 'parent_category': {
+                        //     validators: {
+                        //         notEmpty: {
+                        //             message: 'Parent Category is required'
+                        //         }
+                        //     }
+                        // },
                     },
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger(),

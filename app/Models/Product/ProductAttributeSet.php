@@ -26,7 +26,7 @@ class ProductAttributeSet extends Model
     }
     public function attributesFields()
     {
-        return $this->hasMany(ProductWithAttributeSet::class, 'product_attribute_set_id', 'id')->orderBy('attribute_values', 'asc');
+        return $this->hasMany(ProductWithAttributeSet::class, 'product_attribute_set_id', 'id')->groupBy('attribute_values')->orderBy('attribute_values', 'asc');
     }
     public function attributesFieldsByTitle()
     {

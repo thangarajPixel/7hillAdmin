@@ -16,8 +16,9 @@ class CreateProductCategoriesTable extends Migration
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
             $table->string( 'name' );
-            $table->string( 'slug' )->unique();
-            $table->unsignedBigInteger('parent_id')->default(0);
+            $table->string( 'slug' );
+            $table->unsignedBigInteger('parent_id')->default(0)->nullable();
+            $table->unsignedBigInteger('industrial_id')->default(0)->nullable();
             $table->text('description')->nullable();
             $table->text('image')->nullable();
             $table->longText('meta_title')->nullable();
@@ -26,7 +27,6 @@ class CreateProductCategoriesTable extends Migration
             $table->enum( 'status', ['published', 'unpublished'])->default('published');
             $table->integer('order_by')->nullable();
             $table->unsignedBigInteger('added_by');
-            $table->foreign('added_by')->references('id')->on('users');
             $table->softDeletes();
             $table->timestamps();
         });

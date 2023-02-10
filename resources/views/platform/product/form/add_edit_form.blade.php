@@ -283,7 +283,7 @@
             type : "POST",
             data:{  industrial_id:industrial_id},
             success:function(res) {
-                // alert(res.industrialCategory.length)
+                $('#category_id').html('');
                 $('#category_append').html(res);
                 // var catLength = res.industrialCategory.length;
 

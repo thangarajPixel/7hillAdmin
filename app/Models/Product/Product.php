@@ -18,6 +18,8 @@ class Product extends Model
         'hsn_code',
         'product_url',
         'sku',
+        'wood_type',
+        'finishing',
         'price',
         'mrp',
         'sale_price',

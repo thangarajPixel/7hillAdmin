@@ -56,5 +56,13 @@ class ProductCategory extends Model
         return $this->belongsTo(Industrial::class, 'industrial_id', 'id');
     }
 
+    public function products() {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
+    public function filterMenus() {
+        return $this->hasMany(ProductAttributeSet::class, 'product_category_id', 'id' )->with(['attributesFields'])->select('id', 'title', 'slug')->orderBy('order_by', 'asc');
+    }
+
     
 }

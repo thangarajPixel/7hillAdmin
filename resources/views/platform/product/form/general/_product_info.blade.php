@@ -19,6 +19,21 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mb-10 fv-row">
+                <label class="form-label ">Wood Type</label>
+                <input type="text" name="wood_type" class="form-control mb-2" placeholder="Wood Type" value="{{ $info->wood_type ?? '' }}" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-10 fv-row">
+                <label class="form-label"> Finishing</label>
+                <input type="text" name="finishing" class="form-control mb-2" placeholder="Finishing" value="{{ $info->finishing ?? '' }}" />
+            </div>
+        </div>
+    </div>
     {{-- <div class="row" >
         <div class="col">
             <div class="col-md-3">

@@ -88,6 +88,7 @@ class ProductCategoryController extends Controller
         $info               = '';
         $modal_title        = 'Add Product Category';
         $industrial         = Industrial::where('status', 'published')->get();
+        $productCategory    = ProductCategory::where('status', 'published')->where('parent_id', 0)->get();
         if (isset($id) && !empty($id)) {
             $info           = ProductCategory::find($id);
 
@@ -109,7 +110,7 @@ class ProductCategoryController extends Controller
 
         }
 
-        return view('platform.product_category.form.add_edit_form', compact('modal_title', 'breadCrum', 'info', 'from', 'industrial'));
+        return view('platform.product_category.form.add_edit_form', compact('modal_title', 'breadCrum', 'info', 'from', 'industrial','productCategory'));
     }
     public function checkIndustrial(Request $request)
     {
@@ -124,44 +125,32 @@ class ProductCategoryController extends Controller
     public function saveForm(Request $request,$id = null)
     {
         $id             = $request->id;
-        $industrial_id      = $request->parent_category;
         $validator      = Validator::make($request->all(), [
-            // 'name' => 'required|string|unique:product_categories,name,'. $id . ',id,deleted_at,NULL',
             'name' => 'required|string',
-            'parent_category' => 'required|numeric',
+            'industrial_category' => 'required',
             'slug' => 'string|unique:product_categories,slug,'. $id . ',id,deleted_at,NULL',
             'avatar' => 'mimes:jpeg,png,jpg',
         ]);
 
-
-        $Catedata = Industrial::where('id',$industrial_id)->select('parent_id')->first();
-        if(!empty($Catedata))
-        {
-            if($Catedata['parent_id'] == 0)
-            {
-                $parentId = $industrial_id;
-            }
-            else{
-                $parentId = $Catedata['parent_id'];
-            }
-        }
         $categoryId         = '';
         if ($validator->passes()) {
             if ($request->image_remove_logo == "yes") {
                 $ins['image'] = '';
             }
           
-            $ins['parent_id'] = $parentId;
-            if( $industrial_id ) {
-                $ins['industrial_id'] = $industrial_id;
+            if( !$request->is_parent ) {
+                $ins['parent_id'] = $request->parent_category;
             } else {
-                $ins['industrial_id'] = 0;
+                $ins['parent_id'] = 0;
             }
+
             if( !$id ) {
                 $ins['added_by'] = Auth::id();
             }else {
                 $ins['updated_at'] = Auth::id();
             }
+            $indInfo = Industrial::find($request->industrial_category);
+            $ins['industrial_id'] = $request->industrial_category;
 
             $ins['name'] = $request->name;
             $ins['description'] = $request->description;
@@ -174,7 +163,7 @@ class ProductCategoryController extends Controller
                 $ins['status']          = 'unpublished';
             }
 
-            $ins['slug']                = \Str::slug($request->name);
+            $ins['slug']                = \Str::slug($request->name.' '.$indInfo->slug);
             $ins['meta_title']          = $request->meta_title ?? '';
             $ins['meta_keyword']        = $request->meta_keyword ?? '';
             $ins['meta_description']    = $request->meta_description ?? '';
@@ -187,7 +176,6 @@ class ProductCategoryController extends Controller
             }
             $categeryInfo               = ProductCategory::updateOrCreate(['id' => $id], $ins);
             $categoryId                 = $categeryInfo->id;
-
 
             if($request->hasFile('categoryImage'))
             {
