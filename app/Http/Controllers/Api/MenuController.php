@@ -24,7 +24,7 @@ class MenuController extends Controller
                     $tmp['image'] = asset($item->image);
                 }
                 else{
-                    $tmp['image'] = '';
+                    $tmp['image'] =  asset('userImage/no_Image.jpg');
                 }
                 
                 if( isset( $item->childOnlyNames ) && !empty( $item->childOnlyNames ) && count($item->childOnlyNames) > 0 ) {
@@ -35,7 +35,14 @@ class MenuController extends Controller
                         $tmp1['title'] = $child->title;
                         $tmp1['slug'] = $child->slug;
                         $tmp1['description'] = $child->description;
-                        $tmp1['image'] = $child->image;
+                        // $tmp1['image'] = $child->image;
+                        if(!empty($child->image))
+                        {
+                            $tmp1['image'] = asset($child->image);
+                        }
+                        else{
+                            $tmp1['image'] = asset('userImage/no_Image.jpg');
+                        }
                         $tmp1['child'] = $child->childCategory;
                         /**
                          * check category exist
@@ -46,6 +53,22 @@ class MenuController extends Controller
                     /**
                      * for home funrniture menus
                      */
+                    if(!empty($item->childCategory) && isset($item->childCategory))
+                    {
+                        foreach($item->childCategory as $key=>$val)
+                        {
+                            
+                            if(!empty($val->image))
+                            {
+                                $val->image = asset($val->image);
+                            }
+                            else{
+                                $val->image = asset('userImage/no_Image.jpg');
+                            }
+                            // dd($val->image);
+                        }
+                    }
+                    
                     $tmp['child'] = $item->childCategory;
                 }
               

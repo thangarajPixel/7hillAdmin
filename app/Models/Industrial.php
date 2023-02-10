@@ -46,7 +46,7 @@ class Industrial extends Model
     
     public function childCategory()
     {
-        return $this->hasMany(ProductCategory::class, 'industrial_id', 'id');
+        return $this->hasMany(ProductCategory::class, 'industrial_id', 'id')->where('parent_id', 0);
     }
     public function selectOption()
     {
