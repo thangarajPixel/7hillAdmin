@@ -119,8 +119,12 @@ class ProductAttributeSetController extends Controller
         $categoryId         = '';
         if ($validator->passes()) {
             
+            if($request->product_category_id)
+            {
+                $category_slug = ProductCategory::where('id',$request->product_category_id)->select('slug')->first();
+                $ins['slug'] = Str::slug($request->title).'-'.$category_slug['slug'];
+            }
             $ins['title'] = $request->title;
-            $ins['slug'] = Str::slug($request->title);
             $ins['product_category_id'] = $request->product_category_id;
             $ins['order_by'] = $request->order_by ?? 0;
             $ins['tag_line'] = $request->tag_line;
