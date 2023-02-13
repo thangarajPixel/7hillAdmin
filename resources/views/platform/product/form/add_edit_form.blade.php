@@ -86,7 +86,7 @@
     
 @endsection
 @section('add_on_script')
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
 <script>
     @if(isset( $info->id) && !empty( $info->id))
     addVariationRow('{{ $info->id }}');
