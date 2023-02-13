@@ -57,7 +57,7 @@ class ProductController extends Controller
             $f_video_booking = $request->get('filter_video_booking');
 
             $data = Product::leftJoin('product_categories','product_categories.id','=','products.category_id')
-            ->select('Products.*','product_categories.name as category')->when($f_product_category, function($q) use($f_product_category){
+            ->select('products.*','product_categories.name as category')->when($f_product_category, function($q) use($f_product_category){
                 return $q->where('category_id', $f_product_category);
             })
             // ->when($f_tags, function($q) use($f_tags) {
