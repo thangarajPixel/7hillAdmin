@@ -85,7 +85,6 @@ class FilterController extends Controller
                 $products = $catInfo->products;
                 foreach($products as $key=>$val)
                 {
-                    // echo $val->base_image."<br>";
                     if (!Storage::exists($val->base_image)) {
                         $path               = asset('userImage/no_Image.jpg');
                     } else {
@@ -103,13 +102,97 @@ class FilterController extends Controller
 
         return $params;
     }
+    public function getFilterProducts(Request $request)
+    {
+
+        $filter_category        = $request->category;
+        $filter_attribute       = $request->filter_id;
+        $filter_attribute_array = [];
+        if (isset($filter_attribute) && !empty($filter_attribute)) {
+            
+            $filter_attribute_array = explode("-", $filter_attribute);
+        }
+
+        $productAttrNames = [];
+        if( isset( $filter_attribute_array ) && !empty( $filter_attribute_array ) ) {
+            $productWithData = ProductWithAttributeSet::whereIn('id', $filter_attribute_array)->get();
+            if( isset( $productWithData ) && !empty( $productWithData ) ) {
+                foreach ( $productWithData as $attr ) {
+                    $productAttrNames[] = $attr->attribute_values;
+                }
+            }
+        }
+        $total = Product::select('products.*')->where('products.status', 'published')
+            ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
+            ->leftJoin('product_categories as parent', 'parent.id', '=', 'product_categories.parent_id')
+            ->when($filter_category != '', function ($q) use ($filter_category) {
+                $q->where(function ($query) use ($filter_category) {
+                    return $query->where('product_categories.slug', $filter_category)->orWhere('parent.slug', $filter_category);
+                });
+            })
+            ->when($filter_attribute != '', function ($q) use ($productAttrNames) {
+                $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
+                return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
+            })
+            ->count();
+
+        $details = Product::select('products.*')->where('products.status', 'published')
+            ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
+            ->leftJoin('product_categories as parent', 'parent.id', '=', 'product_categories.parent_id')
+            ->when($filter_category != '', function ($q) use ($filter_category) {
+                $q->where(function ($query) use ($filter_category) {
+                    return $query->where('product_categories.slug', $filter_category)->orWhere('parent.slug', $filter_category);
+                });
+            })
+            ->when($filter_attribute != '', function ($q) use ($productAttrNames) {
+                $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
+                return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
+            })
+            ->groupBy('products.id')
+            ->get();
+            
+
+        $tmp = [];
+        if (isset($details) && !empty($details)) {
+            foreach ($details as $items) {
+                $category               = $items->productCategory;
+                $pro                    = [];
+                $pro['id']              = $items->id;
+                $pro['product_name']    = $items->product_name;
+                $pro['category_name']   = $category->name ?? '';
+                $pro['hsn_code']        = $items->hsn_code;
+                $pro['product_url']     = $items->product_url;
+                $pro['sku']             = $items->sku;
+                $pro['wood_type']       = $items->wood_type;
+                $pro['finishing']       = $items->finishing;
+                $pro['description']     = $items->description;
+                $pro['specification']   = $items->specification;
+                $pro['stock_status']    = $items->stock_status;
+                $pro['is_featured']     = $items->is_featured;
+                $pro['image']           = $items->base_image;
+
+                $imagePath              = $items->base_image;
+
+                if (!Storage::exists($imagePath)) {
+                    $path               = asset('assets/logo/product-noimg.jpg');
+                } else {
+                    $url                = Storage::url($imagePath);
+                    $path               = asset($url);
+                }
+                $pro['image']           = $path;
+
+                $tmp[] = $pro;
+            }
+        }
+        $to = count($details);
+
+        return array('products' => $tmp, 'total_count' => $total, 'from' => ($total == 0 ? '0' : '1'), 'to' => $to);
+    }
     public function getProductBySlug(Request $request)
     {
         $product_url = $request->product_url;
         $items = Product::where('product_url', $product_url)->first();
-
         $category               = $items->productCategory;
-
         $pro                    = [];
         $pro['id']              = $items->id;
         $pro['product_name']    = $items->product_name;
@@ -141,7 +224,6 @@ class FilterController extends Controller
             $url                = Storage::url($imagePath);
             $path               = asset($url);
         }
-
         $pro['image']                   = $path;
 
         $pro['description']             = $items->description;
@@ -158,9 +240,7 @@ class FilterController extends Controller
 
                 $pro['gallery'][] = $path;
             }
-            
         }
-
         $productWithAttributeSetData = ProductWithAttributeSet::where('product_id',$items->id)->groupBy('product_attribute_set_id')->select('product_attribute_set_id')->get();
        
         foreach($productWithAttributeSetData as $key=>$val)
@@ -183,9 +263,7 @@ class FilterController extends Controller
         }
        
         $related_arr                    = [];
-        
         $pro['meta'] = $items->productMeta;
-
         return $pro;
     }
     public function getOtherCategories(Request $request)
@@ -209,7 +287,6 @@ class FilterController extends Controller
                 $tmp['description'] = $item->description;
 
                 $imagePath              = $item->image;
-    // dd(asset($imagePath));
                 if (!Storage::exists($imagePath)) {
                     $path               = asset('assets/logo/no-img-1.jpg');
                 } else {
@@ -224,11 +301,9 @@ class FilterController extends Controller
             }
         } 
         return $data;
-        
     }
     public function getDynamicFilterCategory(Request $request)
     {
-        // dd($request->category_slug);
         $category_slug = $request->category_slug;
 
         $productCategory = ProductCategory::where('slug', $category_slug)->first();
@@ -241,9 +316,7 @@ class FilterController extends Controller
                     $whereIn[] = $items->id; 
                 }
             }
-            
             $data = [];
-
             $filterData = ProductAttributeSet::select('product_attribute_sets.*')
                             ->join('product_categories', 'product_categories.id', '=', 'product_attribute_sets.product_category_id')
                             ->join('products', function($join){
@@ -253,8 +326,6 @@ class FilterController extends Controller
                             ->where('product_categories.slug', $category_slug )
                             ->groupBy('product_attribute_sets.id')
                             ->get();
-            
-            
             if( isset( $filterData ) && !empty( $filterData ) ) {
                 foreach ( $filterData as $item ) {
                     $tmp = [];
@@ -272,6 +343,6 @@ class FilterController extends Controller
             
         }
     }
-
+  
 }
 

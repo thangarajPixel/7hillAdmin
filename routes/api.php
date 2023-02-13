@@ -29,3 +29,4 @@ Route::post('/get/products/{slug}', [App\Http\Controllers\Api\FilterController::
 Route::get('/get/products/by/slug/{product_url}', [App\Http\Controllers\Api\FilterController::class, 'getProductBySlug']); //Product Details
 Route::post('/get/other/category', [App\Http\Controllers\Api\FilterController::class, 'getOtherCategories']);
 
+Route::post('/products_filter', [App\Http\Controllers\Api\FilterController::class, 'getFilterProducts']); // Filter Data Product List

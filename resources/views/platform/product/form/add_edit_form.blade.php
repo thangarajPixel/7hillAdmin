@@ -130,7 +130,6 @@
                 } else {
                     done();
                 }
-
             },
             init: function() {
                 let dropZone = this;
