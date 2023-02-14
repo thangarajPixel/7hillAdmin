@@ -32,10 +32,10 @@ class FilterController extends Controller
             $tmp['meta_keyword'] = $catInfo->meta_keyword;
             $tmp['meta_description'] = $catInfo->meta_description;
 
-            if (!Storage::exists($catInfo->image)) {
+            if (!asset($catInfo->image)) {
                 $path               = asset('userImage/no_Image.jpg');
             } else {
-                $url                = Storage::url($catInfo->image);
+                $url                = $catInfo->image;
                 $path               = asset($url);
             }
             $tmp['image'] = $path;
@@ -69,10 +69,10 @@ class FilterController extends Controller
                     $tmp1['meta_keyword'] = $cat->meta_keyword;
                     $tmp1['meta_description'] = $cat->meta_description;
 
-                    if (!Storage::exists($cat->image)) {
+                    if (!asset($cat->image)) {
                         $path               = asset('userImage/no_Image.jpg');
                     } else {
-                        $url                = Storage::url($cat->image);
+                        $url                = $cat->image;
                         $path               = asset($url);
                     }
                     $tmp1['image'] = $path;
@@ -85,11 +85,10 @@ class FilterController extends Controller
                 $products = $catInfo->products;
                 foreach($products as $key=>$val)
                 {
-                    if (!Storage::exists($val->base_image)) {
+                    if (!asset($val->base_image)) {
                         $path               = asset('userImage/no_Image.jpg');
                     } else {
-                        $url                = Storage::url($val->base_image);
-                        $path               = asset($url);
+                        $path               = asset($val->base_image);
                     }
                     $val['base_image'] = $path;
                 }
@@ -173,11 +172,10 @@ class FilterController extends Controller
 
                 $imagePath              = $items->base_image;
 
-                if (!Storage::exists($imagePath)) {
+                if (!asset($imagePath)) {
                     $path               = asset('assets/logo/product-noimg.jpg');
                 } else {
-                    $url                = Storage::url($imagePath);
-                    $path               = asset($url);
+                    $path               = asset($imagePath);
                 }
                 $pro['image']           = $path;
 
@@ -218,11 +216,10 @@ class FilterController extends Controller
 
         $imagePath              = $items->base_image;
 
-        if (!Storage::exists($imagePath)) {
+        if (!asset($imagePath)) {
             $path               = asset('userImage/no_Image.jpg');
         } else {
-            $url                = Storage::url($imagePath);
-            $path               = asset($url);
+            $path               = asset($imagePath);
         }
         $pro['image']                   = $path;
 
@@ -235,7 +232,7 @@ class FilterController extends Controller
         if (isset($items->productImages) && !empty($items->productImages)) {
             foreach ($items->productImages as $att) {
 
-                $gallery_url            = Storage::url($att->gallery_path);
+                $gallery_url            = $att->gallery_path;
                 $path                   = asset($gallery_url);
 
                 $pro['gallery'][] = $path;
@@ -303,7 +300,7 @@ class FilterController extends Controller
                 
 
                 $imagePath              = $item->image;
-                if (!Storage::exists($imagePath)) {
+                if (!asset($imagePath)) {
                     $path               = asset('assets/logo/no-img-1.jpg');
                 } else {
                     // $url                = Storage::url($imagePath);
