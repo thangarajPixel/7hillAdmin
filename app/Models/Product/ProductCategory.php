@@ -51,6 +51,10 @@ class ProductCategory extends Model
     {
         return $this->hasMany(ProductCategory::class, 'parent_id', 'id')->where('status', 'published')->orderBy('order_by', 'asc');
     }
+    public function categoryList()
+    {
+        return $this->hasMany(ProductCategory::class, 'parent_id', 'id')->where('status', 'published');
+    }
     public function parentIndustry()
     {
         return $this->belongsTo(Industrial::class, 'industrial_id', 'id');

@@ -48,13 +48,9 @@ class ProductController extends Controller
         if ($request->ajax()) {
             
             $f_product_category = $request->get('filter_product_category');
-            $f_brand = $request->get('filter_brand');
-            $f_label = $request->get('filter_label');
-            $f_tags = $request->get('filter_tags');
             $f_stock_status = $request->get('filter_stock_status');
             $f_product_name = $request->get('filter_product_name');
             $f_product_status = $request->get('filter_product_status');
-            $f_video_booking = $request->get('filter_video_booking');
 
             $data = Product::leftJoin('product_categories','product_categories.id','=','products.category_id')
             ->select('products.*','product_categories.name as category')->when($f_product_category, function($q) use($f_product_category){
@@ -69,9 +65,7 @@ class ProductController extends Controller
             ->when($f_product_status, function($q) use($f_product_status) {
                 return $q->where('products.status', $f_product_status);
             })
-            ->when($f_video_booking, function($q) use($f_video_booking) {
-                return $q->where('has_video_shopping', $f_video_booking);
-            })
+            
             ->when($f_product_name, function($q) use($f_product_name) {
                 return $q->where(function($qr) use($f_product_name){
                     $qr->where('product_name', 'like', "%{$f_product_name}%")
@@ -109,9 +103,6 @@ class ProductController extends Controller
                 // ->addColumn('category', function($row){
                 //     return $row->productCategory->name ?? '';
                 // })
-                // ->editColumn('brand', function($row){
-                //     return $row->productBrand->brand_name ?? '';
-                // })
                 ->addColumn('action', function($row){
                     $edit_btn = '<a href="'.route('products.add.edit', ['id' => $row->id]).'" class="btn btn-icon btn-active-primary btn-light-primary mx-1 w-30px h-30px" > 
                                     <i class="fa fa-edit"></i>
@@ -131,10 +122,16 @@ class ProductController extends Controller
         $addHref = route('products.add.edit');
         $uploadHref = route('products.upload');
         $routeValue = 'products';
-        $productCategory        = ProductCategory::where('status', 'published')->get();
+
+
+        $catData = Product::where('status','published')->select('category_id')->groupBy('category_id')->get();
+        foreach($catData as $key=>$val){
+            $pCat[] = $val['category_id']."<br>"; 
+        }
+        $productCategory        = ProductCategory::where('status', 'published')->whereIn('id',$pCat)->select('id','name','slug','parent_id')
+                                    ->get();
         $productLabels          = MainCategory::where(['slug' => 'product-labels', 'status' => 'published'])->first();        
         $productTags            = MainCategory::where(['slug' => 'product-tags', 'status' => 'published'])->first();
-
         $params                 = array(
                                     'title' => $title,
                                     'breadCrum' => $breadCrum,
@@ -158,17 +155,21 @@ class ProductController extends Controller
         if( $id ) {
             $title              = 'Update Product';
             $breadCrum          = array('Products', 'Update Product');
-            $info               = Product::find( $id );
-            $industrialCategory = ProductCategory::select('id','name','slug','image','industrial_id')->get();
-        }
-        else{
-            $industrialCategory = ProductCategory::select('id','name','slug','image','industrial_id')->get();
-        }
+            $info               = Product::find( $id );         
+        }      
+        $industrialCategory = ProductCategory::select('id','name','slug','image','industrial_id')->get();
         $otherProducts          = Product::where('status', 'published')
                                         ->when($id, function ($q) use ($id) {
                                             return $q->where('id', '!=', $id);
                                         })->get();
         $productIndustrial      = Industrial::where('status', 'published')->get();
+        foreach($productIndustrial as $key=>$val)
+        {
+            if($val->parent_id != 0)
+            {   
+                $val['title'] =  $val['title'].' - '.$val->parent->title;
+            }
+        }
 
         $productLabels          = MainCategory::where(['slug' => 'product-labels', 'status' => 'published'])->first();
         
@@ -178,7 +179,6 @@ class ProductController extends Controller
         $brochures              = $this->productRepository->getBrochureJson($id);
         
         $params                 = array(
-
                                     'title' => $title,
                                     'breadCrum' => $breadCrum,
                                     'productIndustrial' => $productIndustrial,
@@ -188,9 +188,7 @@ class ProductController extends Controller
                                     'images' => $images,
                                     'brochures' => $brochures,
                                     'otherProducts' => $otherProducts,
-                                    
                                 );
-                                // dd($industrialCategory);
         return view('platform.product.form.add_edit_form', $params,compact('industrialCategory'));
     }
     public function getIndustrialCategory(Request $request)

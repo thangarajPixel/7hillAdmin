@@ -6,13 +6,13 @@
         <div class="row w-100">
             <div class="col-sm-4 col-md-4">
                 <div class="form-group">
+                    {{-- {{ $item->parent->name ?? 'Parent' }} --}}
                     <label class="text-muted">Category</label>
                     <select name="filter_product_category" id="filter_product_category" class="form-control product-select2">
                         <option value="">All</option>
                         @isset($productCategory)
                             @foreach ($productCategory as $item)
-                                <option value="{{ $item->id }}" 
-                                >{{ $item->name }} - {{ $item->parent->name ?? 'Parent' }} </option>
+                                <option value="{{ $item->id }}">{{ $item->name }}  </option>
                             @endforeach
                         @endisset
                     </select>
