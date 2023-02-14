@@ -274,15 +274,16 @@ class ProductController extends Controller
             if( $request->hasFile('avatar') ) {        
               
                 $imageName                  = uniqid().$request->avatar->getClientOriginalName();
-                $directory                  = 'products/'.$product_id.'/default';
-                Storage::deleteDirectory('public/'.$directory);
+                $directory                  = 'upload/products/'.$product_id.'/default';
+                \File::deleteDirectory($directory);
 
-                if (!is_dir(storage_path("app/public/products/".$product_id."/default"))) {
-                    mkdir(storage_path("app/public/products/".$product_id."/default"), 0775, true);
+                if (!is_dir(public_path("upload/products/".$product_id."/default"))) {
+                    mkdir(public_path("upload/products/".$product_id."/default"), 0775, true);
                 }
-
-                $fileNameThumb              = 'public/products/'.$product_id.'/default/335_225_px_' . time() . '-' . $imageName;
-                Image::make($request->avatar)->resize(280,190)->save(storage_path('app/' . $fileNameThumb));
+                
+                $fileNameThumb              = 'upload/products/'.$product_id.'/default/335_225_px_' . time() . '-' . $imageName;
+             
+                Image::make($request->avatar)->resize(280,190)->save(public_path( $fileNameThumb));
 
                 $productInfo->base_image    = $fileNameThumb;
                 $productInfo->update();
@@ -371,7 +372,6 @@ class ProductController extends Controller
                         $insAttr['product_id']  = $product_id;
 
                         ProductLink::create($insAttr);
-
                     }
                 }
 
@@ -399,28 +399,28 @@ class ProductController extends Controller
             $iteration = 1;
             foreach ($files as $file) {
                 $imageName = uniqid().$file->getClientOriginalName();
-                if (!is_dir(storage_path("app/public/products/".$product_id."/thumbnail"))) {
-                    mkdir(storage_path("app/public/products/".$product_id."/thumbnail"), 0775, true);
+                if (!is_dir(public_path("upload/products/".$product_id."/thumbnail"))) {
+                    mkdir(public_path("upload/products/".$product_id."/thumbnail"), 0775, true);
                 }
                 
-                if (!is_dir(storage_path("app/public/products/".$product_id."/gallery"))) {
-                    mkdir(storage_path("app/public/products/".$product_id."/gallery"), 0775, true);
+                if (!is_dir(public_path("upload/products/".$product_id."/gallery"))) {
+                    mkdir(public_path("upload/products/".$product_id."/gallery"), 0775, true);
                 }
-                if (!is_dir(storage_path("app/public/products/".$product_id."/detailPreview"))) {
-                    mkdir(storage_path("app/public/products/".$product_id."/detailPreview"), 0775, true);
+                if (!is_dir(public_path("upload/products/".$product_id."/detailPreview"))) {
+                    mkdir(public_path("upload/products/".$product_id."/detailPreview"), 0775, true);
                 }
 
-                $fileNameThumb =  'public/products/'.$product_id.'/thumbnail/100_100_px_' . time() . '-' . $imageName;
-                Image::make($file)->resize(120,120)->save(storage_path('app/' . $fileNameThumb));
+                $fileNameThumb =  'upload/products/'.$product_id.'/thumbnail/100_100_px_' . time() . '-' . $imageName;
+                Image::make($file)->resize(120,120)->save(public_path($fileNameThumb));
 
                 
                 $fileSize = $file->getSize();
 
-                $fileName =  'public/products/'.$product_id.'/gallery/1000_700_px_' . time() . '-' . $imageName;
-                Image::make($file)->resize(1000,700)->save(storage_path('app/' . $fileName));
+                $fileName =  'upload/products/'.$product_id.'/gallery/1000_700_px_' . time() . '-' . $imageName;
+                Image::make($file)->resize(1000,700)->save(public_path($fileName));
 
-                $fileNamePreview = 'public/products/'.$product_id.'/detailPreview/615_450_px_' . time() . '-' . $imageName;
-                Image::make($file)->resize(615,450)->save(storage_path('app/' . $fileNamePreview));
+                $fileNamePreview = 'upload/products/'.$product_id.'/detailPreview/615_450_px_' . time() . '-' . $imageName;
+                Image::make($file)->resize(615,450)->save(public_path($fileNamePreview));
 
                 $imageIns[] = array( 
                     'gallery_path'  => $fileName, 
@@ -454,14 +454,14 @@ class ProductController extends Controller
         $id             = $request->id;
         $info           = ProductImage::find( $id );
         
-        $directory      = 'public/products/'.$info->product_id.'/detailPreview/'.$info->preview_path;
-        Storage::delete($directory);
+        $directory      = 'upload/products/'.$info->product_id.'/detailPreview/'.$info->preview_path;
+        \File::deleteDirectory($directory);
         
         $directory      = 'products/'.$info->info.'/gallery/'.$info->gallery_path;
-        Storage::delete('public/'.$directory);
+        \File::deleteDirectory($directory);
 
         $directory      = 'products/'.$info->info.'/thumbnail/'.$info->image_path;
-        Storage::delete('public/'.$directory);
+        \File::deleteDirectory($directory);
 
         $info->delete();
         echo 1;

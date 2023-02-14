@@ -8,7 +8,7 @@
     <!--begin::Image input-->
     @if( isset($info->base_image) && !empty( $info->base_image ) )
     @php
-        $url = Storage::url($info->base_image);
+        $url = asset($info->base_image);
         // print_r( $url );
     @endphp
     @endif

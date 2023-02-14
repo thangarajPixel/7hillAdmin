@@ -27,20 +27,20 @@ class MultiSheetProductImport implements ToModel, WithHeadingRow
         $ins = $cat_ins = $tax_ins = $subcat_ins = $brand_ins = $link_ins = [];
         $category           = $row['category'] ?? null;
         $sub_category       = $row['sub_category'] ?? null;
-        $tax                = $row['tax'] ?? null;
-        if( isset( $category ) && !empty( $category ) && isset( $tax ) && !empty( $tax ) ) {
+        // $tax                = $row['tax'] ?? null;
+        if( isset( $category ) && !empty( $category ) ) {
             #check taxt exits if not create 
-            $taxPercentage  = $tax * 100;
-            $checkTax       = Tax::where('pecentage', $taxPercentage)->first();
-            if( isset($checkTax) && !empty( $checkTax ) ) {
-                $tax_id     = $checkTax->id;
-            } else {
-                $tax_ins['title'] = 'Tax '.intval($taxPercentage);
-                $tax_ins['pecentage'] = $taxPercentage ?? 0;
-                $tax_ins['order_by'] = 0;
+            // $taxPercentage  = $tax * 100;
+            // $checkTax       = Tax::where('pecentage', $taxPercentage)->first();
+            // if( isset($checkTax) && !empty( $checkTax ) ) {
+            //     $tax_id     = $checkTax->id;
+            // } else {
+            //     $tax_ins['title'] = 'Tax '.intval($taxPercentage);
+            //     $tax_ins['pecentage'] = $taxPercentage ?? 0;
+            //     $tax_ins['order_by'] = 0;
 
-                $tax_id = Tax::create($tax_ins)->id;
-            }
+            //     $tax_id = Tax::create($tax_ins)->id;
+            // }
 
             #do insert or update if data exist or not
             $checkCategory = ProductCategory::where('name', trim($category) )->first();
@@ -56,7 +56,7 @@ class MultiSheetProductImport implements ToModel, WithHeadingRow
                 $cat_ins['is_featured']     = '0';
                 $cat_ins['added_by']        = Auth::id();                
                 $cat_ins['tag_line']        = $row['category_tagline'] ?? null;                
-                $cat_ins['tax_id']          = $tax_id;
+                // $cat_ins['tax_id']          = $tax_id;
                 $cat_ins['is_home_menu']    = 'no'; 
                 $cat_ins['slug']            = Str::slug($category);
                 
@@ -69,7 +69,7 @@ class MultiSheetProductImport implements ToModel, WithHeadingRow
                 $sub_category_id                = $checkSubCategory->id;
             } else {
                 #insert new sub category
-                $subcat_ins['tax_id']           = $tax_id;
+                // $subcat_ins['tax_id']           = $tax_id;
                 $subcat_ins['is_home_menu']     = 'no';
                 $subcat_ins['added_by']         = Auth::id();
                 $subcat_ins['name']             = trim($sub_category);
@@ -91,18 +91,18 @@ class MultiSheetProductImport implements ToModel, WithHeadingRow
 
             }
             #check brand exist or create new one
-            $checkBrand                         = Brands::where('brand_name', trim($row['brand']))->first();
-            if( isset( $checkBrand ) && !empty( $checkBrand ) ) {
-                $brand_id                       = $checkBrand->id;
-            } else {
-                #insert new brand
-                $brand_ins['brand_name']    = trim($row['brand']);
-                $brand_ins['slug']          = Str::slug($row['brand']);
-                $brand_ins['order_by']      = 0;
-                $brand_ins['status']        = 'published';
+            // $checkBrand                         = Brands::where('brand_name', trim($row['brand']))->first();
+            // if( isset( $checkBrand ) && !empty( $checkBrand ) ) {
+            //     $brand_id                       = $checkBrand->id;
+            // } else {
+            //     #insert new brand
+            //     $brand_ins['brand_name']    = trim($row['brand']);
+            //     $brand_ins['slug']          = Str::slug($row['brand']);
+            //     $brand_ins['order_by']      = 0;
+            //     $brand_ins['status']        = 'published';
 
-                $brand_id                   = Brands::create($brand_ins)->id;
-            }
+            //     $brand_id                   = Brands::create($brand_ins)->id;
+            // }
 
             #check product exist or create new one
             $sku            = generateProductSku($row['brand'], $row['sku']);
@@ -112,23 +112,22 @@ class MultiSheetProductImport implements ToModel, WithHeadingRow
             $ins['product_name'] = trim($row['product_name']);
             $ins['product_url'] = Str::slug($row['product_name']);
             $ins['sku'] = $sku;
-            $ins['price'] = $productPriceDetails['basePrice'] ?? 0;
-            $ins['mrp'] = $row['mrp'] ?? 0;
-            $ins['sale_price'] = $row['discounted_price'] ?? 0;
-            $ins['sale_start_date'] = ( isset($row['start_date']) && !empty( $row['start_date']) ) ? date('Y-m-d', strtotime($row['start_date'])) : null;
-            $ins['sale_end_date'] = ( isset($row['end_date']) && !empty( $row['end_date']) ) ? date('Y-m-d', strtotime($row['end_date'])) : null;
+            // $ins['price'] = $productPriceDetails['basePrice'] ?? 0;
+            // $ins['mrp'] = $row['mrp'] ?? 0;
+            // $ins['sale_price'] = $row['discounted_price'] ?? 0;
+            // $ins['sale_start_date'] = ( isset($row['start_date']) && !empty( $row['start_date']) ) ? date('Y-m-d', strtotime($row['start_date'])) : null;
+            // $ins['sale_end_date'] = ( isset($row['end_date']) && !empty( $row['end_date']) ) ? date('Y-m-d', strtotime($row['end_date'])) : null;
             $ins['status'] = 'published';
-            $ins['quantity'] = 1;
-            $ins['has_video_shopping'] = $row['video_shopping'] ?? 'no';
+            $ins['quantity'] = '';
             $ins['stock_status'] = 'in_stock';
-            $ins['brand_id'] = $brand_id;
+            // $ins['brand_id'] = $brand_id;
             $ins['category_id'] = $sub_category_id;
             $ins['is_featured'] = ( isset($row['featured']) && !empty( $row['featured']) ) ? 1 : 0;
-            $ins['tax_id'] = $tax_id;
+            // $ins['tax_id'] = $tax_id;
             $ins['description'] = $row['short_description'];
             $ins['technical_information'] = $row['technical_specifications'] ?? null;
-            $ins['feature_information'] = $row['4_bullet_points'] ?? null;
-            $ins['specification'] = $row['long_description'] ?? null;
+            // $ins['feature_information'] = $row['4_bullet_points'] ?? null;
+            // $ins['specification'] = $row['long_description'] ?? null;
             $ins['added_by'] = Auth::id();
 
             $product_id     = Product::create($ins)->id;
