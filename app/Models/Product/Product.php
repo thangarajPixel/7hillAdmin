@@ -15,11 +15,9 @@ class Product extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'product_name',
-        'hsn_code',
+        // 'hsn_code',
         'product_url',
         'sku',
-        'wood_type',
-        'finishing',
         'price',
         'mrp',
         'sale_price',

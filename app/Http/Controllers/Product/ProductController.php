@@ -242,7 +242,7 @@ class ProductController extends Controller
                 $ins['base_image']          = null;
             }
             $ins[ 'product_name' ]          = $request->product_name;
-            $ins[ 'hsn_code' ]              = $request->hsn_code;
+            // $ins[ 'hsn_code' ]              = $request->hsn_code;
             $ins[ 'product_url' ]           = Str::slug($request->product_name);
             $ins[ 'sku' ]                   = $request->sku;
             $ins[ 'price' ]                 = $request->base_price;
@@ -251,8 +251,8 @@ class ProductController extends Controller
             $ins[ 'category_id' ]           = $request->category_id;
             // $ins[ 'tag_id' ]                = $request->tag_id;
             // $ins[ 'label_id' ]              = $request->label_id;
-            $ins[ 'wood_type' ]             = $request->wood_type;
-            $ins[ 'finishing' ]             = $request->finishing;
+            // $ins[ 'wood_type' ]             = $request->wood_type;
+            // $ins[ 'finishing' ]             = $request->finishing;
             $ins[ 'quantity' ]              = $request->qty;
             $ins[ 'stock_status' ]          = $request->stock_status;
             $ins[ 'sale_price' ]            = $request->sale_price ?? 0;

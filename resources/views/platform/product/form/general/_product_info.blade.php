@@ -12,15 +12,15 @@
                 <input type="text" name="sku" class="form-control mb-2" placeholder="Sku" value="{{ $info->sku ?? '' }}" />
             </div>
         </div>
-        <div class="col-md-4">
+        {{-- <div class="col-md-4">
             <div class="mb-10 fv-row">
                 <label class="form-label">HSN Code</label>
                 <input type="text" name="hsn_code" class="form-control mb-2" placeholder="HSN Code" value="{{ $info->hsn_code ?? '' }}" />
             </div>
-        </div>
+        </div> --}}
     </div>
 
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-4">
             <div class="mb-10 fv-row">
                 <label class="form-label ">Wood Type</label>
@@ -33,7 +33,7 @@
                 <input type="text" name="finishing" class="form-control mb-2" placeholder="Finishing" value="{{ $info->finishing ?? '' }}" />
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- <div class="row" >
         <div class="col">
             <div class="col-md-3">
