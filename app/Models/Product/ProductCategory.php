@@ -67,6 +67,10 @@ class ProductCategory extends Model
     public function filterMenus() {
         return $this->hasMany(ProductAttributeSet::class, 'product_category_id', 'id' )->with(['attributesFields'])->select('id', 'title', 'slug')->orderBy('order_by', 'asc');
     }
+    public function otherCategoryData()
+    {
+        return $this->hasOne(Industrial::class, 'id', 'industrial_id')->select('id','title','slug','parent_id');
+    }
 
     
 }

@@ -269,7 +269,7 @@ class FilterController extends Controller
     public function getOtherCategories(Request $request)
     {
         $category       = $request->category;
-        $otherCategory   = ProductCategory::select('id', 'name', 'slug','image')
+        $otherCategory   = ProductCategory::select('id', 'name', 'slug','image','parent_id','industrial_id')
                         ->when($category != '', function ($q) use ($category) {
                             $q->where('slug', '!=', $category);
                         })
@@ -285,6 +285,22 @@ class FilterController extends Controller
                 $tmp['name'] = $item->name;
                 $tmp['slug'] = $item->slug;
                 $tmp['description'] = $item->description;
+                if(!empty($item->otherCategoryData) && isset($item->otherCategoryData))
+                {
+                    if($item->otherCategoryData->parent_id == 0)
+                    {
+                        $tmp['parent_slug'] = $item->otherCategoryData->slug;
+                    }
+                    else if($item->otherCategoryData)
+                    {
+                        $newData  = Industrial::where('id',$item->otherCategoryData->parent_id)->select('title','slug')->first();
+                         $tmp['parent_slug'] = $newData['slug'];
+                    }
+                    else{
+                        $tmp['parent_slug'] = '';
+                    }
+                }
+                
 
                 $imagePath              = $item->image;
                 if (!Storage::exists($imagePath)) {
