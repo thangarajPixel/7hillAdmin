@@ -26,6 +26,13 @@ class MenuController extends Controller
                 else{
                     $tmp['image'] =  asset('userImage/no_Image.jpg');
                 }
+                if(!empty($item->icon))
+                {
+                    $tmp['icon'] = asset($item->icon);
+                }
+                else{
+                    $tmp['icon'] =  asset('userImage/no_Image.jpg');
+                }
                 
                 if( isset( $item->childOnlyNames ) && !empty( $item->childOnlyNames ) && count($item->childOnlyNames) > 0 ) {
                     foreach ( $item->childOnlyNames as $child ) {
@@ -36,12 +43,39 @@ class MenuController extends Controller
                         $tmp1['slug'] = $child->slug;
                         $tmp1['description'] = $child->description;
                         // $tmp1['image'] = $child->image;
+                        // dd($child);
                         if(!empty($child->image))
                         {
                             $tmp1['image'] = asset($child->image);
                         }
                         else{
                             $tmp1['image'] = asset('userImage/no_Image.jpg');
+                        }
+                        if(!empty($child->icon))
+                        {
+                            $tmp1['icon'] = asset($child->icon);
+                        }
+                        else{
+                            $tmp1['icon'] =  asset('userImage/no_Image.jpg');
+                        }
+                        if( isset( $child->childCategory ) && !empty( $child->childCategory ) ) {
+                            foreach ( $child->childCategory as $val1 ) {
+                                // dd($val1);
+                                if(!empty($val1->image))
+                                {
+                                    $val1->image = asset($val1->image);
+                                }
+                                else{
+                                    $val1->image = asset('userImage/no_Image.jpg');
+                                }
+                                if(!empty($val1->icon))
+                                {
+                                    $val1->icon = asset($val1->icon);
+                                }
+                                else{
+                                    $val1->icon = asset('userImage/no_Image.jpg');
+                                }
+                            }
                         }
                         $tmp1['child'] = $child->childCategory;
                         /**
@@ -64,6 +98,13 @@ class MenuController extends Controller
                             }
                             else{
                                 $val->image = asset('userImage/no_Image.jpg');
+                            }
+                            if(!empty($val->icon))
+                            {
+                                $val->icon = asset($val->icon);
+                            }
+                            else{
+                                $val->icon = asset('userImage/no_Image.jpg');
                             }
                             // dd($val->image);
                         }

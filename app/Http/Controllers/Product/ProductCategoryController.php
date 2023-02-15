@@ -56,9 +56,6 @@ class ProductCategoryController extends Controller
                     $status = '<a href="javascript:void(0);" class="badge badge-light-'.(($row->status == 'published') ? 'success': 'danger').'" tooltip="Click to '.(($row->status == 'published') ? 'Unpublish' : 'Publish').'" onclick="return commonChangeStatus(' . $row->id . ', \''.(($row->status == 'published') ? 'unpublished': 'published').'\', \'product-category\')">'.ucfirst($row->status).'</a>';
                     return $status;
                 })
-                ->editColumn('tax', function($row){
-                    return $row->tax ?? 'No';
-                })
                 
                 ->editColumn('created_at', function ($row) {
                     $created_at = Carbon::createFromFormat('Y-m-d H:i:s', $row['created_at'])->format('d-m-Y');
@@ -130,6 +127,7 @@ class ProductCategoryController extends Controller
             'industrial_category' => 'required',
             'slug' => 'string|unique:product_categories,slug,'. $id . ',id,deleted_at,NULL',
             'avatar' => 'mimes:jpeg,png,jpg',
+            'icon' => 'mimes:jpeg,png,jpg',
         ]);
 
         $categoryId         = '';
@@ -174,6 +172,11 @@ class ProductCategoryController extends Controller
                 \File::deleteDirectory(public_path($directory));
                 $ins['image'] = '';
             }
+            if ($request->icon_remove_image == "no") {
+                $directory = 'upload/category/icon/'.$id;
+                \File::deleteDirectory(public_path($directory));
+                $ins['icon'] = '';
+            }
             $categeryInfo               = ProductCategory::updateOrCreate(['id' => $id], $ins);
             $categoryId                 = $categeryInfo->id;
 
@@ -192,6 +195,23 @@ class ProductCategoryController extends Controller
                 $file->move(public_path($directory),$imageName);
 
                 $categeryInfo->image       = $mainCategory;
+                $categeryInfo->save();
+            }
+            if($request->hasFile('icon'))
+            {
+                $directory = 'upload/category/icon/'.$categoryId;
+                \File::deleteDirectory(public_path($directory));
+
+                $file = $request->file('icon');
+                $imageName = uniqid().str_replace(["(", ")"],'',$file->getClientOriginalName());
+                if(!is_dir(public_path($directory."/")))
+                {
+                    mkdir(public_path($directory."/"),0775,true);
+                }
+
+                $mainCategory   = "upload/category/icon/".$categoryId."/".$imageName;
+                $file->move(public_path($directory),$imageName);
+                $categeryInfo->icon       = $mainCategory;
                 $categeryInfo->save();
             }
 

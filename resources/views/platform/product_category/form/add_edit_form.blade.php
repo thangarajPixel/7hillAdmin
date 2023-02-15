@@ -108,7 +108,28 @@
             'background-image': ''
         });
     });
-   
+   //icon image
+   document.getElementById('readUrlicon').addEventListener('change', function() {
+        // console.log("111");
+        if (this.files[0]) {
+            var picture = new FileReader();
+            picture.readAsDataURL(this.files[0]);
+            picture.addEventListener('load', function(event) {
+                console.log(event.target);
+                let img_url = event.target.result;
+                $('#manual-image-icon').css({
+                    'background-image': 'url(' + event.target.result + ')'
+                });
+            });
+        }
+    });
+    document.getElementById('icon_remove_logo').addEventListener('click', function() {
+        $('#icon_remove_image').val("no");
+        $('#manual-image-icon').css({
+            'background-image': ''
+        });
+    });
+   //icon image end
     $('#parent_category').select2();
     $('#industrial_category').select2();
     

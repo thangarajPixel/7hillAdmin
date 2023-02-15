@@ -20,6 +20,7 @@ class ProductCategory extends Model
         'industrial_id',
         'description',
         'image',
+        'icon',
         'meta_title',
         'meta_keyword',
         'meta_description',
@@ -69,7 +70,7 @@ class ProductCategory extends Model
     }
     public function otherCategoryData()
     {
-        return $this->hasOne(Industrial::class, 'id', 'industrial_id')->select('id','title','slug','parent_id');
+        return $this->hasOne(Industrial::class, 'id', 'industrial_id')->select('id','title','slug','parent_id','image','icon');
     }
 
     

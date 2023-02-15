@@ -19,7 +19,6 @@ class IndustrialController extends Controller
 {
     public function index(Request $request)
     { 
-        
         if ($request->ajax()) {
             $data = Industrial::select('industrials.*','users.name as users_name',
             DB::raw('IF(7hill_industrials.parent_id = 0, "Parent", 7hill_parent_category.title ) as parent_name '))
@@ -127,11 +126,15 @@ class IndustrialController extends Controller
             }
 
             if ($request->image_remove_image == "no") {
-                $directory = 'upload/category/industrial/'.$id;
+                $directory = 'upload/category/industrial/image/'.$id;
                 \File::deleteDirectory(public_path($directory));
                 $ins['image'] = '';
             }
-            
+            if ($request->icon_remove_image == "no") {
+                $directory = 'upload/category/industrial/icon/'.$id;
+                \File::deleteDirectory(public_path($directory));
+                $ins['icon'] = '';
+            }
             $error                      = 0;
             $info                       = Industrial::updateOrCreate(['id' => $id], $ins);
             $category_id                  = $info->id;
@@ -139,7 +142,7 @@ class IndustrialController extends Controller
 
             if($request->hasFile('avatar'))
             {
-                $directory = 'upload/category/industrial/'.$category_id;
+                $directory = 'upload/category/industrial/image/'.$category_id;
                 \File::deleteDirectory(public_path($directory));
 
                 $file = $request->file('avatar');
@@ -148,13 +151,30 @@ class IndustrialController extends Controller
                 {
                     mkdir(public_path($directory."/"),0775,true);
                 }
-                $mainCategory   = "upload/category/industrial/".$category_id."/".$imageName;
+                $mainCategory   = "upload/category/industrial/image/".$category_id."/".$imageName;
                 $file->move(public_path($directory),$imageName);
 
                 $info->image       = $mainCategory;
                 $info->save();
             }
-           
+            if($request->hasFile('icon'))
+            {
+                $directory = 'upload/category/industrial/icon/'.$category_id;
+                \File::deleteDirectory(public_path($directory));
+
+                $file = $request->file('icon');
+                $imageName = uniqid().str_replace(["(", ")"],'',$file->getClientOriginalName());
+                if(!is_dir(public_path($directory."/")))
+                {
+                    mkdir(public_path($directory."/"),0775,true);
+                }
+
+                $mainCategory   = "upload/category/industrial/icon/".$category_id."/".$imageName;
+                $file->move(public_path($directory),$imageName);
+                $info->icon       = $mainCategory;
+                $info->save();
+            }
+
             $message                    = (isset($id) && !empty($id)) ? 'Updated Successfully' : 'Added successfully';
         } else {
             $error                      = 1;

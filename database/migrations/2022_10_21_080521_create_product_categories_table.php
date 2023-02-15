@@ -20,6 +20,7 @@ class CreateProductCategoriesTable extends Migration
             $table->unsignedBigInteger('parent_id')->default(0)->nullable();
             $table->unsignedBigInteger('industrial_id')->default(0)->nullable();
             $table->text('description')->nullable();
+            $table->string('icon')->nullable();
             $table->text('image')->nullable();
             $table->longText('meta_title')->nullable();
             $table->longText('meta_keyword')->nullable();

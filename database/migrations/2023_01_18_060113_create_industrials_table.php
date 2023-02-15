@@ -18,6 +18,7 @@ class CreateIndustrialsTable extends Migration
             $table->string('title')->nullable();
             $table->string('slug')->nullable();
             $table->string('image')->nullable();
+            $table->string('icon')->nullable();
             $table->unsignedBigInteger('parent_id')->default(0)->nullable();
             $table->longText('description')->nullable();
             $table->longText('meta_title')->nullable();

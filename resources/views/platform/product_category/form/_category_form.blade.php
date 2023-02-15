@@ -97,6 +97,54 @@
                 </span>
             </div>
         </div>
+        <div class=" mb-7">
+            <div class="fv-row">
+                <label class="d-block fw-bold fs-6 mb-5">Icon</label>
+                <div class="form-text">
+                    Allowed file types: png, jpg,
+                    jpeg.
+                </div>
+            </div>
+            <input id="icon_remove_image" type="hidden" name="icon_remove_image" value="yes">
+            <div class="image-input image-input-outline manual-image-icon" data-kt-image-input="true"
+                style="background-image: url({{ asset('userImage/no_Image.jpg') }})">
+                @if ($info->icon ?? '')
+                @php
+                    $url = Storage::url($info->icon);
+                @endphp
+                    <div class="image-input-wrapper w-125px h-125px manual-image-icon"
+                        id="manual-image-icon"
+                        style="background-image: url({{ asset($info->icon) }});">
+                    </div>
+                @else
+                    <div class="image-input-wrapper w-125px h-125px manual-image-icon"
+                        id="manual-image-icon"
+                        style="background-image: url({{ asset('userImage/no_Image.jpg') }});">
+                    </div>
+                @endif
+                <label
+                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                    title="Change Icon">
+                    <i class="bi bi-pencil-fill fs-7"></i>
+                    <input type="file" name="icon" id="readUrlicon"
+                        accept=".png, .jpg, .jpeg" />
+                </label>
+
+                <span
+                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                    title="Cancel icon">
+                    <i class="bi bi-x fs-2"></i>
+                </span>
+                <span
+                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                    title="Remove avatar1">
+                    <i class="bi bi-x fs-2" id="icon_remove_logo"></i>
+                </span>
+            </div>
+        </div>
         <div class="mb-7 mt-4">
             <label class="fw-bold fs-6 mb-2">Sorting Order</label>
             <input type="text" name="order_by" class="form-control numberonly form-control-solid mb-3 mb-lg-0"
