@@ -19,7 +19,7 @@
                             href="#" onclick="return getGlobalTab('general')">Project</a>
                     </li>
 
-                    <li class="nav-item mt-2">
+                    {{-- <li class="nav-item mt-2">
                         <a class="nav-link text-active-primary ms-0 me-10 py-5 global-class" id="sms" href="#"
                             onclick="return getGlobalTab('sms')">SMS</a>
                     </li>
@@ -27,12 +27,12 @@
                     <li class="nav-item mt-2">
                         <a class="nav-link text-active-primary ms-0 me-10 py-5 global-class" id="payment" href="#"
                             onclick="return getGlobalTab('payment')">Payment</a>
-                    </li>
+                    </li> --}}
 
-                    <li class="nav-item mt-2">
+                    {{-- <li class="nav-item mt-2">
                         <a class="nav-link text-active-primary ms-0 me-10 py-5 global-class" id="links" href="#"
                             onclick="return getGlobalTab('links')"> Links </a>
-                    </li>
+                    </li> --}}
 
                 </ul>
 
