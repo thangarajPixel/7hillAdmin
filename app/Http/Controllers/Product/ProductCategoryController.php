@@ -186,7 +186,7 @@ class ProductCategoryController extends Controller
                 \File::deleteDirectory(public_path($directory));
 
                 $file = $request->file('categoryImage');
-                $imageName = uniqid().str_replace(["(", ")"],'',$file->getClientOriginalName());
+                $imageName = uniqid().str_replace(["(", ")"," "],'',$file->getClientOriginalName());
                 if(!is_dir(public_path($directory."/")))
                 {
                     mkdir(public_path($directory."/"),0775,true);
@@ -203,7 +203,7 @@ class ProductCategoryController extends Controller
                 \File::deleteDirectory(public_path($directory));
 
                 $file = $request->file('icon');
-                $imageName = uniqid().str_replace(["(", ")"],'',$file->getClientOriginalName());
+                $imageName = uniqid().str_replace(["(", ")"," "],'',$file->getClientOriginalName());
                 if(!is_dir(public_path($directory."/")))
                 {
                     mkdir(public_path($directory."/"),0775,true);
