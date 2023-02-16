@@ -52,7 +52,7 @@
                     <tr>
                         <td class="w-30"> <span><img src="{{ public_path('assets/logo/logo.png') }}" alt="" height="100"></span> </td>
                         <td class="w-30" >
-                            <h3> Musee Musical Pvt Ltd </h3>
+                            <h3> 7Hill Pvt Ltd </h3>
                             <div> No 73 </div>
                             <div> Anna salai </div>
                             <div> Chennai 600023 </div>
