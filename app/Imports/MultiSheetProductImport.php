@@ -41,23 +41,26 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             }
             
             $checkSubIndustrial = Industrial::where(['title' => trim($industrial_category), 'parent_id' => $industrial_id] )->first();
-            if( isset( $industrial_category ) && !empty( $industrial_category ) ) {
-                $sub_industrial_id                = $checkSubIndustrial->id;
-            } else {
-                #insert new sub category
-                // $subcat_ins['tax_id']           = $tax_id;
-                $subind_ins['added_by']         = Auth::id();
-                $subind_ins['title']            = trim($industrial_category);
-                $subind_ins['order_by']         = 0;
-                $subind_ins['status']           = 'published';
-                $subind_ins['parent_id']        = $industrial_id;
+            if(isset( $industrial_category ) && !empty( $industrial_category ))
+            {
+                if( isset( $checkSubIndustrial ) && !empty( $checkSubIndustrial ) ) {
+                    $sub_industrial_id                = $checkSubIndustrial->id;
+                } else {
+                    #insert new sub category
+                    // $subcat_ins['tax_id']           = $tax_id;
+                    $subind_ins['added_by']         = Auth::id();
+                    $subind_ins['title']            = trim($industrial_category);
+                    $subind_ins['order_by']         = 0;
+                    $subind_ins['status']           = 'published';
+                    $subind_ins['parent_id']        = $industrial_id;
 
-                if( isset( $industrial_id ) && !empty( $industrial_id ) ) {
-                    $parentInfo                 = Industrial::find($industrial_id);
-                    $parent_name                = $parentInfo->name ?? '';
+                    if( isset( $industrial_id ) && !empty( $industrial_id ) ) {
+                        $parentInfo                 = Industrial::find($industrial_id);
+                        $parent_name                = $parentInfo->name ?? '';
+                    }
+                    $subind_ins['slug']             = Str::slug($industrial_category);
+                    $sub_industrial_id              = Industrial::create($subind_ins);
                 }
-                $subind_ins['slug']             = Str::slug($industrial_category);
-                $sub_industrial_id              = Industrial::create($subind_ins);
             }
 // print_r("industrial_id=".$industrial_id."<br>"."sub_industrial_id=".$sub_industrial_id);die();
             //////////////
