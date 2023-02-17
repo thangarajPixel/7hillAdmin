@@ -123,7 +123,7 @@ class ProductController extends Controller
         $uploadHref = route('products.upload');
         $routeValue = 'products';
 
-
+        $pCat[] = '';
         $catData = Product::where('status','published')->select('category_id')->groupBy('category_id')->get();
         foreach($catData as $key=>$val){
             $pCat[] = $val['category_id']."<br>"; 
