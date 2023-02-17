@@ -113,7 +113,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             $ins['status'] = 'published';
             $ins['quantity'] = '';
             $ins['stock_status'] = 'in_stock';
-            $ins['category_id'] = $sub_category_id;
+            $ins['category_id'] = $sub_category_id ?? '';
             $ins['description'] = $row['short_description'];
             $ins['specification'] = $row['technical_specifications'];
             $ins['product_model'] = $row['product_model'];
