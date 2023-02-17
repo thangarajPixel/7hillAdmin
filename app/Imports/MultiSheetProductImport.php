@@ -81,25 +81,28 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             }
             #check subcategory exist or create new one
             $checkSubCategory = ProductCategory::where(['name' => trim($sub_category), 'parent_id' => $category_id] )->first();
-            if( isset( $checkSubCategory ) && !empty( $checkSubCategory ) ) {
-                $sub_category_id                = $checkSubCategory->id;
-            } else {
-                #insert new sub category
-                $subcat_ins['added_by']         = Auth::id();
-                $subcat_ins['name']             = trim($sub_category);
-                $subcat_ins['order_by']         = 0;
-                $subcat_ins['status']           = 'published';
-                $subcat_ins['parent_id']        = $category_id;
+            if(isset( $sub_category ) && !empty( $sub_category ))
+            {
+                if( isset( $checkSubCategory ) && !empty( $checkSubCategory ) ) {
+                    $sub_category_id                = $checkSubCategory->id;
+                } else {
+                    #insert new sub category
+                    $subcat_ins['added_by']         = Auth::id();
+                    $subcat_ins['name']             = trim($sub_category);
+                    $subcat_ins['order_by']         = 0;
+                    $subcat_ins['status']           = 'published';
+                    $subcat_ins['parent_id']        = $category_id;
 
-                $parent_name = '';
-                if( isset( $category_id ) && !empty( $category_id ) ) {
-                    $parentInfo                 = ProductCategory::find($category_id);
-                    $parent_name                = $parentInfo->name ?? '';
+                    $parent_name = '';
+                    if( isset( $category_id ) && !empty( $category_id ) ) {
+                        $parentInfo                 = ProductCategory::find($category_id);
+                        $parent_name                = $parentInfo->name ?? '';
+                    }
+        
+                    $subcat_ins['slug']             = Str::slug($sub_category.' '.$parent_name);
+                    $sub_category_id                = ProductCategory::create($subcat_ins);
+
                 }
-    
-                $subcat_ins['slug']             = Str::slug($sub_category.' '.$parent_name);
-                $sub_category_id                = ProductCategory::create($subcat_ins);
-
             }
           
             $sku            = generateProductSku($row['sku']);
