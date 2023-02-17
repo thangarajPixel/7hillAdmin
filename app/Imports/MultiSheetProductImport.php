@@ -150,7 +150,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             $ins['added_by'] = Auth::id();
 
             $product_id     = Product::create($ins)->id;
-            dd("!11");
+            // dd("!11");
 
             // if( isset( $row['video_link']) && !empty( $row['video_link'])) {
             //     $link_ins['product_id'] = $product_id;
