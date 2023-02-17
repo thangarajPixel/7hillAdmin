@@ -47,7 +47,6 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                     $sub_industrial_id                = $checkSubIndustrial->id;
                 } else {
                     #insert new sub category
-                    // $subcat_ins['tax_id']           = $tax_id;
                     $subind_ins['added_by']         = Auth::id();
                     $subind_ins['title']            = trim($industrial_category);
                     $subind_ins['order_by']         = 0;
@@ -62,8 +61,6 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                     $sub_industrial_id              = Industrial::create($subind_ins);
                 }
             }
-// print_r("industrial_id=".$industrial_id."<br>"."sub_industrial_id=".$sub_industrial_id);die();
-            //////////////
             #do insert or update if data exist or not
             $checkCategory = ProductCategory::where('name', trim($category) )->first();
             
@@ -88,8 +85,6 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                 $sub_category_id                = $checkSubCategory->id;
             } else {
                 #insert new sub category
-                // $subcat_ins['tax_id']           = $tax_id;
-                // $subcat_ins['is_home_menu']     = 'no';
                 $subcat_ins['added_by']         = Auth::id();
                 $subcat_ins['name']             = trim($sub_category);
                 $subcat_ins['order_by']         = 0;
@@ -106,57 +101,23 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                 $sub_category_id                = ProductCategory::create($subcat_ins);
 
             }
-            #check brand exist or create new one
-            // $checkBrand                         = Brands::where('brand_name', trim($row['brand']))->first();
-            // if( isset( $checkBrand ) && !empty( $checkBrand ) ) {
-            //     $brand_id                       = $checkBrand->id;
-            // } else {
-            //     #insert new brand
-            //     $brand_ins['brand_name']    = trim($row['brand']);
-            //     $brand_ins['slug']          = Str::slug($row['brand']);
-            //     $brand_ins['order_by']      = 0;
-            //     $brand_ins['status']        = 'published';
-
-            //     $brand_id                   = Brands::create($brand_ins)->id;
-            // }
-
-            #check product exist or create new one
+          
             $sku            = generateProductSku($row['sku']);
-            // $amount         = $row['base_price'] ?? $row['tax_inclexcl'] ?? 0;
-            // $productPriceDetails = getAmountExclusiveTax((float)$amount, $taxPercentage ?? 0 );
-
+          
             $ins['product_name'] = trim($row['product_name']);
             $ins['product_url'] = Str::slug($row['product_name']);
             $ins['sku'] = $sku;
-            // $ins['price'] = $productPriceDetails['basePrice'] ?? 0;
-            // $ins['mrp'] = $row['mrp'] ?? 0;
-            // $ins['sale_price'] = $row['discounted_price'] ?? 0;
-            // $ins['sale_start_date'] = ( isset($row['start_date']) && !empty( $row['start_date']) ) ? date('Y-m-d', strtotime($row['start_date'])) : null;
-            // $ins['sale_end_date'] = ( isset($row['end_date']) && !empty( $row['end_date']) ) ? date('Y-m-d', strtotime($row['end_date'])) : null;
             $ins['status'] = 'published';
             $ins['quantity'] = '';
             $ins['stock_status'] = 'in_stock';
-            // $ins['brand_id'] = $brand_id;
             $ins['category_id'] = $sub_category_id;
-            // $ins['is_featured'] = ( isset($row['featured']) && !empty( $row['featured']) ) ? 1 : 0;
-            // $ins['tax_id'] = $tax_id;
             $ins['description'] = $row['short_description'];
             $ins['specification'] = $row['technical_specifications'];
             $ins['product_model'] = $row['product_model'];
-            // $ins['technical_information'] = $row['technical_specifications'] ?? null;
-            // $ins['feature_information'] = $row['4_bullet_points'] ?? null;
-            // $ins['specification'] = $row['long_description'] ?? null;
             $ins['added_by'] = Auth::id();
 
-            $product_id     = Product::create($ins)->id;
-            // dd("!11");
-
-            // if( isset( $row['video_link']) && !empty( $row['video_link'])) {
-            //     $link_ins['product_id'] = $product_id;
-            //     $link_ins['url'] = $row['video_link'];
-            //     $link_ins['url_type'] = 'video_link';
-            //     ProductLink::create($link_ins);
-            // }
+            // $product_id     = Product::create($ins)->id;  /////// This is important for save product
+           
             
         }
         
