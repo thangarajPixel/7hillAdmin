@@ -63,7 +63,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                 $sub_industrial_id              = Industrial::create($subind_ins);
 
             }
-print_r("industrial_id=".$industrial_id."<br>"."sub_industrial_id=".$sub_industrial_id);die();
+// print_r("industrial_id=".$industrial_id."<br>"."sub_industrial_id=".$sub_industrial_id);die();
             //////////////
             #do insert or update if data exist or not
             $checkCategory = ProductCategory::where('name', trim($category) )->first();
@@ -122,9 +122,9 @@ print_r("industrial_id=".$industrial_id."<br>"."sub_industrial_id=".$sub_industr
             // }
 
             #check product exist or create new one
-            $sku            = generateProductSku($row['brand'], $row['sku']);
-            $amount         = $row['base_price'] ?? $row['tax_inclexcl'] ?? 0;
-            $productPriceDetails = getAmountExclusiveTax((float)$amount, $taxPercentage ?? 0 );
+            $sku            = generateProductSku($row['sku']);
+            // $amount         = $row['base_price'] ?? $row['tax_inclexcl'] ?? 0;
+            // $productPriceDetails = getAmountExclusiveTax((float)$amount, $taxPercentage ?? 0 );
 
             $ins['product_name'] = trim($row['product_name']);
             $ins['product_url'] = Str::slug($row['product_name']);
@@ -139,10 +139,12 @@ print_r("industrial_id=".$industrial_id."<br>"."sub_industrial_id=".$sub_industr
             $ins['stock_status'] = 'in_stock';
             // $ins['brand_id'] = $brand_id;
             $ins['category_id'] = $sub_category_id;
-            $ins['is_featured'] = ( isset($row['featured']) && !empty( $row['featured']) ) ? 1 : 0;
+            // $ins['is_featured'] = ( isset($row['featured']) && !empty( $row['featured']) ) ? 1 : 0;
             // $ins['tax_id'] = $tax_id;
             $ins['description'] = $row['short_description'];
-            $ins['technical_information'] = $row['technical_specifications'] ?? null;
+            $ins['specification'] = $row['technical_specifications'];
+            $ins['product_model'] = $row['product_model'];
+            // $ins['technical_information'] = $row['technical_specifications'] ?? null;
             // $ins['feature_information'] = $row['4_bullet_points'] ?? null;
             // $ins['specification'] = $row['long_description'] ?? null;
             $ins['added_by'] = Auth::id();

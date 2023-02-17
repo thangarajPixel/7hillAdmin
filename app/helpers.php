@@ -68,10 +68,10 @@ if (! function_exists('getAmountExclusiveTax')) {
 }
 
 if (! function_exists('generateProductSku')) {
-    function generateProductSku($brand, $sku = '' ) {
+    function generateProductSku($sku = '' ) {
         $countNumber    = '0000';
         if( empty( $sku ) ) {
-            $sku = 'MM-'.date('m').'-'.strtoupper($brand).'-'.$countNumber;
+            $sku = 'MM-'.date('m').'-'.$countNumber;
         }
         
 
@@ -90,7 +90,7 @@ if (! function_exists('generateProductSku')) {
                 }
                 $ord = $new_no.$old_no;
                 
-                $sku =  'MM-'.date('m').'-'.strtoupper($brand).'-'.$ord;
+                $sku =  'MM-'.date('m').'-'.$ord;
             }
         } 
         return $sku;
