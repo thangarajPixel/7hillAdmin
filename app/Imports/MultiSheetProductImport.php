@@ -90,7 +90,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             } else {
                 #insert new sub category
                 // $subcat_ins['tax_id']           = $tax_id;
-                $subcat_ins['is_home_menu']     = 'no';
+                // $subcat_ins['is_home_menu']     = 'no';
                 $subcat_ins['added_by']         = Auth::id();
                 $subcat_ins['name']             = trim($sub_category);
                 $subcat_ins['order_by']         = 0;
@@ -148,15 +148,15 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             // $ins['feature_information'] = $row['4_bullet_points'] ?? null;
             // $ins['specification'] = $row['long_description'] ?? null;
             $ins['added_by'] = Auth::id();
-
+dd("!11");
             $product_id     = Product::create($ins)->id;
 
-            if( isset( $row['video_link']) && !empty( $row['video_link'])) {
-                $link_ins['product_id'] = $product_id;
-                $link_ins['url'] = $row['video_link'];
-                $link_ins['url_type'] = 'video_link';
-                ProductLink::create($link_ins);
-            }
+            // if( isset( $row['video_link']) && !empty( $row['video_link'])) {
+            //     $link_ins['product_id'] = $product_id;
+            //     $link_ins['url'] = $row['video_link'];
+            //     $link_ins['url_type'] = 'video_link';
+            //     ProductLink::create($link_ins);
+            // }
             
         }
         
