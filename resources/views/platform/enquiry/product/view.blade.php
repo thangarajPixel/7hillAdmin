@@ -67,7 +67,7 @@
                         </div>
                         <div class="card-footer">
                             <div>
-                                <a type="button" class="btn btn-sm btn-active-light-primary" href="{{ route('enquiry.products') }}">Back</a>
+                                <a type="button" class="btn btn-sm btn-active-light-primary" href="{{ route('enquiry') }}">Back</a>
                             </div>
                         </div>
                     </div>

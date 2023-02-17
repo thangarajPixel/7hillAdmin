@@ -47,7 +47,6 @@
                                 <th> Company Number </th>
                                 <th> City </th>
                                 <th> Created Date </th>
-                                <th> Status </th>
                                 <th style="width: 75px;">Action</th>
                             </tr>
                         </thead>
@@ -71,7 +70,7 @@
             serverSide: true,
             type: 'POST',
             ajax: {
-                "url": "{{ route('enquiry.products') }}",
+                "url": "{{ route('enquiry') }}",
                 "data": function(d) {
                     d.status = $('select[name=filter_status]').val();
                 }
@@ -108,10 +107,7 @@
                     data: 'created_at',
                     name: 'created_at'
                 },
-                {
-                    data: 'status',
-                    name: 'status'
-                },
+             
                 {
                     data: 'action',
                     name: 'action',

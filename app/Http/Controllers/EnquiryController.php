@@ -32,13 +32,6 @@ class EnquiryController extends Controller
                 }
             })
             ->addIndexColumn()
-            ->editColumn('status', function ($row) {
-                $status = '<a href="javascript:void(0);" class="badge badge-light-'.(($row->status == 'published') ? 'success': 'danger')
-                .'" tooltip="Click to '.(($row->status == 'published') ? 'Unpublish' : 'Publish').'" 
-                onclick="return commonChangeStatus(' . $row->id . ',\''.(($row->status == 'published') ? 'unpublished': 'published')
-                .'\', \'industrial-module\')">'.ucfirst($row->status).'</a>';
-                return $status;
-            })
             ->editColumn('created_at', function ($row) {
                 $created_at = Carbon::createFromFormat('Y-m-d H:i:s', $row['created_at'])->format('d-m-Y');
                 return $created_at;
@@ -48,7 +41,7 @@ class EnquiryController extends Controller
             //     $view_btn = '<a href="javascript:void(0);" onclick="return  openForm(\'industrial-module\',' . $row->id . ')" class="btn btn-icon btn-active-primary btn-light-primary mx-1 w-30px h-30px" > 
             //     <i class="fa fa-edit"></i>
             // </a>';
-            $view_btn = '<a href="'.route('enquiry.products.view',$row->id).'"  class="btn btn-icon btn-active-primary btn-light-primary mx-1 w-30px h-30px" > 
+            $view_btn = '<a href="'.route('enquiry.view',$row->id).'"  class="btn btn-icon btn-active-primary btn-light-primary mx-1 w-30px h-30px" > 
             <i class="fa fa-eye"></i>
         </a>';
                 $del_btn = '<a href="javascript:void(0);" onclick="return commonDelete(' . $row->id . ', \'enquiry\')" class="btn btn-icon btn-active-danger btn-light-danger mx-1 w-30px h-30px" > 

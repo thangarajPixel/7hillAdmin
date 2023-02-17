@@ -107,6 +107,12 @@
                    'pdf': "{{ route('industrial-module.export.pdf') }}",
                 }
             }, 
+            'enquiry': {
+               'delete': "{{ route('enquiry.delete') }}",
+               'export': {
+                   'excel': "{{ route('enquiry.export.excel') }}",
+                }
+            },
            
        }
    };

@@ -111,12 +111,12 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/list', [App\Http\Controllers\ReportProductController::class, 'index'])->name('reports.products.list');
         });
     });  
-    // Route::prefix('enquiry')->middleware(['checkAccess:visible'])->group(function(){
-    //     Route::get('/products', [App\Http\Controllers\EnquiryController::class, 'enquiryList'])->name('enquiry.products');
-    //     Route::get('/products/view/{id}', [App\Http\Controllers\EnquiryController::class, 'productView'])->name('enquiry.products.view');
-    //     Route::post('/products/delete', [App\Http\Controllers\EnquiryController::class, 'productEnquiryDelete'])->name('enquiry.products.delete');
-    //     Route::post('/products/export/excel', [App\Http\Controllers\EnquiryController::class, 'productEnquiryexport'])->name('enquiry.products.export.excel')->middleware(['checkAccess:export']);
-    // });  
+    Route::prefix('enquiry')->middleware(['checkAccess:visible'])->group(function(){
+        Route::get('/products', [App\Http\Controllers\EnquiryController::class, 'enquiryList'])->name('enquiry');
+        Route::get('/products/view/{id}', [App\Http\Controllers\EnquiryController::class, 'productView'])->name('enquiry.view');
+        Route::post('/products/delete', [App\Http\Controllers\EnquiryController::class, 'productEnquiryDelete'])->name('enquiry.delete');
+        Route::post('/products/export/excel', [App\Http\Controllers\EnquiryController::class, 'productEnquiryexport'])->name('enquiry.export.excel')->middleware(['checkAccess:export']);
+    });  
 
    
 });

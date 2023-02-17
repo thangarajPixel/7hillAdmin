@@ -131,7 +131,7 @@
                 </div>
             </div>
             @endif --}}
-            {{-- @if( access()->hasAccess(['enquiry.products']) )
+            @if( access()->hasAccess(['enquiry']) )
             <div data-kt-menu-trigger="click" class="menu-item menu-accordion mb-1 @if( request()->routeIs(['enquiry.*'])) hover show @endif">
                 <span class="menu-link">
                     <span class="menu-icon">
@@ -148,7 +148,7 @@
                 </span>
                 <div class="menu-sub menu-sub-accordion">
                     <div class="menu-item">
-                        <a class="menu-link @if( request()->routeIs(['enquiry.products','enquiry.products.view'])) active @endif" href="{{ route('enquiry.products') }}">
+                        <a class="menu-link @if( request()->routeIs(['enquiry','enquiry.view'])) active @endif" href="{{ route('enquiry') }}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -157,7 +157,7 @@
                     </div>
                 </div>
             </div>
-            @endif --}}
+            @endif
             @if( access()->hasAccess(['banner']) )
             <div class="menu-item">
                 <div class="menu-content pt-8 pb-0">

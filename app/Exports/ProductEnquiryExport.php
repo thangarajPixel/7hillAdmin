@@ -18,7 +18,7 @@ class ProductEnquiryExport implements FromView
     // }
     public function view(): View
     {
-        $list = ProductEnquiry::select('product_enquiries.*')
+        $list = ProductEnquiry::select('product_enquiries.*','products.product_name')
         ->leftJoin('products','products.id','=','product_enquiries.product_id')
         ->get();
         return view('platform.exports.enquiry.excel', compact('list'));
