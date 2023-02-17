@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Industrial;
 use App\Models\Master\Brands;
 use App\Models\Product\Product;
 use App\Models\Product\ProductCategory;
@@ -17,31 +18,53 @@ class MultiSheetProductImport implements ToModel, WithHeadingRow
    
     public function model(array $row)
     {
-        /***
-         * 1.check tax exist
-         * 2.check category exist
-         * 3.check subcategory exist
-         * 4.check brand exist         
-         */
-
+       
+$status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'published' : 'unpublished';
         $ins = $cat_ins = $tax_ins = $subcat_ins = $brand_ins = $link_ins = [];
+        $industrial                 = $row['industrial'] ?? null;
+        $industrial_category        = $row['sub_industrial'] ?? null;
         $category           = $row['category'] ?? null;
         $sub_category       = $row['sub_category'] ?? null;
-        // $tax                = $row['tax'] ?? null;
-        if( isset( $category ) && !empty( $category ) ) {
-            #check taxt exits if not create 
-            // $taxPercentage  = $tax * 100;
-            // $checkTax       = Tax::where('pecentage', $taxPercentage)->first();
-            // if( isset($checkTax) && !empty( $checkTax ) ) {
-            //     $tax_id     = $checkTax->id;
-            // } else {
-            //     $tax_ins['title'] = 'Tax '.intval($taxPercentage);
-            //     $tax_ins['pecentage'] = $taxPercentage ?? 0;
-            //     $tax_ins['order_by'] = 0;
+        if(  isset($industrial) && !empty($industrial) ) {
+           
+            $checkIndustrial = Industrial::where('title', trim($industrial) )->first();
+            if( isset( $checkIndustrial ) && !empty( $checkIndustrial ) ) {
+                $industrial_id                = $checkIndustrial->id;
+            } else {
+                $ind_ins['title']           = $industrial;
+                $ind_ins['parent_id']       = 0;
+                $ind_ins['description']     = $row['industrial_description'] ?? null;
+                $ind_ins['status']          = 'published';
+                $ind_ins['added_by']        = Auth::id();                
+                $ind_ins['slug']            = Str::slug($industrial);
+                $industrial_id                = Industrial::create($ind_ins)->id;
+                
+            }
+            
+            $checkSubIndustrial = Industrial::where(['title' => trim($industrial_category), 'parent_id' => $industrial_id] )->first();
+            if( isset( $checkSubIndustrial ) && !empty( $checkSubIndustrial ) ) {
+                $sub_industrial_id                = $checkSubIndustrial->id;
+            } else {
+                #insert new sub category
+                // $subcat_ins['tax_id']           = $tax_id;
+                $subind_ins['added_by']         = Auth::id();
+                $subind_ins['title']            = trim($industrial_category);
+                $subind_ins['order_by']         = 0;
+                $subind_ins['status']           = 'published';
+                $subind_ins['parent_id']        = $industrial_id;
 
-            //     $tax_id = Tax::create($tax_ins)->id;
-            // }
+                $parent_name = '';
+                if( isset( $industrial_id ) && !empty( $industrial_id ) ) {
+                    $parentInfo                 = Industrial::find($industrial_id);
+                    $parent_name                = $parentInfo->name ?? '';
+                }
+    
+                $subind_ins['slug']             = Str::slug($industrial_category.' '.$parent_name);
+                $sub_industrial_id              = Industrial::create($subind_ins);
 
+            }
+print_r("industrial_id=".$industrial_id."<br>"."sub_industrial_id=".$sub_industrial_id);die();
+            //////////////
             #do insert or update if data exist or not
             $checkCategory = ProductCategory::where('name', trim($category) )->first();
             
@@ -51,15 +74,12 @@ class MultiSheetProductImport implements ToModel, WithHeadingRow
                 #insert new category                
                 $cat_ins['name']            = $category;
                 $cat_ins['parent_id']       = 0;
+                $cat_ins['industrial_id']   = $industrial_id;
                 $cat_ins['description']     = $row['category_description'] ?? null;
                 $cat_ins['status']          = 'published';
-                $cat_ins['is_featured']     = '0';
                 $cat_ins['added_by']        = Auth::id();                
-                $cat_ins['tag_line']        = $row['category_tagline'] ?? null;                
-                // $cat_ins['tax_id']          = $tax_id;
-                $cat_ins['is_home_menu']    = 'no'; 
+                // $cat_ins['tax_id']       = $tax_id;
                 $cat_ins['slug']            = Str::slug($category);
-                
                 $category_id                = ProductCategory::create($cat_ins)->id;
 
             }
@@ -73,12 +93,9 @@ class MultiSheetProductImport implements ToModel, WithHeadingRow
                 $subcat_ins['is_home_menu']     = 'no';
                 $subcat_ins['added_by']         = Auth::id();
                 $subcat_ins['name']             = trim($sub_category);
-                $subcat_ins['description']      = $row['subcategory_description'] ?? null;
                 $subcat_ins['order_by']         = 0;
-                $subcat_ins['tag_line']         = $row['subcategory_tagline'] ?? null;
                 $subcat_ins['status']           = 'published';
                 $subcat_ins['parent_id']        = $category_id;
-                $subcat_ins['is_featured']      = '0';
 
                 $parent_name = '';
                 if( isset( $category_id ) && !empty( $category_id ) ) {
