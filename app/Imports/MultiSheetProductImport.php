@@ -122,6 +122,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             // }
 
             #check product exist or create new one
+            dd("!11");
             $sku            = generateProductSku($row['sku']);
             // $amount         = $row['base_price'] ?? $row['tax_inclexcl'] ?? 0;
             // $productPriceDetails = getAmountExclusiveTax((float)$amount, $taxPercentage ?? 0 );
@@ -148,7 +149,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             // $ins['feature_information'] = $row['4_bullet_points'] ?? null;
             // $ins['specification'] = $row['long_description'] ?? null;
             $ins['added_by'] = Auth::id();
-dd("!11");
+
             $product_id     = Product::create($ins)->id;
 
             // if( isset( $row['video_link']) && !empty( $row['video_link'])) {
