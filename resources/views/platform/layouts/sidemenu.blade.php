@@ -35,6 +35,7 @@
                     <span class="menu-arrow"></span>
                 </span>
                 <div class="menu-sub menu-sub-accordion menu-active-bg">
+                    @if( access()->hasAccess(['industrial-module']) )
                     <div class="menu-item">
                         <a class="menu-link @if(  request()->routeIs(['industrial-module'])) active @endif" href="{{ route('industrial-module') }}">
                             <span class="menu-bullet">
@@ -43,6 +44,7 @@
                             <span class="menu-title">Industrial Module</span>
                         </a>
                     </div>
+                    @endif
                     @if( access()->hasAccess(['product-category']) )
                     <div class="menu-item">
                         <a class="menu-link @if(  request()->routeIs(['product-category'])) active @endif" href="{{ route('product-category') }}">

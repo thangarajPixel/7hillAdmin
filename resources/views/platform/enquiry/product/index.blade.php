@@ -26,8 +26,6 @@
                 <div class="card-toolbar w-100">
                     <div class="d-flex justify-content-end w-100" data-kt-customer-table-toolbar="base">
                         @include('platform.layouts.parts.common._export_button')
-
-                       
                     </div>
 
                 </div>

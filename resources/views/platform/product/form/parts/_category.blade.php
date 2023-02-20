@@ -10,14 +10,3 @@
         @endisset
     </select> 
 </div>
-<script>
-    // {{ $item->name }} - {{ $item->parent->name ?? 'Parent' }}
-    // var cat_id = '{{ $info->category_id ?? "" }}';
-    // setTimeout(() => {
-    //     $('#category_id').select2();
-    //     if( cat_id ) {
-    //         $('#category_id').val(cat_id);
-    //     }
-        
-    // }, 200);
-</script>
