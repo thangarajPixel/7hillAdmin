@@ -13,8 +13,6 @@ var KTAppEcommerceSaveProduct = function () {
 
         var pro_eleme = '#kt_ecommerce_add_product_short_description';
         var quill_product_desc = document.querySelector('#kt_ecommerce_add_product_short_description');
-        var feature_eleme = '#kt_ecommerce_add_product_model';
-        var quill_feature_desc = document.querySelector('#kt_ecommerce_add_product_model');
         var spec_eleme = '#kt_ecommerce_add_product_specification';
         var quill_spec_desc = document.querySelector('#kt_ecommerce_add_product_specification');
         var meta_eleme = '#kt_ecommerce_add_product_meta_description';
@@ -59,30 +57,6 @@ var KTAppEcommerceSaveProduct = function () {
         quill_product_desc.on('text-change', function(delta, oldDelta, source) {
             $('#product_description').val(quill_product_desc.container.firstChild.innerHTML);
         });
-
-        //product Feature descritpion
-        quill_feature_desc = new Quill(feature_eleme, {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, 6, false]
-                    }],
-                    ['bold', 'italic', 'underline'],
-                    ['image', 'code-block'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    ['clean']
-                ]
-            },
-            placeholder: 'Type your text here...',
-            theme: 'snow' // or 'bubble'
-        });
-        quill_feature_desc.on('text-change', function(delta, oldDelta, source) {
-            $('#product_model').val(quill_feature_desc.container.firstChild.innerHTML);
-        });
-
-        //product Tech description
-        
-
         //product spec description
         quill_spec_desc = new Quill(spec_eleme, {
             modules: {
@@ -103,11 +77,32 @@ var KTAppEcommerceSaveProduct = function () {
             $('#product_specification').val(quill_spec_desc.container.firstChild.innerHTML);
         });
 
+        //product Feature descritpion
+        quill_feature_desc = new Quill(feature_eleme, {
+            modules: {
+                toolbar: [
+                    [{
+                        header: [1, 2, 3, 4, 5, 6, false]
+                    }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'code-block'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['clean']
+                ]
+            },
+            placeholder: 'Type your text here...',
+            theme: 'snow' // or 'bubble'
+        });
+       
+
+        //product Tech description
+        
+
+        
 
         const elements = [
             '#kt_ecommerce_add_product_meta_description',
             '#kt_ecommerce_add_product_short_description',
-            '#kt_ecommerce_add_product_model',
             '#kt_ecommerce_add_product_specification',
             '#kt_ecommerce_add_product_features',
             '#kt_ecommerce_add_product_benefits',

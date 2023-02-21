@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="mb-10 fv-row">
-                <label class="form-label required">SKU</label>
+                <label class="form-label required">SKU - <small>Product Model</small> </label>
                 <input type="text" name="sku" class="form-control mb-2" placeholder="Sku" value="{{ $info->sku ?? '' }}" />
             </div>
         </div>

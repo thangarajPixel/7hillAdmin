@@ -56,9 +56,6 @@ class ProductController extends Controller
             ->select('products.*','product_categories.name as category')->when($f_product_category, function($q) use($f_product_category){
                 return $q->where('category_id', $f_product_category);
             })
-            // ->when($f_tags, function($q) use($f_tags) {
-            //     return $q->where('tag_id', $f_tags);
-            // })
             ->when($f_stock_status, function($q) use($f_stock_status) {
                 return $q->where('stock_status', $f_stock_status);
             })
@@ -212,12 +209,7 @@ class ProductController extends Controller
                                 'status' => 'required',
                                 'stock_status' => 'required',
                                 'product_name' => 'required_if:product_page_type,==,general',
-                                // 'base_price' => 'required_if:product_page_type,==,general',
                                 'sku' => 'required_if:product_page_type,==,general|unique:products,sku,' . $id . ',id,deleted_at,NULL',
-                                // 'sale_price' => 'required_if:discount_option,==,percentage',
-                                // 'sale_price' => 'required_if:discount_option,==,fixed_amount',
-                                // 'sale_start_date' => 'required_if:sale_price,!=,0',
-                                // 'sale_end_date' => 'required_if:sale_price,==,0',
                                 'dicsounted_price' => 'required_if:discount_option,==,fixed_amount',
                                 'filter_variation' => 'nullable|array',
                                 'filter_variation.*' => 'nullable|required_with:filter_variation',
@@ -225,15 +217,6 @@ class ProductController extends Controller
                                 'filter_variation_value.*' => 'nullable|required_with:filter_variation.*',
                             ];
                                        
-        if( isset($request->url) && !empty( $request->url) && !is_null($request->url[0]) ) {
-            // $validate_array['url'] = 'nullable|url|array';
-            // $validate_array['url.*'] = 'nullable|url|required_with:url';
-            // $validate_array['url_type'] = 'nullable|required_with:url|array';
-            // $validate_array['url_type.*'] = 'nullable|required_with:url.*';
-              
-            $validate_array['url.*'] = 'required|url';
-            $validate_array['url_type.*'] = 'required';
-        }   
         $validator      = Validator::make( $request->all(), $validate_array );
 
         if ($validator->passes()) {
@@ -242,17 +225,11 @@ class ProductController extends Controller
                 $ins['base_image']          = null;
             }
             $ins[ 'product_name' ]          = $request->product_name;
-            // $ins[ 'hsn_code' ]              = $request->hsn_code;
             $ins[ 'product_url' ]           = Str::slug($request->product_name);
             $ins[ 'sku' ]                   = $request->sku;
-            $ins[ 'price' ]                 = $request->base_price;
             $ins[ 'status' ]                = $request->status;
             $ins[ 'industrial_id' ]         = $request->industrial_id;
             $ins[ 'category_id' ]           = $request->category_id;
-            // $ins[ 'tag_id' ]                = $request->tag_id;
-            // $ins[ 'label_id' ]              = $request->label_id;
-            // $ins[ 'wood_type' ]             = $request->wood_type;
-            // $ins[ 'finishing' ]             = $request->finishing;
             $ins[ 'quantity' ]              = $request->qty;
             $ins[ 'stock_status' ]          = $request->stock_status;
             $ins[ 'sale_price' ]            = $request->sale_price ?? 0;
@@ -260,7 +237,6 @@ class ProductController extends Controller
             $ins[ 'sale_end_date' ]         = $request->sale_end_date ?? null;
             $ins[ 'description' ]           = $request->product_description ?? null;
             $ins[ 'specification' ]         = $request->product_specification ?? null;
-            $ins[ 'product_model' ]         = $request->product_model ?? null;
             $ins[ 'added_by' ]              = auth()->user()->id;
             
             $productInfo                    = Product::updateOrCreate(['id' => $id], $ins);
@@ -290,25 +266,6 @@ class ProductController extends Controller
 
             }
             
-            // ProductDiscount::where('product_id', $product_id )->delete();
-            // if( isset( $request->discount_option ) && $request->discount_option != 1 ) {
-            //     $disIns['product_id'] = $product_id;
-            //     $disIns['discount_type'] = $request->discount_option;
-            //     $disIns['discount_value'] = $request->discount_percentage ?? 0; //this is for percentage 
-            //     $disIns['amount'] = $request->dicsounted_price ?? 0; //this only for fixed amount
-            //     ProductDiscount::create($disIns);
-            // }
-
-            // ProductMeasurement::where('product_id', $product_id )->delete();
-            // if( isset( $request->isShipping ) ) {
-
-            //     $measure['product_id']  = $product_id;
-            //     $measure[ 'weight' ]    = $request->weight ?? 0;
-            //     $measure[ 'width' ]     = $request->width ?? 0;
-            //     $measure[ 'hight' ]     = $request->height ?? 0;
-            //     $measure[ 'length' ]    = $request->length ?? 0;
-            //     ProductMeasurement::create($measure);
-            // }
 
             $request->session()->put('image_product_id', $product_id);
             $request->session()->put('brochure_product_id', $product_id);
@@ -316,14 +273,12 @@ class ProductController extends Controller
             if( isset( $request->filter_variation ) && !empty( $request->filter_variation ) )  {
                 $filter_variation = $request->filter_variation;
                 $filter_variation_value = $request->filter_variation_value;
-                // $filter_variation_title = $request->filter_variation_title;
                 ProductWithAttributeSet::where('product_id', $product_id)->delete();
 
                 for ($i=0; $i < count($request->filter_variation); $i++) { 
                     $insAttr = [];
                     $insAttr['product_attribute_set_id']    = $filter_variation[$i];
                     $insAttr['attribute_values']            = $filter_variation_value[$i];
-                    // $insAttr['title']                       = $filter_variation_title[$i];
                     $insAttr['product_id']                  = $product_id;
 
                     ProductWithAttributeSet::create($insAttr);
