@@ -135,7 +135,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             $ins['category_id'] = $catId ?? '';
             $ins['description'] = $row['short_description'];
             $ins['specification'] = $row['technical_specifications'];
-            $ins['product_model'] = $row['product_model'];
+            // $ins['product_model'] = $row['product_model'];
             $ins['added_by'] = Auth::id();
 
             $product_id     = Product::create($ins)->id;  /////// This is important for save product

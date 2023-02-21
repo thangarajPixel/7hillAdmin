@@ -29,16 +29,16 @@ class Industrial extends Model
 
     public function parent()
     {
-        return $this->hasOne(Industrial::class,'id','parent_id') ;
+        return $this->hasOne(Industrial::class,'id','parent_id')->where('status','published');
     }
 
     public function childOnlyNames()
     {
-        return $this->hasMany(Industrial::class, 'parent_id', 'id');
+        return $this->hasMany(Industrial::class, 'parent_id', 'id')->where('status','published');
     }
     public function parentOnlyName()
     {
-        return $this->hasMany(ProductCategory::class,'industrial_id','id');
+        return $this->hasMany(ProductCategory::class,'industrial_id','id')->where('status','published');
     }
     public function userInfo()
     {
@@ -47,10 +47,10 @@ class Industrial extends Model
     
     public function childCategory()
     {
-        return $this->hasMany(ProductCategory::class, 'industrial_id', 'id')->where('parent_id', 0);
+        return $this->hasMany(ProductCategory::class, 'industrial_id', 'id')->where('parent_id', 0)->where('status','published');
     }
     public function selectOption()
     {
-       return $this->hasOne(Industrial::class,'id','parent_id')->select('title');
+       return $this->hasOne(Industrial::class,'id','parent_id')->select('title')->where('status','published');
     }
 }

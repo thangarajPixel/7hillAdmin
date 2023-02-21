@@ -154,7 +154,7 @@ class ProductController extends Controller
             $breadCrum          = array('Products', 'Update Product');
             $info               = Product::find( $id );         
         }      
-        $industrialCategory = ProductCategory::select('id','name','slug','image','industrial_id')->get();
+        $industrialCategory = ProductCategory::select('id','name','slug','image','industrial_id')->where('status','published')->get();
         $otherProducts          = Product::where('status', 'published')
                                         ->when($id, function ($q) use ($id) {
                                             return $q->where('id', '!=', $id);
