@@ -85,7 +85,7 @@ class MenuController extends Controller
                                 }
                             }
                         }
-                        $tmp1['child'] = $child->childCategory;
+                        $tmp1['subChild'] = $child->childCategory;
                         /**
                          * check category exist
                          */
