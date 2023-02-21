@@ -69,15 +69,11 @@ class MyProfileController extends Controller
                         }
                     }
                   
-                  
-                    if(!is_dir(public_path($folder_name)))
-                    {
-                        mkdir(public_path($folder_name),0775,true);
-                    }
-                    dd("333");
+              
+                    // dd("333");
                     $path           = $folder_name . $filename;
                     $request->profile_image->move(public_path($folder_name), $filename);
-                    dd($path);
+                    // dd($path);
                     $ins['image']   = $path;
                 }
                 if ($request->image_remove_image == "yes") {
