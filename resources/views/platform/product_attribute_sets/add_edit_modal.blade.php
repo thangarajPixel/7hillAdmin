@@ -40,11 +40,11 @@
                             <input type="text" name="title" class="form-control form-control-solid mb-3 mb-lg-0"
                                 placeholder="Title" value="{{ $info->title ?? '' }}" />
                         </div>
-                        <div class="fv-row mb-7">
+                        {{-- <div class="fv-row mb-7">
                             <label class=" fw-bold fs-6 mb-2">Tagline</label>
                             <input type="text" name="tag_line" class="form-control form-control-solid mb-3 mb-lg-0"
                                 placeholder="Tag Line" value="{{ $info->tag_line ?? '' }}" />
-                        </div>
+                        </div> --}}
 
                         <div class="fv-row mb-7">
                             <label class="required fw-bold fs-6 mb-2">Product Category</label>
@@ -70,7 +70,7 @@
                         </div>
 
                         <br>
-                        <div class="row mb-7">
+                        {{-- <div class="row mb-7">
                             <div class="col-md-4">
                                 <div class="mb-7">
                                     <label class="fw-bold fs-6 mb-2"> Searchable </label>
@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="fv-row mb-7">
                             <label class="fw-bold fs-6 mb-2">Sorting Order</label>

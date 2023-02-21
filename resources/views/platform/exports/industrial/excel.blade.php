@@ -31,7 +31,7 @@
                 <td>{{ $item->description ?? '' }}</td>
                 <td>{{ $item->meta_title ?? '' }}</td>
                 <td>{{ $item->meta_keyword ?? '' }}</td>
-                <td>{{ $item->meta_description ?? '' }}</td>
+                <td>{{ strip_tags($item->meta_description) ?? '' }}</td>
                 <td>{{ $item->status }}</td>
                 <td>{{ $item->userInfo->name ?? '' }}</td>
                 <td>{{ $item->created_at }}</td>
