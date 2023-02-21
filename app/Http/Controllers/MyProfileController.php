@@ -70,8 +70,10 @@ class MyProfileController extends Controller
                     }
                   
                    
-                    if (!file_exists($folder_name)) {
-                        mkdir($folder_name, 777, true);
+                    
+                    if(!is_dir(public_path($folder_name."/")))
+                    {
+                        mkdir(public_path($folder_name."/"),0775,true);
                     }
                     dd("333");
                     $path           = $folder_name . $filename;
