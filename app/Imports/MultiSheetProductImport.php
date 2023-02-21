@@ -70,7 +70,13 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                 #insert new category                
                 $cat_ins['name']            = $category;
                 $cat_ins['parent_id']       = 0;
-                $cat_ins['industrial_id']   = $industrial_id;
+                if(isset($sub_industrial_id->id) && !empty($sub_industrial_id->id))
+                {
+                    $cat_ins['industrial_id']   = $sub_industrial_id->id;
+                }
+                else{
+                    $cat_ins['industrial_id']   = $industrial_id;
+                }
                 $cat_ins['description']     = $row['category_description'] ?? null;
                 $cat_ins['status']          = 'published';
                 $cat_ins['added_by']        = Auth::id();                
@@ -92,7 +98,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                     $subcat_ins['order_by']         = 0;
                     $subcat_ins['status']           = 'published';
                     $subcat_ins['parent_id']        = $category_id;
-
+                    $subcat_ins['industrial_id']    = $sub_industrial_id->id;
                     $parent_name = '';
                     if( isset( $category_id ) && !empty( $category_id ) ) {
                         $parentInfo                 = ProductCategory::find($category_id);
@@ -100,11 +106,17 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                     }
         
                     $subcat_ins['slug']             = Str::slug($sub_category.' '.$parent_name);
-                    $sub_category_id                = ProductCategory::create($subcat_ins);
-
+                    $sub_category_id                = ProductCategory::create($subcat_ins)->id;
                 }
             }
-          
+            if(!empty($category_id))
+            {
+                $catId = $category_id;
+            }
+            if(!empty($sub_category_id))
+            {
+                $catId = $sub_category_id;
+            }
             $sku            = generateProductSku($row['sku']);
           
             $ins['product_name'] = trim($row['product_name']);
@@ -113,13 +125,14 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             $ins['status'] = 'published';
             $ins['quantity'] = '';
             $ins['stock_status'] = 'in_stock';
-            $ins['category_id'] = $sub_category_id ?? '';
+            $ins['industrial_id'] = $industrial_id ?? '';
+            $ins['category_id'] = $catId ?? '';
             $ins['description'] = $row['short_description'];
             $ins['specification'] = $row['technical_specifications'];
             $ins['product_model'] = $row['product_model'];
             $ins['added_by'] = Auth::id();
 
-            // $product_id     = Product::create($ins)->id;  /////// This is important for save product
+            $product_id     = Product::create($ins)->id;  /////// This is important for save product
            
             
         }
