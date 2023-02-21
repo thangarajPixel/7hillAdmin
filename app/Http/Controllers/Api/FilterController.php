@@ -44,8 +44,15 @@ class FilterController extends Controller
                 $url                = $catInfo->icon;
                 $icon_path               = asset($url);
             }
+            if (!asset($catInfo->banner_image)) {
+                $banner_path               = asset('userImage/no_Image.jpg');
+            } else {
+                $url                       = $catInfo->banner_image;
+                $banner_path               = asset($url);
+            }
             $tmp['image'] = $path;
             $tmp['icon'] = $icon_path;
+            $tmp['banner_image'] = $banner_path;
             $ind = [];
             if( isset( $catInfo->parentIndustry ) && !empty( $catInfo->parentIndustry )) {
                 $ind[] = array( 
@@ -88,8 +95,15 @@ class FilterController extends Controller
                         $url                = $cat->icon;
                         $icon_path               = asset($url);
                     }
+                    if (!asset($cat->banner_image)) {
+                        $banner_image_path               = asset('userImage/7hillbanner.jpg');
+                    } else {
+                        $url                = $cat->banner_image;
+                        $banner_image               = asset($url);
+                    }
                     $tmp1['image'] = $path;
                     $tmp1['icon'] = $icon_path;
+                    $tmp1['banner_image'] = $banner_image;
 
                     $tmp['child'][] = $tmp1;
                 }
@@ -280,7 +294,7 @@ class FilterController extends Controller
     public function getOtherCategories(Request $request)
     {
         $category       = $request->category;
-        $otherCategory   = ProductCategory::select('id', 'name', 'slug','image','icon','parent_id','industrial_id')
+        $otherCategory   = ProductCategory::select('id', 'name', 'slug','image','icon','banner_image','parent_id','industrial_id')
                         ->when($category != '', function ($q) use ($category) {
                             $q->where('slug', '!=', $category);
                         })
@@ -315,6 +329,7 @@ class FilterController extends Controller
 
                 $imagePath              = $item->image;
                 $iconPath              = $item->icon;
+                $bannerPath              = $item->banner_image;
                 if (empty($imagePath)) {
                     $path               = asset('assets/logo/no-img-1.jpg');
                 } else {
@@ -328,8 +343,16 @@ class FilterController extends Controller
                     $iconpath               = asset($iconPath);
                 }
 
+                if (empty($bannerPath)) {
+                    $bannerpath               = asset('assets/logo/no-img-1.jpg');
+                } else {
+                    // $url                = Storage::url($imagePath);
+                    $bannerpath               = asset($bannerPath);
+                }
+
                 $tmp['image'] = $path;
                 $tmp['icon'] = $iconpath;
+                $tmp['banner_image'] = $bannerpath;
 
                 $data[] = $tmp;
 

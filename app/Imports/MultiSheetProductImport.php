@@ -30,6 +30,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             $checkIndustrial = Industrial::where('title', trim($industrial) )->first();
             if( isset( $checkIndustrial ) && !empty( $checkIndustrial ) ) {
                 $industrial_id                = $checkIndustrial->id;
+                $categoryAppendSlug           = $checkIndustrial->slug;
             } else {
                 $ind_ins['title']           = $industrial;
                 $ind_ins['parent_id']       = 0;
@@ -38,6 +39,8 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                 $ind_ins['added_by']        = Auth::id();                
                 $ind_ins['slug']            = Str::slug($industrial);
                 $industrial_id                = Industrial::create($ind_ins)->id;
+
+                $categoryAppendSlug =  $ind_ins['slug'];
             }
             
             $checkSubIndustrial = Industrial::where(['title' => trim($industrial_category), 'parent_id' => $industrial_id] )->first();
@@ -45,6 +48,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             {
                 if( isset( $checkSubIndustrial ) && !empty( $checkSubIndustrial ) ) {
                     $sub_industrial_id                = $checkSubIndustrial->id;
+                    $categoryAppendSlug               =  $checkSubIndustrial->slug;
                 } else {
                     #insert new sub category
                     $subind_ins['added_by']         = Auth::id();
@@ -59,7 +63,9 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                     }
                     $subind_ins['slug']             = Str::slug($industrial_category);
                     $sub_industrial_id              = Industrial::create($subind_ins);
-                }
+
+                    $categoryAppendSlug =  $subind_ins['slug'];
+                } 
             }
             #do insert or update if data exist or not
             $checkCategory = ProductCategory::where('name', trim($category) )->first();
@@ -81,7 +87,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                 $cat_ins['status']          = 'published';
                 $cat_ins['added_by']        = Auth::id();                
                 // $cat_ins['tax_id']       = $tax_id;
-                $cat_ins['slug']            = Str::slug($category);
+                $cat_ins['slug']            = Str::slug($category.' '.$categoryAppendSlug);
                 $category_id                = ProductCategory::create($cat_ins)->id;
 
             }
@@ -105,7 +111,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                         $parent_name                = $parentInfo->name ?? '';
                     }
         
-                    $subcat_ins['slug']             = Str::slug($sub_category.' '.$parent_name);
+                    $subcat_ins['slug']             = Str::slug($sub_category.' '.$categoryAppendSlug);
                     $sub_category_id                = ProductCategory::create($subcat_ins)->id;
                 }
             }

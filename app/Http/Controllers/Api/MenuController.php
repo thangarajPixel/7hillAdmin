@@ -75,6 +75,14 @@ class MenuController extends Controller
                                 else{
                                     $val1->icon = asset('userImage/no_Image.jpg');
                                 }
+
+                                if(!empty($val1->banner_image))
+                                {
+                                    $val1->banner_image = asset($val1->banner_image);
+                                }
+                                else{
+                                    $val1->banner_image = asset('userImage/7hillbanner.jpg');
+                                }
                             }
                         }
                         $tmp1['child'] = $child->childCategory;
@@ -105,6 +113,14 @@ class MenuController extends Controller
                             }
                             else{
                                 $val->icon = asset('userImage/no_Image.jpg');
+                            }
+
+                            if(!empty($val->banner_image))
+                            {
+                                $val->banner_image = asset($val->banner_image);
+                            }
+                            else{
+                                $val->banner_image = asset('userImage/7hillbanner.jpg');
                             }
                             // dd($val->image);
                         }
