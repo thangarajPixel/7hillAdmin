@@ -69,11 +69,10 @@ class MyProfileController extends Controller
                         }
                     }
                   
-                   
-                    
-                    if(!is_dir(public_path($folder_name."/")))
+                  
+                    if(!is_dir(public_path($folder_name)))
                     {
-                        mkdir(public_path($folder_name."/"),0775,true);
+                        mkdir(public_path($folder_name),0775,true);
                     }
                     dd("333");
                     $path           = $folder_name . $filename;
