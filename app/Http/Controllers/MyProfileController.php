@@ -65,7 +65,7 @@ class MyProfileController extends Controller
                         $existID = User::find($id);
                         $deleted_file = $existID->image;
                         if(File::exists($deleted_file)) {
-                            File::delete($deleted_file);
+                            File::deleteDirectory($deleted_file);
                         }
                     }
                     if (!file_exists($folder_name)) {
