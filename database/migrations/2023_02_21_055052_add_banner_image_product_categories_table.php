@@ -14,7 +14,7 @@ class AddBannerImageProductCategoriesTable extends Migration
     public function up()
     {
         Schema::table('product_categories', function (Blueprint $table) {
-            $table->string('banner_image')->after('icon');
+            $table->string('banner_image')->after('icon')->nullable();
         });
     }
 
