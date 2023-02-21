@@ -68,12 +68,14 @@ class MyProfileController extends Controller
                             File::delete($deleted_file);
                         }
                     }
+                   
                     if (!file_exists($folder_name)) {
                         mkdir($folder_name, 777, true);
                     }
                    
                     $path           = $folder_name . $filename;
                     $request->profile_image->move(public_path($folder_name), $filename);
+                    dd($path);
                     $ins['image']   = $path;
                 }
                 if ($request->image_remove_image == "yes") {
