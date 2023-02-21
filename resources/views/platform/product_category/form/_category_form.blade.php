@@ -51,6 +51,55 @@
     <div class="col-md-4">
         <div class=" mb-7">
             <div class="fv-row">
+                <label class="d-block fw-bold fs-6 mb-5">Banner <small>(Size 1600*350)</small></label>
+                <div class="form-text">
+                    Allowed file types: png, jpg,
+                    jpeg.
+                </div>
+                
+            </div>
+            <input id="image_remove_banner" type="hidden" name="image_remove_banner" value="yes">
+            <div class="image-input image-input-outline manual-image-banner" data-kt-image-input="true"
+                style="background-image: url({{ asset('userImage/no_Image.jpg') }})">
+                @if ($info->banner_image ?? '')
+                @php
+                    $url = Storage::url($info->banner_image);
+                @endphp
+                    <div class="image-input-wrapper w-125px h-125px manual-image-banner"
+                        id="manual-image-banner"
+                        style="background-image: url({{ asset($info->banner_image) }});">
+                    </div>
+                @else
+                    <div class="image-input-wrapper w-125px h-125px manual-image-banner"
+                        id="manual-image-banner"
+                        style="background-image: url({{ asset('userImage/no_Image.jpg') }});">
+                    </div>
+                @endif
+                <label
+                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                    title="Change Icon">
+                    <i class="bi bi-pencil-fill fs-7"></i>
+                    <input type="file" name="banner_image" id="bannerUrl"
+                        accept=".png, .jpg, .jpeg" />
+                </label>
+
+                <span
+                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                    title="Cancel avatar">
+                    <i class="bi bi-x fs-2"></i>
+                </span>
+                <span
+                    class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                    data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                    title="Remove avatar1">
+                    <i class="bi bi-x fs-2" id="banner_remove_logo"></i>
+                </span>
+            </div>
+        </div>
+        <div class=" mb-7">
+            <div class="fv-row">
                 <label class="d-block fw-bold fs-6 mb-5">Image</label>
                 <div class="form-text">
                     Allowed file types: png, jpg,

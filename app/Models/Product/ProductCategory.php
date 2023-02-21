@@ -21,6 +21,7 @@ class ProductCategory extends Model
         'description',
         'image',
         'icon',
+        'banner_image',
         'meta_title',
         'meta_keyword',
         'meta_description',

@@ -130,6 +130,32 @@
         });
     });
    //icon image end
+
+   //banner image start 
+
+   document.getElementById('bannerUrl').addEventListener('change', function() {
+        // console.log("111");
+        if (this.files[0]) {
+            var picture = new FileReader();
+            picture.readAsDataURL(this.files[0]);
+            picture.addEventListener('load', function(event) {
+                console.log(event.target);
+                let img_url = event.target.result;
+                $('#manual-image-banner').css({
+                    'background-image': 'url(' + event.target.result + ')'
+                });
+            });
+        }
+    });
+    document.getElementById('banner_remove_logo').addEventListener('click', function() {
+        $('#image_remove_banner').val("no");
+        $('#manual-image-banner').css({
+            'background-image': ''
+        });
+    });
+
+
+   //banner image end
     $('#parent_category').select2();
     $('#industrial_category').select2();
     

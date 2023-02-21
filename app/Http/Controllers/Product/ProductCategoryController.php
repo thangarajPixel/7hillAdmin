@@ -177,6 +177,11 @@ class ProductCategoryController extends Controller
                 \File::deleteDirectory(public_path($directory));
                 $ins['icon'] = '';
             }
+            if ($request->image_remove_banner == "no") {
+                $directory = 'upload/category/banner_image/'.$id;
+                \File::deleteDirectory(public_path($directory));
+                $ins['banner_image'] = '';
+            }
             $categeryInfo               = ProductCategory::updateOrCreate(['id' => $id], $ins);
             $categoryId                 = $categeryInfo->id;
 
@@ -212,6 +217,24 @@ class ProductCategoryController extends Controller
                 $mainCategory   = "upload/category/icon/".$categoryId."/".$imageName;
                 $file->move(public_path($directory),$imageName);
                 $categeryInfo->icon       = $mainCategory;
+                $categeryInfo->save();
+            }
+
+            if($request->hasFile('banner_image'))
+            {
+                $directory = 'upload/category/banner_image/'.$categoryId;
+                \File::deleteDirectory(public_path($directory));
+
+                $file = $request->file('banner_image');
+                $imageName = uniqid().str_replace(["(", ")"," "],'',$file->getClientOriginalName());
+                if(!is_dir(public_path($directory."/")))
+                {
+                    mkdir(public_path($directory."/"),0775,true);
+                }
+
+                $mainCategory   = "upload/category/banner_image/".$categoryId."/".$imageName;
+                $file->move(public_path($directory),$imageName);
+                $categeryInfo->banner_image       = $mainCategory;
                 $categeryInfo->save();
             }
 
