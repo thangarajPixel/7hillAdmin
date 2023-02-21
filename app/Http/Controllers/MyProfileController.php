@@ -60,6 +60,7 @@ class MyProfileController extends Controller
                     
                     $existID = User::find($id);
                     $deleted_file = $existID->image;
+                    dd("1111");
                     if($id)
                     {
                         $existID = User::find($id);
