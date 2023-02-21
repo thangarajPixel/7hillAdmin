@@ -125,16 +125,16 @@ class IndustrialController extends Controller
                 $ins['parent_id'] = 0;
             }
 
-            if ($request->image_remove_image == "no") {
-                $directory = 'upload/category/industrial/image/'.$id;
-                \File::deleteDirectory(public_path($directory));
-                $ins['image'] = '';
-            }
-            if ($request->icon_remove_image == "no") {
-                $directory = 'upload/category/industrial/icon/'.$id;
-                \File::deleteDirectory(public_path($directory));
-                $ins['icon'] = '';
-            }
+            // if ($request->image_remove_image == "no") {
+            //     $directory = 'upload/category/industrial/image/'.$id;
+            //     \File::deleteDirectory(public_path($directory));
+            //     $ins['image'] = '';
+            // }
+            // if ($request->icon_remove_image == "no") {
+            //     $directory = 'upload/category/industrial/icon/'.$id;
+            //     \File::deleteDirectory(public_path($directory));
+            //     $ins['icon'] = '';
+            // }
             $error                      = 0;
             $info                       = Industrial::updateOrCreate(['id' => $id], $ins);
             $category_id                  = $info->id;
@@ -142,7 +142,7 @@ class IndustrialController extends Controller
 
             if($request->hasFile('avatar'))
             {
-                $directory = 'upload/category/industrial/image/'.$category_id;
+                $directory = 'upload/industrial/image/'.$category_id;
                 \File::deleteDirectory(public_path($directory));
 
                 $file = $request->file('avatar');
@@ -151,7 +151,7 @@ class IndustrialController extends Controller
                 {
                     mkdir(public_path($directory."/"),0775,true);
                 }
-                $mainCategory   = "upload/category/industrial/image/".$category_id."/".$imageName;
+                $mainCategory   = "upload/industrial/image/".$category_id."/".$imageName;
                 $file->move(public_path($directory),$imageName);
 
                 $info->image       = $mainCategory;
@@ -159,7 +159,7 @@ class IndustrialController extends Controller
             }
             if($request->hasFile('icon'))
             {
-                $directory = 'upload/category/industrial/icon/'.$category_id;
+                $directory = 'upload/industrial/icon/'.$category_id;
                 \File::deleteDirectory(public_path($directory));
 
                 $file = $request->file('icon');
@@ -169,7 +169,7 @@ class IndustrialController extends Controller
                     mkdir(public_path($directory."/"),0775,true);
                 }
 
-                $mainCategory   = "upload/category/industrial/icon/".$category_id."/".$imageName;
+                $mainCategory   = "upload/industrial/icon/".$category_id."/".$imageName;
                 $file->move(public_path($directory),$imageName);
                 $info->icon       = $mainCategory;
                 $info->save();
