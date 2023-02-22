@@ -96,7 +96,7 @@ class FilterController extends Controller
                         $icon_path               = asset($url);
                     }
                     if (empty($cat->banner_image)) {
-                        $banner_image_path               = asset('userImage/7hillbanner.jpg');
+                        $banner_image               = asset('userImage/7hillbanner.jpg');
                     } else {
                         $url                = $cat->banner_image;
                         $banner_image               = asset($url);
