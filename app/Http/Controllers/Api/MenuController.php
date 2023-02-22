@@ -24,7 +24,7 @@ class MenuController extends Controller
                     $tmp['image'] = asset($item->image);
                 }
                 else{
-                    $tmp['image'] =  asset('userImage/no_Image.jpg');
+                    $tmp['image'] =  asset('userImage/7hillcategory.jpg');
                 }
                 if(!empty($item->icon))
                 {
@@ -49,7 +49,7 @@ class MenuController extends Controller
                             $tmp1['image'] = asset($child->image);
                         }
                         else{
-                            $tmp1['image'] = asset('userImage/no_Image.jpg');
+                            $tmp1['image'] = asset('userImage/7hillcategory.jpg');
                         }
                         if(!empty($child->icon))
                         {
@@ -66,7 +66,7 @@ class MenuController extends Controller
                                     $val1->image = asset($val1->image);
                                 }
                                 else{
-                                    $val1->image = asset('userImage/no_Image.jpg');
+                                    $val1->image = asset('userImage/7hillcategory.jpg');
                                 }
                                 if(!empty($val1->icon))
                                 {
@@ -105,7 +105,7 @@ class MenuController extends Controller
                                 $val->image = asset($val->image);
                             }
                             else{
-                                $val->image = asset('userImage/no_Image.jpg');
+                                $val->image = asset('userImage/7hillcategory.jpg');
                             }
                             if(!empty($val->icon))
                             {

@@ -31,21 +31,21 @@ class FilterController extends Controller
             $tmp['meta_title'] = $catInfo->meta_title;
             $tmp['meta_keyword'] = $catInfo->meta_keyword;
             $tmp['meta_description'] = $catInfo->meta_description;
-
-            if (!asset($catInfo->image)) {
-                $path               = asset('userImage/no_Image.jpg');
+// dd($catInfo->image);
+            if (empty($catInfo->image)) {
+                $path               = asset('userImage/7hillcategory.jpg');
             } else {
                 $url                = $catInfo->image;
                 $path               = asset($url);
             }
-            if (!asset($catInfo->icon)) {
+            if (empty($catInfo->icon)) {
                 $icon_path               = asset('userImage/no_Image.jpg');
             } else {
                 $url                = $catInfo->icon;
                 $icon_path               = asset($url);
             }
-            if (!asset($catInfo->banner_image)) {
-                $banner_path               = asset('userImage/no_Image.jpg');
+            if (empty($catInfo->banner_image)) {
+                $banner_path               = asset('userImage/7hillbanner.jpg');
             } else {
                 $url                       = $catInfo->banner_image;
                 $banner_path               = asset($url);
@@ -83,19 +83,19 @@ class FilterController extends Controller
                     $tmp1['meta_keyword'] = $cat->meta_keyword;
                     $tmp1['meta_description'] = $cat->meta_description;
 
-                    if (!asset($cat->image)) {
-                        $path               = asset('userImage/no_Image.jpg');
+                    if (empty($cat->image)) {
+                        $path               = asset('userImage/7hillcategory.jpg');
                     } else {
                         $url                = $cat->image;
                         $path               = asset($url);
                     }
-                    if (!asset($cat->icon)) {
+                    if (empty($cat->icon)) {
                         $icon_path               = asset('userImage/no_Image.jpg');
                     } else {
                         $url                = $cat->icon;
                         $icon_path               = asset($url);
                     }
-                    if (!asset($cat->banner_image)) {
+                    if (empty($cat->banner_image)) {
                         $banner_image_path               = asset('userImage/7hillbanner.jpg');
                     } else {
                         $url                = $cat->banner_image;
@@ -113,8 +113,8 @@ class FilterController extends Controller
                 $products = $catInfo->products;
                 foreach($products as $key=>$val)
                 {
-                    if (!asset($val->base_image)) {
-                        $path               = asset('userImage/no_Image.jpg');
+                    if (empty($val->base_image)) {
+                        $path               = asset('userImage/7hillproduct.jpg');
                     } else {
                         $path               = asset($val->base_image);
                     }
@@ -200,8 +200,8 @@ class FilterController extends Controller
 
                 $imagePath              = $items->base_image;
 
-                if (!asset($imagePath)) {
-                    $path               = asset('assets/logo/product-noimg.jpg');
+                if (empty($imagePath)) {
+                    $path               = asset('userImage/7hillproduct.jpg');
                 } else {
                     $path               = asset($imagePath);
                 }
@@ -244,8 +244,8 @@ class FilterController extends Controller
 
         $imagePath              = $items->base_image;
 
-        if (!asset($imagePath)) {
-            $path               = asset('userImage/no_Image.jpg');
+        if (empty($imagePath)) {
+            $path               = asset('userImage/7hillproduct.jpg');
         } else {
             $path               = asset($imagePath);
         }
@@ -331,7 +331,7 @@ class FilterController extends Controller
                 $iconPath              = $item->icon;
                 $bannerPath              = $item->banner_image;
                 if (empty($imagePath)) {
-                    $path               = asset('assets/logo/no-img-1.jpg');
+                    $path               = asset('userImage/7hillcategory.jpg');
                 } else {
                     // $url                = Storage::url($imagePath);
                     $path               = asset($imagePath);
@@ -344,7 +344,7 @@ class FilterController extends Controller
                 }
 
                 if (empty($bannerPath)) {
-                    $bannerpath               = asset('assets/logo/no-img-1.jpg');
+                    $bannerpath               = asset('userImage/7hillbanner.jpg');
                 } else {
                     // $url                = Storage::url($imagePath);
                     $bannerpath               = asset($bannerPath);
