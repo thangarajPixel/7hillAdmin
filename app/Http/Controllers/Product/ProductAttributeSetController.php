@@ -38,8 +38,7 @@ class ProductAttributeSetController extends Controller
                         if( !strpos($keywords, '.')) {
                             $date = date('Y-m-d', strtotime($keywords));
                         } 
-                        $query->where('product_attribute_sets.title', 'like', "%{$keywords}%")
-                        ->orWhere('product_attribute_sets.tag_line', 'like', "%{$keywords}%");
+                        $query->where('product_attribute_sets.title', 'like', "%{$keywords}%");
                         if( isset( $date )) {
                             $query->orWhereDate("product_attribute_sets.created_at", $date);
                         }
@@ -51,16 +50,7 @@ class ProductAttributeSetController extends Controller
                 ->editColumn('status', function ($row) {
                     $status = '<a href="javascript:void(0);" class="badge badge-light-'.(($row->status == 'published') ? 'success': 'danger').'" tooltip="Click to '.(($row->status == 'published') ? 'Unpublish' : 'Publish').'" onclick="return commonChangeStatus(' . $row->id . ', \''.(($row->status == 'published') ? 'unpublished': 'published').'\', \'product-attribute\')">'.ucfirst($row->status).'</a>';
                     return $status;
-                })
-                ->addColumn('product_list', function($row){
-                    return ( isset( $row->is_use_in_product_listing ) && $row->is_use_in_product_listing == '1' ) ? 'Yes' : 'No';
-                })
-                ->addColumn('compare', function($row){
-                    return ( isset( $row->is_comparable ) && $row->is_comparable == '1' ) ? 'Yes' : 'No';
-                })
-                ->addColumn('search', function($row){
-                    return ( isset( $row->is_searchable ) && $row->is_searchable == '1' ) ? 'Yes' : 'No';
-                })
+                })       
                 ->editColumn('created_at', function ($row) {
                     $created_at = Carbon::createFromFormat('Y-m-d H:i:s', $row['created_at'])->format('d-m-Y');
                     return $created_at;
