@@ -47,7 +47,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             if(isset( $industrial_category ) && !empty( $industrial_category ))
             {
                 if( isset( $checkSubIndustrial ) && !empty( $checkSubIndustrial ) ) {
-                    $sub_industrial_id                = $checkSubIndustrial->id;
+                    $sub_industrial_id                = $checkSubIndustrial;
                     $categoryAppendSlug               =  $checkSubIndustrial->slug;
                 } else {
                     #insert new sub category
@@ -97,6 +97,8 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
             {
                 if( isset( $checkSubCategory ) && !empty( $checkSubCategory ) ) {
                     $sub_category_id                = $checkSubCategory->id;
+                    $checkSubCategory['industrial_id']    = $sub_industrial_id->id ?? '';
+                    $checkSubCategory->update();
                 } else {
                     #insert new sub category
                     $subcat_ins['added_by']         = Auth::id();
@@ -104,7 +106,7 @@ $status = (isset($row['status']) && strtolower($row['status']) == 'active') ? 'p
                     $subcat_ins['order_by']         = 0;
                     $subcat_ins['status']           = 'published';
                     $subcat_ins['parent_id']        = $category_id;
-                    $subcat_ins['industrial_id']    = $sub_industrial_id->id;
+                    $subcat_ins['industrial_id']    = $sub_industrial_id->id ?? '';
                     $parent_name = '';
                     if( isset( $category_id ) && !empty( $category_id ) ) {
                         $parentInfo                 = ProductCategory::find($category_id);
