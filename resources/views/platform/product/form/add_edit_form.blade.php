@@ -83,12 +83,13 @@
         </div>
     </div>
 </div>
-    
+
 @endsection
 @section('add_on_script')
 <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
 <script>
     @if(isset( $info->id) && !empty( $info->id))
+    // addVariationRow('{{ $info->id }}','{{ $info->category_id }}');
     addVariationRow('{{ $info->id }}');
     @endif
     $('.product-tab').click(function() {
@@ -335,7 +336,9 @@
 
     }
 
-    function addVariationRow( id = '') {
+    function addVariationRow( id = '',category_id = '') {
+        var category_id = $('#category_id').val();
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -344,7 +347,7 @@
         $.ajax({
             url:"{{ route('products.attribute.row') }}",
             type: "POST",
-            data:{product_id:id},
+            data:{product_id:id,category_id:category_id},
             success: function(res){
                 $('#formRepeaterId').append( res );
             }

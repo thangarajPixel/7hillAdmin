@@ -25,8 +25,8 @@ Route::post('/get/dynamic/filter/category', [App\Http\Controllers\Api\FilterCont
 
 
 Route::get('/get/allMenu', [App\Http\Controllers\Api\MenuController::class, 'getAllMenu']);
-Route::post('/get/products/{slug}', [App\Http\Controllers\Api\FilterController::class, 'getProducts']); // Listing all products with filter
 Route::get('/get/products/by/slug/{product_url}', [App\Http\Controllers\Api\FilterController::class, 'getProductBySlug']); //Product Details
 Route::post('/get/other/category', [App\Http\Controllers\Api\FilterController::class, 'getOtherCategories']);
 
+Route::post('/get/products/{slug}', [App\Http\Controllers\Api\FilterController::class, 'getProducts']); // Listing all products with filter
 Route::post('/products_filter', [App\Http\Controllers\Api\FilterController::class, 'getFilterProducts']); // Filter Data Product List

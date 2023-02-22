@@ -31,7 +31,6 @@ class FilterController extends Controller
             $tmp['meta_title'] = $catInfo->meta_title;
             $tmp['meta_keyword'] = $catInfo->meta_keyword;
             $tmp['meta_description'] = $catInfo->meta_description;
-// dd($catInfo->image);
             if (empty($catInfo->image)) {
                 $path               = asset('userImage/7hillcategory.jpg');
             } else {
@@ -124,6 +123,7 @@ class FilterController extends Controller
             $filter_menus = $catInfo->filterMenus ?? [];
             $tmp['filter_menus'] = $filter_menus;
             $tmp['products'] = $products;
+            // $tmp['products'] = $this->getFilterProducts($request);
             $params[] = $tmp;
         }
 
@@ -131,7 +131,8 @@ class FilterController extends Controller
     }
     public function getFilterProducts(Request $request)
     {
-
+        
+        $page                   = $request->page ?? 0;
         $filter_category        = $request->category;
         $filter_attribute       = $request->filter_id;
         $filter_attribute_array = [];
@@ -149,6 +150,14 @@ class FilterController extends Controller
                 }
             }
         }
+
+        $limit = 12;
+        $skip = (isset($page) && !empty($page)) ? ($page * $limit) : 0;
+
+        $from   = 1 + ($page * $limit);
+        $take_limit = $limit + ($page * $limit);
+
+
         $total = Product::select('products.*')->where('products.status', 'published')
             ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
             ->leftJoin('product_categories as parent', 'parent.id', '=', 'product_categories.parent_id')
@@ -176,6 +185,7 @@ class FilterController extends Controller
                 return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
             })
             ->groupBy('products.id')
+            ->skip(0)->take($take_limit)
             ->get();
             
 

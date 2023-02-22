@@ -91,7 +91,6 @@ class ProductAttributeSetController extends Controller
 
     public function saveForm(Request $request,$id = null)
     {
-        
         $id             = $request->id;
         $product_category_id    = $request->product_category_id;
         $validator      = Validator::make($request->all(), [
@@ -178,8 +177,14 @@ class ProductAttributeSetController extends Controller
     public function getAttributeRow(Request $request)
     {
         $product_id             = $request->product_id;
+        $category_id            = $request->category_id;
         $info                   = Product::find($product_id);
-        $attributes             = ProductAttributeSet::where('status', 'published')->orderBy('order_by','ASC')->get();
+        $attributes             = ProductAttributeSet::where('status', 'published')
+                                    ->when(!empty($category_id), function ($query) use ($category_id) {
+                                        $query->where('product_category_id', $category_id);
+                                    })
+                                    ->orderBy('order_by','ASC')->get();
+
         return view('platform.product.form.filter._items', compact('attributes', 'info'));
     }
 
