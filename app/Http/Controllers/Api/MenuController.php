@@ -33,6 +33,14 @@ class MenuController extends Controller
                 else{
                     $tmp['icon'] =  asset('userImage/no_Image.jpg');
                 }
+                if(!empty($item->banner_image))
+                {
+                    $tmp['banner_image'] = asset($item->banner_image);
+                }
+                else{
+                    $tmp['banner_image'] =  asset('userImage/7hillbanner.jpg');
+                }
+              
                 
                 if( isset( $item->childOnlyNames ) && !empty( $item->childOnlyNames ) && count($item->childOnlyNames) > 0 ) {
                     foreach ( $item->childOnlyNames as $child ) {

@@ -54,16 +54,31 @@ class FilterController extends Controller
             $tmp['banner_image'] = $banner_path;
             $ind = [];
             if( isset( $catInfo->parentIndustry ) && !empty( $catInfo->parentIndustry )) {
+                if(!empty($catInfo->parentIndustry->banner_image)) {
+                    $catInfo->parentIndustry->banner_image = asset($catInfo->parentIndustry->banner_image);
+                }
+                else{
+                    $catInfo->parentIndustry->banner_image = asset('userImage/7hillbanner.jpg');
+                }
                 $ind[] = array( 
                     'id' => $catInfo->parentIndustry->id, 
                     'title' => $catInfo->parentIndustry->title, 
                     'slug' => $catInfo->parentIndustry->slug, 
+                    'banner_image' => $catInfo->parentIndustry->banner_image, 
+
                 );
                 if( isset( $catInfo->parentIndustry->parent ) && !empty( $catInfo->parentIndustry->parent ) ) {
+                    if(!empty($catInfo->parentIndustry->parent->banner_image)) {
+                        $catInfo->parentIndustry->parent->banner_image = asset($catInfo->parentIndustry->parent->banner_image);
+                    }
+                    else{
+                        $catInfo->parentIndustry->parent->banner_image = asset('userImage/7hillbanner.jpg');
+                    }
                     $ind[] = array( 
                         'id' => $catInfo->parentIndustry->parent->id, 
                         'title' => $catInfo->parentIndustry->parent->title, 
                         'slug' => $catInfo->parentIndustry->parent->slug, 
+                        'banner_image' => $catInfo->parentIndustry->parent->banner_image, 
                     );
                 }
 
