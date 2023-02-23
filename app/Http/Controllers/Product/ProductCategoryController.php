@@ -169,19 +169,32 @@ class ProductCategoryController extends Controller
             $error                      = 0;
             // dd($request->all());
             if ($request->image_remove_image == "no" && empty($request->categoryImage)) {
-                $directory = 'upload/category/image/'.$id;
-                \File::deleteDirectory(public_path($directory));
-                $ins['image'] = '';
+                if($id)
+                {
+                    $directory = 'upload/category/image/'.$id;
+                    \File::deleteDirectory(public_path($directory));
+                    $ins['image'] = '';
+                }
+                
             }
             if ($request->icon_remove_image == "no" && empty($request->icon)) {
-                $directory = 'upload/category/icon/'.$id;
-                \File::deleteDirectory(public_path($directory));
-                $ins['icon'] = '';
+
+                if($id)
+                {
+                    $directory = 'upload/category/icon/'.$id;
+                    \File::deleteDirectory(public_path($directory));
+                    $ins['icon'] = '';
+                }
+                
             }
             if ($request->image_remove_banner == "no" && empty($request->banner_image)) {
-                $directory = 'upload/category/banner_image/'.$id;
-                \File::deleteDirectory(public_path($directory));
-                $ins['banner_image'] = '';
+                if($id)
+                {
+                    $directory = 'upload/category/banner_image/'.$id;
+                    \File::deleteDirectory(public_path($directory));
+                    $ins['banner_image'] = '';
+                }
+               
             }
             $categeryInfo               = ProductCategory::updateOrCreate(['id' => $id], $ins);
             $categoryId                 = $categeryInfo->id;

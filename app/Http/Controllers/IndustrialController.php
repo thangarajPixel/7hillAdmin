@@ -126,14 +126,21 @@ class IndustrialController extends Controller
             }
 
             if ($request->image_remove_image == "no" && empty($request->avatar)) {
-                $directory = 'upload/category/industrial/image/'.$id;
-                \File::deleteDirectory(public_path($directory));
-                $ins['image'] = '';
+                if($id)
+                {
+                    $directory = 'upload/category/industrial/image/'.$id;
+                    \File::deleteDirectory(public_path($directory));
+                    $ins['image'] = '';
+                }
+                
             }
             if ($request->icon_remove_image == "no" && empty($request->icon)) {
-                $directory = 'upload/category/industrial/icon/'.$id;
-                \File::deleteDirectory(public_path($directory));
-                $ins['icon'] = '';
+                if($id)
+                {
+                    $directory = 'upload/category/industrial/icon/'.$id;
+                    \File::deleteDirectory(public_path($directory));
+                    $ins['icon'] = '';
+                }
             }
             $error                      = 0;
             $info                       = Industrial::updateOrCreate(['id' => $id], $ins);
