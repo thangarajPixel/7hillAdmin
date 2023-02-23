@@ -36,7 +36,7 @@ class MyProfileController extends Controller
 
     public function saveForm(Request $request)
     {
-        
+
         $id             = $request->id;
         $tabType        = $request['tab_name'];
         if( $tabType == "myaccount")
@@ -76,7 +76,7 @@ class MyProfileController extends Controller
                     $request->profile_image->move(public_path($folder_name), $filename);
                     $ins['image']   = $path;
                 }
-                if ($request->image_remove_image == "yes") {
+                if ($request->image_remove_image == "yes" && empty($request->profile_image)) {
                     $ins['image'] = '';
                 }
     
@@ -126,8 +126,5 @@ class MyProfileController extends Controller
       
         return response()->json(['error'=> $error, 'message' => $message, 'tabType' => $tabType]);
     }
-    public function saveFormPassword(Request $request)
-    {
-        dd($request->all());
-    }
+    
 }

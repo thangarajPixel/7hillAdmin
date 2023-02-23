@@ -167,21 +167,22 @@ class ProductCategoryController extends Controller
             $ins['meta_description']    = $request->meta_description ?? '';
             $ins['sorting_order']       = $request->order_by ?? 0;
             $error                      = 0;
-            // if ($request->image_remove_image == "no") {
-            //     $directory = 'upload/category/image/'.$id;
-            //     \File::deleteDirectory(public_path($directory));
-            //     $ins['image'] = '';
-            // }
-            // if ($request->icon_remove_image == "no") {
-            //     $directory = 'upload/category/icon/'.$id;
-            //     \File::deleteDirectory(public_path($directory));
-            //     $ins['icon'] = '';
-            // }
-            // if ($request->image_remove_banner == "no") {
-            //     $directory = 'upload/category/banner_image/'.$id;
-            //     \File::deleteDirectory(public_path($directory));
-            //     $ins['banner_image'] = '';
-            // }
+            // dd($request->all());
+            if ($request->image_remove_image == "no" && empty($request->categoryImage)) {
+                $directory = 'upload/category/image/'.$id;
+                \File::deleteDirectory(public_path($directory));
+                $ins['image'] = '';
+            }
+            if ($request->icon_remove_image == "no" && empty($request->icon)) {
+                $directory = 'upload/category/icon/'.$id;
+                \File::deleteDirectory(public_path($directory));
+                $ins['icon'] = '';
+            }
+            if ($request->image_remove_banner == "no" && empty($request->banner_image)) {
+                $directory = 'upload/category/banner_image/'.$id;
+                \File::deleteDirectory(public_path($directory));
+                $ins['banner_image'] = '';
+            }
             $categeryInfo               = ProductCategory::updateOrCreate(['id' => $id], $ins);
             $categoryId                 = $categeryInfo->id;
 
