@@ -55,25 +55,38 @@ class MyProfileController extends Controller
                 $ins['address']         = $request->address;
                 $path = '';
                 if ($request->hasFile('profile_image')) {
-                    $filename       = time() . '_' . $request->profile_image->getClientOriginalName();
-                    $folder_name    = 'user/' . $request->email . '/profile/';
-                    
-                    $existID = User::find($id);
-                    $deleted_file = $existID->image;
-                    if($id)
+
+
+                    $directory = 'user/' . $request->email.'/profile/';
+                    \File::deleteDirectory(public_path($directory));
+
+                    $file = $request->file('profile_image');
+                    $filename =time() . '_' .str_replace(["(", ")"," "],'',$file->getClientOriginalName());
+
+                    if(!is_dir(public_path($directory."/")))
                     {
-                        $existID = User::find($id);
-                        $deleted_file = $existID->image;
-                        if(File::exists($deleted_file)) {
-                            File::delete($deleted_file);
-                        }
+                        mkdir(public_path($directory."/"),0775,true);
                     }
-                    if (!file_exists($folder_name)) {
-                        mkdir($folder_name, 777, true);
-                    }
-                   
-                    $path           = $folder_name . $filename;
-                    $request->profile_image->move(public_path($folder_name), $filename);
+                    $path   = 'user/' . $request->email . '/profile/'.$filename;
+                    $file->move(public_path($directory),$filename);
+                    // $filename       = time() . '_' . $request->profile_image->getClientOriginalName();
+                    // $folder_name    = 'user/' . $request->email . '/profile/';
+                    
+                    // $existID = User::find($id);
+                    // $deleted_file = $existID->image;
+                    // if($id)
+                    // {
+                    //     $existID = User::find($id);
+                    //     $deleted_file = $existID->image;
+                    //     if(File::exists($deleted_file)) {
+                    //         File::delete($deleted_file);
+                    //     }
+                    // }
+                    // if (!file_exists($folder_name)) {
+                    //     mkdir($folder_name, 777, true);
+                    // }
+                    // $path           = $folder_name . $filename;
+                    // $request->profile_image->move(public_path($folder_name), $filename);
                     $ins['image']   = $path;
                 }
                 if ($request->image_remove_image == "yes") {
