@@ -128,7 +128,7 @@ class IndustrialController extends Controller
             if ($request->image_remove_image == "no" && empty($request->avatar)) {
                 if($id)
                 {
-                    $directory = 'upload/category/industrial/image/'.$id;
+                    $directory = 'upload/industrial/image/'.$id;
                     \File::deleteDirectory(public_path($directory));
                     $ins['image'] = '';
                 }
@@ -137,9 +137,17 @@ class IndustrialController extends Controller
             if ($request->icon_remove_image == "no" && empty($request->icon)) {
                 if($id)
                 {
-                    $directory = 'upload/category/industrial/icon/'.$id;
+                    $directory = 'upload/industrial/icon/'.$id;
                     \File::deleteDirectory(public_path($directory));
                     $ins['icon'] = '';
+                }
+            }
+            if ($request->image_remove_banner == "no" && empty($request->banner_image)) {
+                if($id)
+                {
+                    $directory = 'upload/industrial/banner_image/'.$id;
+                    \File::deleteDirectory(public_path($directory));
+                    $ins['banner_image'] = '';
                 }
             }
             $error                      = 0;
@@ -181,6 +189,24 @@ class IndustrialController extends Controller
                 $info->icon       = $mainCategory;
                 $info->save();
             }
+            if($request->hasFile('banner_image'))
+            {
+                $directory = 'upload/industrial/banner_image/'.$category_id;
+                \File::deleteDirectory(public_path($directory));
+
+                $file = $request->file('banner_image');
+                $imageName = uniqid().str_replace(["(", ")"," "],'',$file->getClientOriginalName());
+                if(!is_dir(public_path($directory."/")))
+                {
+                    mkdir(public_path($directory."/"),0775,true);
+                }
+
+                $mainCategory   = "upload/industrial/banner_image/".$category_id."/".$imageName;
+                $file->move(public_path($directory),$imageName);
+                $info->banner_image       = $mainCategory;
+                $info->save();
+            }
+
 
             $message                    = (isset($id) && !empty($id)) ? 'Updated Successfully' : 'Added successfully';
         } else {

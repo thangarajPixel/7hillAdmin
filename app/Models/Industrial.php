@@ -17,6 +17,7 @@ class Industrial extends Model
         'slug',
         'image',
         'icon',
+        'banner_image',
         'parent_id',
         'description',
         'meta_title',
