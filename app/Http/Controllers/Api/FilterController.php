@@ -358,7 +358,7 @@ class FilterController extends Controller
                         $tmp['parent_slug'] = '';
                     }
                 }
-                dd($tmp);
+                // dd($tmp);
 
 
                 $data[] = $tmp;
