@@ -61,6 +61,8 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/', [App\Http\Controllers\Product\ProductController::class, 'index'])->name('products')->middleware(['checkAccess:visible']); 
         Route::get('/upload', [App\Http\Controllers\Product\ProductController::class, 'bulkUpload'])->name('products.upload')->middleware(['checkAccess:editable']); 
         Route::post('/upload/product', [App\Http\Controllers\Product\ProductController::class, 'doBulkUpload'])->name('products.bulk.upload')->middleware(['checkAccess:editable']); 
+        Route::post('/upload/attributes/product', [App\Http\Controllers\Product\ProductController::class, 'doAttributesBulkUpload'])->name('products.bulk.attributes.upload')->middleware(['checkAccess:editable']); 
+        
         Route::get('/add/{id?}', [App\Http\Controllers\Product\ProductController::class, 'addEditPage'])->name('products.add.edit')->middleware(['checkAccess:editable']); 
         Route::post('/status', [App\Http\Controllers\Product\ProductController::class, 'changeStatus'])->name('products.status')->middleware(['checkAccess:status']);
         Route::post('/delete', [App\Http\Controllers\Product\ProductController::class, 'delete'])->name('products.delete')->middleware(['checkAccess:delete']);
@@ -91,6 +93,9 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/collection/export/pdf', [App\Http\Controllers\Product\ProductCollectionController::class, 'exportPdf'])->name('product-collection.export.pdf')->middleware(['checkAccess:export']);
     
         Route::post('/industrial-category',[App\Http\Controllers\Product\ProductController::class,'getIndustrialCategory'])->name('industrial-category');
+        Route::get('/autocomplete-search',[App\Http\Controllers\Product\ProductController::class,'autocompleteSearch'])->name('autocomplete-search');
+    
+    
     });
     Route::post('/getProduct/category/list', [App\Http\Controllers\CommonController::class, 'getProductCategoryList'])->name('common.category.dropdown');
     Route::post('/getProduct/brand/list', [App\Http\Controllers\CommonController::class, 'getProductBrandList'])->name('common.brand.dropdown');

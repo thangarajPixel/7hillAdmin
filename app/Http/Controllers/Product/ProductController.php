@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Exports\ProductExport;
 use App\Http\Controllers\Controller;
 use App\Imports\MultiSheetProductImport;
+use App\Imports\UploadAttributes;
 use App\Imports\TestImport;
 use Illuminate\Http\Request;
 use App\Models\Category\MainCategory;
@@ -519,6 +520,11 @@ class ProductController extends Controller
     public function doBulkUpload(Request $request)
     {
         Excel::import( new MultiSheetProductImport, request()->file('file') );
+        return response()->json(['error'=> 0, 'message' => 'Imported successfully']);
+    }
+    public function doAttributesBulkUpload(Request $request)
+    {
+        Excel::import( new UploadAttributes, request()->file('file') );
         return response()->json(['error'=> 0, 'message' => 'Imported successfully']);
     }
 
