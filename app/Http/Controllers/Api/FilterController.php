@@ -319,6 +319,7 @@ class FilterController extends Controller
     }
     public function getOtherCategories(Request $request)
     {
+       
         $category       = $request->category;
         $otherCategory   = ProductCategory::select('id', 'name', 'slug','image','icon','banner_image','parent_id','industrial_id')
                         ->when($category != '', function ($q) use ($category) {
@@ -327,6 +328,7 @@ class FilterController extends Controller
                         ->where(['status' => 'published'])
                         ->orderBy('order_by', 'asc')
                         ->get();
+                        dd($otherCategory);
         $data = [];
         if( isset( $otherCategory ) && !empty( $otherCategory ) ) {
             foreach ($otherCategory as $item) {
