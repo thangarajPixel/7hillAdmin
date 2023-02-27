@@ -351,7 +351,7 @@ class FilterController extends Controller
                     else if($item->otherCategoryData)
                     {
                         // dd("22");
-                        $newData  = Industrial::where('id',$item->otherCategoryData->parent_id)->select('title','slug','image')->first();
+                        $newData  = Industrial::where('id',$item->otherCategoryData->parent_id)->select('title','slug','image','icon')->first();
                          $tmp['parent_slug'] = $newData['slug'];
                     }
                     else{
@@ -359,13 +359,22 @@ class FilterController extends Controller
                     }
                 }
                 $imagePath              = $item->image;
+                $iconPath              = $item->icon;
                 if (empty($imagePath)) {
                     $path               = asset('userImage/7hillcategory.jpg');
                 } else {
                     // $url                = Storage::url($imagePath);
                     $path               = asset($imagePath);
                 }
+                if (empty($iconPath)) {
+                    $iconpath               = asset('assets/logo/no-img-1.jpg');
+                } else {
+                    // $url                = Storage::url($imagePath);
+                    $iconpath               = asset($iconPath);
+                }
                 $tmp['image'] = $path;
+                $tmp['icon'] = $iconpath;
+
                 // dd($tmp);
 
 
