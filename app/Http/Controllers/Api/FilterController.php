@@ -342,10 +342,13 @@ class FilterController extends Controller
                 {
                     if($item->otherCategoryData->parent_id == 0)
                     {
+                        dd("11");
+
                         $tmp['parent_slug'] = $item->otherCategoryData->slug;
                     }
                     else if($item->otherCategoryData)
                     {
+                        dd("22");
                         $newData  = Industrial::where('id',$item->otherCategoryData->parent_id)->select('title','slug')->first();
                          $tmp['parent_slug'] = $newData['slug'];
                     }
