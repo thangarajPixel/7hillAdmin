@@ -358,7 +358,14 @@ class FilterController extends Controller
                         $tmp['parent_slug'] = '';
                     }
                 }
-                
+                $imagePath              = $item->image;
+                if (empty($imagePath)) {
+                    $path               = asset('userImage/7hillcategory.jpg');
+                } else {
+                    // $url                = Storage::url($imagePath);
+                    $path               = asset($imagePath);
+                }
+                $tmp['image'] = $path;
                 // dd($tmp);
 
 
