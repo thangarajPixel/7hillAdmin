@@ -328,7 +328,7 @@ class FilterController extends Controller
                         ->where(['status' => 'published'])
                         ->orderBy('order_by', 'asc')
                         ->get();
-                        dd($otherCategory);
+                        // dd($otherCategory);
         $data = [];
         if( isset( $otherCategory ) && !empty( $otherCategory ) ) {
             foreach ($otherCategory as $item) {
@@ -357,33 +357,33 @@ class FilterController extends Controller
 
                 $imagePath              = $item->image;
                 $iconPath              = $item->icon;
-                // $bannerPath              = $item->banner_image;
-                // if (empty($imagePath)) {
-                //     $path               = asset('userImage/7hillcategory.jpg');
-                // } else {
-                //     // $url                = Storage::url($imagePath);
-                //     $path               = asset($imagePath);
-                // }
-                // if (empty($iconPath)) {
-                //     $iconpath               = asset('assets/logo/no-img-1.jpg');
-                // } else {
-                //     // $url                = Storage::url($imagePath);
-                //     $iconpath               = asset($iconPath);
-                // }
+                $bannerPath              = $item->banner_image;
+                if (empty($imagePath)) {
+                    $path               = asset('userImage/7hillcategory.jpg');
+                } else {
+                    // $url                = Storage::url($imagePath);
+                    $path               = asset($imagePath);
+                }
+                if (empty($iconPath)) {
+                    $iconpath               = asset('assets/logo/no-img-1.jpg');
+                } else {
+                    // $url                = Storage::url($imagePath);
+                    $iconpath               = asset($iconPath);
+                }
 
-                // if (empty($bannerPath)) {
-                //     $bannerpath               = asset('userImage/7hillbanner.jpg');
-                // } else {
-                //     // $url                = Storage::url($imagePath);
-                //     $bannerpath               = asset($bannerPath);
-                // }
+                if (empty($bannerPath)) {
+                    $bannerpath               = asset('userImage/7hillbanner.jpg');
+                } else {
+                    // $url                = Storage::url($imagePath);
+                    $bannerpath               = asset($bannerPath);
+                }
 
-                // $tmp['image'] = $path;
-                // $tmp['icon'] = $iconpath;
-                // $tmp['banner_image'] = $bannerpath;
+                $tmp['image'] = $path;
+                $tmp['icon'] = $iconpath;
+                $tmp['banner_image'] = $bannerpath;
 
                 $data[] = $tmp;
-
+dd($data);
             }
         } 
         return $data;
