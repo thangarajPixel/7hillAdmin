@@ -174,18 +174,19 @@ class FilterController extends Controller
 
 
         $total = Product::select('products.*')->where('products.status', 'published')
-            ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
-            ->leftJoin('product_categories as parent', 'parent.id', '=', 'product_categories.parent_id')
-            ->when($filter_category != '', function ($q) use ($filter_category) {
-                $q->where(function ($query) use ($filter_category) {
-                    return $query->where('product_categories.slug', $filter_category)->orWhere('parent.slug', $filter_category);
-                });
-            })
-            ->when($filter_attribute != '', function ($q) use ($productAttrNames) {
-                $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
-                return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
-            })
-            ->count();
+                ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
+                ->leftJoin('product_categories as parent', 'parent.id', '=', 'product_categories.parent_id')
+                ->when($filter_category != '', function ($q) use ($filter_category) {
+                    $q->where(function ($query) use ($filter_category) {
+                        return $query->where('product_categories.slug', $filter_category)->orWhere('parent.slug', $filter_category);
+                    });
+                })
+                ->when($filter_attribute != '', function ($q) use ($productAttrNames) {
+                    $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
+                    return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
+                })
+                // ->groupBy('products.id')
+                ->count();
 
         $details = Product::select('products.*')->where('products.status', 'published')
             ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
@@ -354,7 +355,7 @@ class FilterController extends Controller
 
                 $imagePath              = $item->image;
                 $iconPath              = $item->icon;
-                $bannerPath              = $item->banner_image;
+                // $bannerPath              = $item->banner_image;
                 if (empty($imagePath)) {
                     $path               = asset('userImage/7hillcategory.jpg');
                 } else {
@@ -368,16 +369,16 @@ class FilterController extends Controller
                     $iconpath               = asset($iconPath);
                 }
 
-                if (empty($bannerPath)) {
-                    $bannerpath               = asset('userImage/7hillbanner.jpg');
-                } else {
-                    // $url                = Storage::url($imagePath);
-                    $bannerpath               = asset($bannerPath);
-                }
+                // if (empty($bannerPath)) {
+                //     $bannerpath               = asset('userImage/7hillbanner.jpg');
+                // } else {
+                //     // $url                = Storage::url($imagePath);
+                //     $bannerpath               = asset($bannerPath);
+                // }
 
                 $tmp['image'] = $path;
                 $tmp['icon'] = $iconpath;
-                $tmp['banner_image'] = $bannerpath;
+                // $tmp['banner_image'] = $bannerpath;
 
                 $data[] = $tmp;
 
