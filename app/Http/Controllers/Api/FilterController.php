@@ -351,13 +351,14 @@ class FilterController extends Controller
                     else if($item->otherCategoryData)
                     {
                         // dd("22");
-                        $newData  = Industrial::where('id',$item->otherCategoryData->parent_id)->select('title','slug')->first();
+                        $newData  = Industrial::where('id',$item->otherCategoryData->parent_id)->select('title','slug','image')->first();
                          $tmp['parent_slug'] = $newData['slug'];
                     }
                     else{
                         $tmp['parent_slug'] = '';
                     }
                 }
+                
                 // dd($tmp);
 
 
