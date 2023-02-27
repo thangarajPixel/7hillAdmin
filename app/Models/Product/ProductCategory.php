@@ -71,7 +71,7 @@ class ProductCategory extends Model
     }
     public function otherCategoryData()
     {
-        return $this->hasOne(Industrial::class, 'id', 'industrial_id')->select('id','title','slug','parent_id','image','icon','banner_image');
+        return $this->hasOne(Industrial::class, 'id', 'industrial_id')->select('id','title','slug','parent_id','image','icon');
     }
 
     
