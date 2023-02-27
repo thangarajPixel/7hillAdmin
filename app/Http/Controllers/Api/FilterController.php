@@ -338,19 +338,14 @@ class FilterController extends Controller
                 $tmp['name'] = $item->name;
                 $tmp['slug'] = $item->slug;
                 $tmp['description'] = $item->description;
-                // dd($tmp);
                 if(!empty($item->otherCategoryData) && isset($item->otherCategoryData))
                 {
-                    // dd($item->otherCategoryData);
                     if($item->otherCategoryData->parent_id == 0)
                     {
-                        // dd("11");
-
                         $tmp['parent_slug'] = $item->otherCategoryData->slug;
                     }
                     else if($item->otherCategoryData)
                     {
-                        // dd("22");
                         $newData  = Industrial::where('id',$item->otherCategoryData->parent_id)->select('title','slug','image','icon')->first();
                          $tmp['parent_slug'] = $newData['slug'];
                     }
@@ -365,19 +360,16 @@ class FilterController extends Controller
                 if (empty($imagePath)) {
                     $path               = asset('userImage/7hillcategory.jpg');
                 } else {
-                    // $url                = Storage::url($imagePath);
                     $path               = asset($imagePath);
                 }
                 if (empty($iconPath)) {
                     $iconpath               = asset('assets/logo/no-img-1.jpg');
                 } else {
-                    // $url                = Storage::url($imagePath);
                     $iconpath               = asset($iconPath);
                 }
                 if (empty($bannerPath)) {
                     $bannerpath               = asset('userImage/7hillbanner.jpg');
                 } else {
-                    // $url                = Storage::url($imagePath);
                     $bannerpath               = asset($bannerPath);
                 }
                 $tmp['image'] = $path;
