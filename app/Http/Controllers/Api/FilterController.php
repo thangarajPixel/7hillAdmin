@@ -338,6 +338,7 @@ class FilterController extends Controller
                 $tmp['name'] = $item->name;
                 $tmp['slug'] = $item->slug;
                 $tmp['description'] = $item->description;
+                dd($tmp);
                 if(!empty($item->otherCategoryData) && isset($item->otherCategoryData))
                 {
                     if($item->otherCategoryData->parent_id == 0)
