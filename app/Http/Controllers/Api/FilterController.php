@@ -183,9 +183,9 @@ class FilterController extends Controller
                 })
                 ->when($filter_attribute != '', function ($q) use ($productAttrNames) {
                     $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
-                    return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
+                     $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
+                     return $q->groupBy('product_with_attribute_sets.product_id');
                 })
-                // ->groupBy('products.id')
                 ->get();
 
         $total = count($total);
