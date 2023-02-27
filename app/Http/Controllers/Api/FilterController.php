@@ -378,9 +378,9 @@ class FilterController extends Controller
                     $bannerpath               = asset($bannerPath);
                 }
 
-                $tmp['image'] = $path;
-                $tmp['icon'] = $iconpath;
-                $tmp['banner_image'] = $bannerpath;
+                // $tmp['image'] = $path;
+                // $tmp['icon'] = $iconpath;
+                // $tmp['banner_image'] = $bannerpath;
 
                 $data[] = $tmp;
 dd($data);
