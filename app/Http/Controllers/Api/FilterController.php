@@ -353,12 +353,13 @@ class FilterController extends Controller
                         $tmp['parent_slug'] = '';
                     }
                 }
-                
+                dd($tmp);
 
 
                 $data[] = $tmp;
-dd($data);
             }
+
+
         } 
         return $data;
     }
