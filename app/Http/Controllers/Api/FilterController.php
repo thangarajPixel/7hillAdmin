@@ -338,7 +338,21 @@ class FilterController extends Controller
                 $tmp['name'] = $item->name;
                 $tmp['slug'] = $item->slug;
                 $tmp['description'] = $item->description;
-                
+                if(!empty($item->otherCategoryData) && isset($item->otherCategoryData))
+                {
+                    if($item->otherCategoryData->parent_id == 0)
+                    {
+                        $tmp['parent_slug'] = $item->otherCategoryData->slug;
+                    }
+                    else if($item->otherCategoryData)
+                    {
+                        $newData  = Industrial::where('id',$item->otherCategoryData->parent_id)->select('title','slug')->first();
+                         $tmp['parent_slug'] = $newData['slug'];
+                    }
+                    else{
+                        $tmp['parent_slug'] = '';
+                    }
+                }
                 
 
 
