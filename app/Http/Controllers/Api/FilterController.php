@@ -341,7 +341,7 @@ class FilterController extends Controller
                 // dd($tmp);
                 if(!empty($item->otherCategoryData) && isset($item->otherCategoryData))
                 {
-                    dd($item->otherCategoryData);
+                    // dd($item->otherCategoryData);
                     if($item->otherCategoryData->parent_id == 0)
                     {
                         dd("11");
