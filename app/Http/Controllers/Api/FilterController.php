@@ -185,9 +185,10 @@ class FilterController extends Controller
                     $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
                     return $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
                 })
-                ->groupBy('product_with_attribute_sets.product_id')
-                ->get();
-        $total = count($total);
+                // ->groupBy('products.id')
+                ->count();
+                // $total = count($total);
+
         $details = Product::select('products.*')->where('products.status', 'published')
             ->join('product_categories', 'product_categories.id', '=', 'products.category_id')
             ->leftJoin('product_categories as parent', 'parent.id', '=', 'product_categories.parent_id')
