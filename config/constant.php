@@ -3,10 +3,11 @@ return [
     'permission' => array(
                     'users',
                     'roles',
-                    'product-category',
                     'industrial-module',
-                    'customer',
+                    'product-category',
                     'products',
+                    'product-attribute',
+                    'customer',
                     // 'reports.products',
                     'global',
                     'my-profile',
