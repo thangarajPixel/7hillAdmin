@@ -28,7 +28,7 @@ class ContactMail extends Mailable
      */
     public function build()
     {
-        $this->from('example@example.com')->with('details', $this->details)
+        $this->from('heveafurniture2022@gmail.com')->with('details', $this->details)
         ->subject('Contact Enquiry')->view('email.contact');
     }
 }

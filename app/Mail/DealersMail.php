@@ -28,7 +28,7 @@ class DealersMail extends Mailable
      */
     public function build()
     {
-        $this->from('example@example.com')->with('details', $this->details)
+        $this->from('heveafurniture2022@gmail.com')->with('details', $this->details)
         ->subject('Dealers Enquiry')->view('email.dealer');
     }
 }
