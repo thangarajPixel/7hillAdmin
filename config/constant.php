@@ -16,8 +16,8 @@ return [
                 ),
    
     'mail'  => array(
-        // 'info@7hillfurniture.com',
-        'santhoshd.pixel@gmail.com',
+        'info@7hillfurniture.com',
+        // 'santhoshd.pixel@gmail.com',
     ),
     
 ];
