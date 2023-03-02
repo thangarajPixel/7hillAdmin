@@ -91,7 +91,7 @@
                                                                                                     <a href="#"
                                                                                                         style="color: #fff; text-decoration: none !important;"
                                                                                                         target="_blank">
-                                                                                                        <img title="Logo" style="max-width: 300px;" src="http://192.168.0.56/7hillAdmin/public/assets/logo/logo.png" ></a>
+                                                                                                        <img title="Logo" style="max-width: 300px;" src="https://7hillfurniture.com/admin/public/assets/logo/logo.png" ></a>
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </tbody>
