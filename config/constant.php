@@ -16,8 +16,8 @@ return [
                 ),
    
     'mail'  => array(
-        'santhoshd.pixel@gmail.com',
-        '67santhosh@gmail.com',
+        'info@7hillfurniture.com',
+        // 'santhoshd.pixel@gmail.com',
     ),
     
 ];
