@@ -8,7 +8,6 @@ return [
                     'products',
                     'product-attribute',
                     'customer',
-                    // 'reports.products',
                     'global',
                     'my-profile',
                     'enquiry',
