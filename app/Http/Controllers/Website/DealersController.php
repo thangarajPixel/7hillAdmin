@@ -44,8 +44,7 @@ class DealersController extends Controller
                 'location'              =>$requests->location,
             ];
             try{
-                $sent_mail = "santhoshd.pixel@gmail.com";
-
+                $sent_mail = config('constant.mail');
                 Mail::to($sent_mail)->send(new DealersMail($details));
             }catch(\Exception $e){
                 $message = 'Thanks for reach us, our team will get back to you shortly. Please setup your <a href="setting/mail_setting">mail setting</a> to send mail.';

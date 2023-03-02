@@ -43,8 +43,7 @@ class ProductEnquiryController extends Controller
                 'company_name'          =>$requests->company_name,
             ];
             try{
-                $sent_mail = "santhoshd.pixel@gmail.com";
-
+                $sent_mail = config('constant.mail');
                 Mail::to($sent_mail)->send(new ProductEnquiryMail($details));
             }catch(\Exception $e){
                 $message = 'Product Enquiry submit successfully. Please setup your <a href="setting/mail_setting">mail setting</a> to send mail.';

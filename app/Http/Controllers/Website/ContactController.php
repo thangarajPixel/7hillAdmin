@@ -38,8 +38,7 @@ class ContactController extends Controller
                 'message'       =>$requests->message,
             ];
             try{
-                $sent_mail = "santhoshd.pixel@gmail.com";
-
+                $sent_mail = config('constant.mail');
                 Mail::to($sent_mail)->send(new ContactMail($details));
             }catch(\Exception $e){
                 $message = 'Thanks for reach us, our team will get back to you shortly. Please setup your <a href="setting/mail_setting">mail setting</a> to send mail.';

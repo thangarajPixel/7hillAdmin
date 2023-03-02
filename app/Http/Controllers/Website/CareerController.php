@@ -44,7 +44,7 @@ class CareerController extends Controller
                     
                     if($file->extension() == "pfd" || "doc" || "docx")
                     {
-                    $name = $file->getClientOriginalName();
+                    $name = str_replace(["(", ")"," "],'',$file->getClientOriginalName());
                     $file->move(public_path('website/careers'), $name);  
                     $attachPath= public_path('website/careers');
                     $attachement =  $attachPath.'/'.$name;
@@ -64,8 +64,7 @@ class CareerController extends Controller
                 'attachment'            =>$attachement,
             ];
             try{
-                $sent_mail = "santhoshd.pixel@gmail.com";
-
+                $sent_mail = config('constant.mail');
                 Mail::to($sent_mail)->send(new CareerMail($details));
             }catch(\Exception $e){
                 $message = 'Thanks for reach us, our team will get back to you shortly. Please setup your <a href="setting/mail_setting">mail setting</a> to send mail.';

@@ -14,5 +14,10 @@ return [
                     'enquiry',
 
                 ),
+   
+    'mail'  => array(
+        'santhoshd.pixel@gmail.com',
+        '67santhosh@gmail.com',
+    ),
     
 ];
