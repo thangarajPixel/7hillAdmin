@@ -65,7 +65,7 @@
                                         class="full-width" style="border-spacing: 0;">
                                         <tbody>
                                             <tr>
-                                                <td valign="middle" bgcolor="663883" style="border-collapse: collapse;">
+                                                <td valign="middle" bgcolor="#f7f7f7" style="border-collapse: collapse;">
                                                     <!-- start top navigation -->
                                                     <table width="800" align="center" border="0" cellspacing="0"
                                                         cellpadding="0" class="full-width" style="border-spacing: 0;">
