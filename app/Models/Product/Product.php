@@ -40,7 +40,8 @@ class Product extends Model
         'base_image',
         'approved_by',
         'approved_at',
-        'added_by'
+        'added_by',
+        'sorting_order',
     ];
 
     public function productCategory()

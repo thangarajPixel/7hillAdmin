@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class ProductCategory extends Model
 {
@@ -63,7 +64,7 @@ class ProductCategory extends Model
     }
 
     public function products() {
-        return $this->hasMany(Product::class, 'category_id', 'id');
+        return $this->hasMany(Product::class, 'category_id', 'id')->orderBy(DB::raw('ISNULL(sorting_order), sorting_order'), 'ASC');
     }
 
     public function filterMenus() {

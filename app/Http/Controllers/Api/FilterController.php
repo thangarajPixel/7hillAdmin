@@ -9,6 +9,7 @@ use App\Models\Product\ProductAttributeSet;
 use App\Models\Product\ProductCategory;
 use App\Models\Product\ProductWithAttributeSet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class FilterController extends Controller
@@ -146,7 +147,6 @@ class FilterController extends Controller
     }
     public function getFilterProducts(Request $request)
     {
-        
         $page                   = $request->page ?? 0;
         $filter_category        = $request->category;
         $filter_attribute       = $request->filter_id;
@@ -185,7 +185,7 @@ class FilterController extends Controller
                     $q->join('product_with_attribute_sets', 'product_with_attribute_sets.product_id', '=', 'products.id');
                      $q->whereIn('product_with_attribute_sets.attribute_values', $productAttrNames);
                      return $q->groupBy('product_with_attribute_sets.product_id');
-                })
+                })  
                 ->get();
 
         $total = count($total);
@@ -204,6 +204,7 @@ class FilterController extends Controller
             })
             ->groupBy('products.id')
             ->skip(0)->take($take_limit)
+            ->orderBy(DB::raw('ISNULL(sorting_order), sorting_order'), 'ASC')
             ->get();
             
 

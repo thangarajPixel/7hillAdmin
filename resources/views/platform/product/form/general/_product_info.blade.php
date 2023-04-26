@@ -12,6 +12,12 @@
                 <input type="text" name="sku" class="form-control mb-2" placeholder="Sku" value="{{ $info->sku ?? '' }}" />
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="mb-10 fv-row">
+                <label class="form-label">Sorting Order </label>
+                <input type="text" name="sorting_order" class="form-control mb-2 numberonly" placeholder="Sorting Order" value="{{ $info->sorting_order ?? '' }}" />
+            </div>
+        </div>
         {{-- <div class="col-md-4">
             <div class="mb-10 fv-row">
                 <label class="form-label">HSN Code</label>

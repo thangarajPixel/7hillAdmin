@@ -239,6 +239,7 @@ class ProductController extends Controller
             $ins[ 'description' ]           = $request->product_description ?? null;
             $ins[ 'specification' ]         = $request->product_specification ?? null;
             $ins[ 'added_by' ]              = auth()->user()->id;
+            $ins[ 'sorting_order' ]         = $request->sorting_order ?? null;
             
             $productInfo                    = Product::updateOrCreate(['id' => $id], $ins);
             if(!empty($id))
