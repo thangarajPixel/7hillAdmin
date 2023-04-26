@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Industrial;
+use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
-    public function getAllMenu()
+    public function getAllMenu(Request $request)
     {
-
+        
+        $limit = $request->limit ;
         $data = Industrial::where('parent_id',0)->where('status', 'published')->get();
         $params = [];
         if( isset( $data ) && !empty( $data ) ) {
@@ -133,10 +135,30 @@ class MenuController extends Controller
                             // dd($val->image);
                         }
                     }
-                    
-                    $tmp['child'] = $item->childCategory;
+                    $x = 0;
+                    $newArray = [];
+                        if(!empty($limit))
+                        {
+                            
+                            foreach($item->childCategory as $key=>$menuVal){
+                                if($x < 10)
+                                {
+                                    $newArray[] = $menuVal;
+                                    $x++; 
+                                }
+                                else{
+                                    break;
+                                }
+
+                            }
+                            $tmp['child'] = $newArray;
+                           
+                        }
+                        else{
+                            $tmp['child'] = $item->childCategory;
+                        }
+                   
                 }
-              
                 $params[] = $tmp;
             }
         }
