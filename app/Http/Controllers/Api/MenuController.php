@@ -74,7 +74,7 @@ class MenuController extends Controller
                             $tmp1['banner_image'] = asset($child->banner_image);
                         }
                         else{
-                            $tmp1['banner_image'] =  asset('userImage/no_Image.jpg');
+                            $tmp1['banner_image'] =  asset('userImage/7hillbanner.jpg');
                         }
 
                         if( isset( $child->childCategory ) && !empty( $child->childCategory ) ) {
