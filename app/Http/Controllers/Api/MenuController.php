@@ -68,6 +68,15 @@ class MenuController extends Controller
                         else{
                             $tmp1['icon'] =  asset('userImage/no_Image.jpg');
                         }
+
+                          if(!empty($child->banner_image))
+                        {
+                            $tmp1['banner_image'] = asset($child->banner_image);
+                        }
+                        else{
+                            $tmp1['banner_image'] =  asset('userImage/no_Image.jpg');
+                        }
+
                         if( isset( $child->childCategory ) && !empty( $child->childCategory ) ) {
                             foreach ( $child->childCategory as $val1 ) {
                                 // dd($val1);
