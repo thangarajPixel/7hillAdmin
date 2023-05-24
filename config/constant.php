@@ -16,7 +16,7 @@ return [
    
     'mail'  => array(
         'santhoshd.pixel@gmail.com',
-        'manikandan@pixel-studios.com',
+       
     ),
     
 ];
