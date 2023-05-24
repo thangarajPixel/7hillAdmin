@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ProductEnquiryMail;
+use App\Models\Product\Product;
 use App\Models\ProductEnquiry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -34,11 +35,13 @@ class ProductEnquiryController extends Controller
         $res = $data->save();
         if($res)
         {
+
+             $productData = Product::find($requests->product_id);
             $details = [
                 'name'                  =>$requests->name,
                 'email'                 =>$requests->email,
                 'mobile'                =>$requests->mobile,
-                'product'               =>$requests->product_id,
+                'product'               =>$productData->product_name ?? '',
                 'city'                  =>$requests->city,
                 'company_name'          =>$requests->company_name,
             ];
