@@ -15,6 +15,7 @@ return [
                 ),
    
     'mail'  => array(
+        'santhoshd.pixel@gmail.com',
         'info@7hillfurniture.com',
        
     ),
